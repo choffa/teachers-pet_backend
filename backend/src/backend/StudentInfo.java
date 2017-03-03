@@ -52,3 +52,5 @@ public class StudentInfo implements Serializable{
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+}
