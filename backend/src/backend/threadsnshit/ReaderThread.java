@@ -33,15 +33,15 @@ public class ReaderThread implements Runnable{
 			if(oldSnitt!=idb.getGjennomsnitt()||oldAnt!=idb.getAntall()){
 				oldSnitt=idb.getGjennomsnitt();
 				oldAnt=idb.getAntall();
-			t = new TeacherInfo(idb.getGjennomsnitt(), idb.getAntall());
-			for (ConnectionHandeler teacher:teachers){
-				if(teacher!=null){
-				try{
-					teacher.push(t);
-				}catch(Exception e) {}
+				t = new TeacherInfo(idb.getGjennomsnitt(), idb.getAntall());
+				for (ConnectionHandeler teacher:teachers){
+					if(teacher!=null){
+						try{
+							teacher.push(t);
+						}catch(Exception e) {}
+					}
+					Runtime.getRuntime().gc();
 				}
-			Runtime.getRuntime().gc();
-			}
 			}
 		}
 	}
