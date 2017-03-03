@@ -6,6 +6,12 @@ import backend.StudentInfo;
 
 import java.io.*;
 
+/**
+ * A class that writes from the app to the server
+ * 
+ * @author Choffa and Mathias
+ *
+ */
 public class AppWriter implements Runnable {
 
 	private Socket socket;
@@ -14,6 +20,9 @@ public class AppWriter implements Runnable {
 	private final String URL = "doktor.pvv.org";
 	private final int port = 4279;
 	
+	/**
+	 * Contructs the new AppWriter 
+	 */
 	public AppWriter(){
 		try {
 			socket = new Socket(URL, port);
@@ -26,7 +35,7 @@ public class AppWriter implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public AppWriter(StudentInfo si){
 		this();
 		this.si = si;
@@ -46,7 +55,10 @@ public class AppWriter implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * Sets the studentinfo to write
+	 * @param StudentInfo to write
+	 */
 	public void setInfo(StudentInfo si){
 		this.si = si;
 	}
