@@ -2,7 +2,14 @@ package backend;
 
 
 import java.io.Serializable;
-//
+
+/**
+ * 
+ * A class for the info that students will send to the backend.
+ * 
+ * @author Mathias, documentation by choffa
+ *
+ */
 public class StudentInfo implements Serializable{
     /**
 	 * 
@@ -13,7 +20,12 @@ public class StudentInfo implements Serializable{
     String fag;
     int id;
 
-
+    /**
+     * Constructs a new StudentInfo object, obviously  
+     * @param A string that contains the subject code
+     * @param The new ranking that the student sends
+     * @param The old rank that a student might have sent earlier
+     */
     public StudentInfo(String fag, byte rank, byte oldRank){
         this.fag = fag;
         this.rank = rank;
