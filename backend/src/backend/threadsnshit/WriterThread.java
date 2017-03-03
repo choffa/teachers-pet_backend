@@ -5,9 +5,21 @@ import backend.tests.ReadWriteTest;
 
 import java.util.ArrayList;
 
+/**
+ * A class that handles the writing to the database object. It implements
+ * Runnable & ServerListener
+ * 
+ * @author Mathias, documentation by choffa
+ *
+ */
 public class WriterThread implements Runnable, ServerListener{
 	InputDatabase idb;
 	volatile ArrayList<StudentInfo> infoStack;
+	
+	/**
+	 * Creates a new instance of the writerThread
+	 * @param The Database object that the WriterThread should write to
+	 */
 	public WriterThread(InputDatabase db){
 		idb = db;
 		infoStack = new ArrayList<StudentInfo>();
@@ -25,9 +37,14 @@ public class WriterThread implements Runnable, ServerListener{
 		}
 	}
 
+	
 	@Override
-	public synchronized void addInfo(StudentInfo info) {
-		infoStack.add(info);
+	/**
+	 * Method for adding StudentInfo to the stack
+	 * @param The studentInfo to add
+	 */
+	public synchronized void addInfo(StudentInfo s) {
+		infoStack.add(s);
 		
 	}
 	
@@ -41,7 +58,10 @@ public class WriterThread implements Runnable, ServerListener{
 			}
 		} 
 	}
-	
+	/**
+	 * Adds a new ranking to the database object
+	 * @param The StudentInfo object that contains the new ranking
+	 */
 	private void addNewRank(StudentInfo s){
 		float oldSnitt = idb.getGjennomsnitt();
 		int oldAnt = idb.getAntall();
@@ -50,6 +70,11 @@ public class WriterThread implements Runnable, ServerListener{
 		idb.setGjennomsnitt(newSnitt);
 		idb.setAntall(newAnt);
 	}
+	
+	/**
+	 * Updates the rank if the student has already voted
+	 * @param The StudentInfo object that contains the updated ranking
+	 */
 	private void updateOldRank(StudentInfo s){
 		float oldSnitt = idb.getGjennomsnitt();
 		int oldAnt = idb.getAntall();
