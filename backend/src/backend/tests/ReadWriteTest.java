@@ -5,7 +5,6 @@ import backend.database.InputDatabase;
 import backend.threadsnshit.MainListenerThread;
 import backend.threadsnshit.ReaderThread;
 import backend.threadsnshit.WriterThread;
-import frontend.AppReader;
 
 public class ReadWriteTest {
 	static StudentInfo s;
