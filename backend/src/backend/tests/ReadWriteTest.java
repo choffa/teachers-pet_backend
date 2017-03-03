@@ -20,7 +20,7 @@ public class ReadWriteTest {
 		new Thread(mlt).start();
 		System.out.println("mlt started");
 		new Thread(rt).start();
-		new Thread(new AppReader()).start();
+		//new Thread(new AppReader()).start();
 		/*while(true){
 			try{
 			Thread.sleep((long) (Math.random()*200));
