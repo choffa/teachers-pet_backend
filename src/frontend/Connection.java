@@ -104,21 +104,9 @@ public class Connection implements Closeable, AutoCloseable {
 	 * @return An ArrayList with the lectures in it
 	 */
 	public ArrayList<Lecture> getLectures() {
-		//TODO: Create method for receiving the lectures from the server
 		checkState();
 		out.println("GET_ALLLECTURES");
-		out.flush();
-		ArrayList<Lecture> lectures = new ArrayList<>();
-		String resString = in.nextLine();
-		String[] resArray = resString.split("#");
-		for (String s : resArray){
-			String[] lectureArray = s.split(" ");
-			lectures.add(new Lecture(Integer.parseInt(lectureArray[0]),
-					lectureArray[1], lectureArray[2], new Date(lectureArray[3]),
-					Integer.parseInt(lectureArray[4]), Integer.parseInt(lectureArray[5]), lectureArray[6] ));
-		}
-		System.out.println(lectures);
-		return null;
+		return readLectureInput();
 	}
 
 	/**
@@ -127,9 +115,26 @@ public class Connection implements Closeable, AutoCloseable {
 	 * @param professorID The ID of the professor that held the lectures
 	 * @return An ArrayList with the lectures in it
 	 */
-	public ArrayList<Object> getLectures(int professorID) {
-		//TODO: Create method for getting lectures by specific professor
-		return null;
+	public ArrayList<Lecture> getLectures(String professorID) {
+		checkState();
+		out.println("GET_LECTURE " + professorID);
+		return readLectureInput();
+	}
+
+
+	private ArrayList<Lecture> readLectureInput(){
+		ArrayList<Lecture> res = new ArrayList<>();
+		while (in.next().compareTo("NEXT") == 0){
+			int lectureID = in.nextInt();
+			String professorID = in.next();
+			String courseID = in.next();
+			Date date = new Date(in.next());
+			int start = in.nextInt();
+			int end = in.nextInt();
+			String room = in.next();
+			res.add(new Lecture(lectureID, professorID, courseID, date, start, end, room));
+		}
+		return res;
 	}
 
 	/**
@@ -140,8 +145,35 @@ public class Connection implements Closeable, AutoCloseable {
 	 * @param end   The end time the lecture ends
 	 * @param room  The room that the lecture takes place
 	 */
-	public void createLecture(int professorID, LocalDate date, LocalTime start, LocalTime end, String room) {
-		//TODO: Make method body for 
+	public void createLecture(String professorID, String courseID, Date date, int start, int end, String room) {
+		checkState();
+		checkLectureInput(professorID, courseID, start, end, room);
+		out.println("SET_LECTURE " + professorID + " " + courseID + " " + date + " " + start + " "
+			+ end + " " + room);
+		//Should the server respond with boolean?
+	}
+
+	/**
+	 * A method that creates a new lecture in the database,
+	 * it simply reads the relevant data from the object and
+	 * calls the other createLecture method with that data
+	 *
+	 * @param lecture	The Lecture object to create instance for
+	 */
+	public void createLecture(Lecture lecture){
+		createLecture(lecture.getProfessorID(), lecture.getCourseID(), lecture.getDate(), lecture.getStart(),
+				lecture.getEnd(), lecture.getRoom());
+	}
+
+	private void checkLectureInput(String professorID, String courseID, int start, int end, String room){
+		boolean flag = false;
+		if (professorID.contains(" ") || courseID.contains(" ") || room.contains(" ")){
+			flag = true;
+		} else if (start < 0 || start > 23 || end < 1 || end > 24){
+			flag = true;
+		}
+
+		if (flag){ throw new IllegalArgumentException("This is not a valid lecture"); }
 	}
 
 	//------------------------------------------------------------------------
@@ -155,8 +187,10 @@ public class Connection implements Closeable, AutoCloseable {
 	 * @param rating    The actual rating of the speed. This should be a number between 1 and 5 (inclusive)
 	 * @throws IllegalArgumentException if the rating is not between 1 and 5
 	 */
-	public void sendSpeedRating(int lectureID, int studentID, int rating) throws IllegalArgumentException {
-		//TODO: Create method for sending speed-rating
+	public void sendSpeedRating(int lectureID, String studentID, int rating) throws IllegalArgumentException {
+		if (rating < 1 | rating > 5) { throw new IllegalArgumentException(); }
+		out.println("SET_SPEEDRATING " + lectureID + " " + studentID);
+		//Should the server respond with boolean?
 	}
 
 	/**
@@ -166,8 +200,8 @@ public class Connection implements Closeable, AutoCloseable {
 	 * @return A float representing the current average speed rating
 	 */
 	public float getAverageSpeedRating(int lectureID) {
-		//TODO: Create method for getting speed-rating for specific lecture
-		return 0;
+		out.println("GET_AVERAGESPEEDRATING " + lectureID);
+		return in.nextFloat();
 	}
 
 	//------------------------------------------------------------------------
