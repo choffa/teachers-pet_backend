@@ -32,8 +32,12 @@ public class ServerConnection implements Runnable {
 				case "GET_SUBJECTS":
 					break;
 				case "SET_SUBJECTRATING":
+					int ssrSuID = Integer.parseInt(in.next());
+					int ssrSID = Integer.parseInt(in.next());
+					int ssrRat = Integer.parseInt(in.next());
 					break;
 				case "GET_AVERAGESUBJECTRATING":
+					
 					break;
 				case "SET_SUBJECT":
 					break;
