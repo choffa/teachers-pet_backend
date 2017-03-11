@@ -6,8 +6,6 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 public class Connection implements Closeable, AutoCloseable {
 
@@ -200,6 +198,7 @@ public class Connection implements Closeable, AutoCloseable {
 	 * @return A float representing the current average speed rating
 	 */
 	public float getAverageSpeedRating(int lectureID) {
+		checkState();
 		out.println("GET_AVERAGESPEEDRATING " + lectureID);
 		return in.nextFloat();
 	}
@@ -213,9 +212,14 @@ public class Connection implements Closeable, AutoCloseable {
 	 * @param lectureID The ID of the lecture to get subjects for
 	 * @return A ArrayList of integers representing the ID of the subjects
 	 */
-	public ArrayList<Integer> getSubjects(int lectureID) {
-		//TODO: Create method for getting the subjects for specific lectures
-		return null;
+	public ArrayList<Subject> getSubjects(int lectureID) {
+		checkState();
+		out.println("GET_SUBJECTS");
+		ArrayList<Subject> res = new ArrayList<>();
+		while (in.next() == "NEXT"){
+			res.add(new Subject(in.nextInt(), in.next()));
+		}
+		return res;
 	}
 
 	/**
@@ -225,6 +229,14 @@ public class Connection implements Closeable, AutoCloseable {
 	 */
 	public void createSubject(int lectureID) {
 		//TODO: Create method for creating subject associated with specific lecture
+		checkState();
+		out.println("SET_SUBJECT " + lectureID);
+	}
+
+	private void checkSubjectInput(String name){
+		if (name.contains(" ")){
+			throw new IllegalArgumentException("Subject name should not contain space");
+		}
 	}
 
 	private void checkState() {
