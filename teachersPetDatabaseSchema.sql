@@ -2,12 +2,12 @@ CREATE TABLE Lectures (
     LectureID 	    VARCHAR(32) PRIMARY KEY NOT NULL,
     LectureDate     DATE NOT NULL,
     StartTime 	    TIME NOT NULL,
-    EndTime 	    TIME NOT NULL,
+    EndTime 	      TIME NOT NULL,
     Professor 	    INTEGER
 );
 
 CREATE TABLE SubjectS (
-    SubjectID    	INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    SubjectID      	INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
     LectureID 	    VARCHAR(32) NOT NULL,
     SubjectName     VARCHAR(32),
     
