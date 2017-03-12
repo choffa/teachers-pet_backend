@@ -42,6 +42,8 @@ public class ServerConnection implements Runnable {
 					sdc.insert(ServerDatabaseConnection.SUBJECTRANKING, new String[] {ssrSuID,ssrRat,ssrComment,ssrSID});
 					break;
 				case "GET_AVERAGESUBJECTRATING":
+					String gasrSuID = in.next();
+					sdc.getInt(sdc.SUBJECTRANKING, input)
 					break;
 				case "SET_SUBJECT":
 					break;
