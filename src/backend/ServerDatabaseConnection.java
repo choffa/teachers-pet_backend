@@ -10,16 +10,26 @@ import java.sql.Connection;
 
 public class ServerDatabaseConnection {
 	private Connection con  =  null;
-	private String url = "jdbc:mysql://mysql.idi.ntnu.no/p_teacherspet";
+	private String url = "jdbc:mysql://mysql.idi.ntnu.no/p_teacherspet"; 
 	private String user = "tpbackend_adm";
 	private String pw = "ang4OhmieD7aefo";
 	
+	
+	/**
+	 * Made so that other classes can add to the database without changes in the database affecting other classes than this class.
+	 */
 	public static final String LECTURES = "Lectures(LectureID,LectureDate,StartTime,EndTime,Professor)";
 	public static final String SUBJECTS = "Subjects(LectureID,SubjectID,SubjectName)";
 	public static final String SUBJECTRANKING = "SubjectRanking(Ranking,RankingComment,SubjectID,StudentID)";
 	public static final String SPEEDRANKING = "SpeedRanking(LectureID,Ranking,StudentID)";
 	
 	
+	
+	/**
+	 * Generic insert method.
+	 * @param tableName
+	 * @param args
+	 */
 	public void insert(String tableName, String[] args){
 		try{
 			connect();
@@ -41,13 +51,20 @@ public class ServerDatabaseConnection {
 	
 	
 	
-	
+	/**
+	 * Used by testclass to test connection. 
+	 * @return true if method finishes (connection opens and closes)
+	 */
 	public boolean testConnection(){
 			connect();
 			close();
 		return true;
 	}
 	
+	
+	/**
+	 * Connects to database
+	 */
 	private void connect(){
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -66,6 +83,10 @@ public class ServerDatabaseConnection {
 			  } 
 	}
 	
+	
+	/**
+	 * Closes database connection
+	 */
 	private void close(){
 		{
 		    try {
@@ -76,6 +97,10 @@ public class ServerDatabaseConnection {
 		  }
 	}
 	
+	
+	/**
+	 * testing method.
+	 */
 	public static void main(String[] args) {
 		ServerDatabaseConnection sdc = new ServerDatabaseConnection();
 		sdc.testConnection();
