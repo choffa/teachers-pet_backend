@@ -54,11 +54,10 @@ public class ServerDatabaseConnection {
 	}
 	
 
-	public double getAverage(String table, String column, int id){
-		String query = "SELECT AVG("+column+") FROM "+table+" WHERE " + table + "id";
-		Statement s;
+	public double getAverage(String table, String idColumn, int id){
+		String query = "SELECT AVG(ranking) FROM "+table+" WHERE "+idColumn+"=" + id;
 		try {
-			s = con.createStatement();
+			Statement s = con.createStatement();
 			ResultSet r = s.executeQuery(query);
 			if (r.next()){
 				return r.getDouble(1);

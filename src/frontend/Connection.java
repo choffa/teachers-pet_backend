@@ -126,7 +126,7 @@ public class Connection implements Closeable, AutoCloseable {
 			int lectureID = in.nextInt();
 			String professorID = in.next();
 			String courseID = in.next();
-			Date date = new Date(in.next());
+			@SuppressWarnings("deprecation") Date date = new Date(in.next());
 			int start = in.nextInt();
 			int end = in.nextInt();
 			String room = in.next();
