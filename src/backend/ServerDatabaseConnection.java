@@ -56,16 +56,20 @@ public class ServerDatabaseConnection {
 
 	public double getAverage(String table, String idColumn, int id){
 		String query = "SELECT AVG(ranking) FROM "+table+" WHERE " +idColumn+"="+id;
+		double res = 0.0;
 		try {
+			connect();
 			Statement s = con.createStatement();
 			ResultSet r = s.executeQuery(query);
 			if (r.next()){
-				return r.getDouble(1);
+				res = r.getDouble(1);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			close();
+			return res;
 		}
-		return 0.0;
 	}
 	public int getInt(String from, String what, String condition1, String condition2){
 		return 0;
@@ -85,24 +89,23 @@ public class ServerDatabaseConnection {
 	 * @return
 	 */
 	public String[] getList(String table, String condition1, String condition2, String... what){
-		Statement s;
 		try {
-			s = con.createStatement();
-		String what2="";
-		for(String w:what) what2+=" "+w;
-		String query = "SELECT"+what2+" FROM "+table.split("(")[0]+"WHERE "+condition1+"="+condition2+";";
-		ResultSet rs = s.executeQuery(query);
-		int numCol = rs.getMetaData().getColumnCount();
-		ArrayList<String> list = new ArrayList<String>();
-		while(rs.next()) {
-			for(int i=1;i<=numCol;i++){
-				list.add(rs.getString(i));
+			Statement s = con.createStatement();
+			String what2="";
+			for(String w:what) what2+=" "+w;
+			String query = "SELECT"+what2+" FROM "+table.split("(")[0]+"WHERE "+condition1+"="+condition2+";";
+			ResultSet rs = s.executeQuery(query);
+			int numCol = rs.getMetaData().getColumnCount();
+			ArrayList<String> list = new ArrayList<String>();
+			while(rs.next()) {
+				for(int i=1;i<=numCol;i++){
+					list.add(rs.getString(i));
+				}
+				list.add("NEXT");
 			}
-			list.add("NEXT");
-		}
-		list.remove(list.size()-1);
-		list.add("END");
-		return (String[]) list.toArray();
+			list.remove(list.size()-1);
+			list.add("END");
+			return (String[]) list.toArray();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
