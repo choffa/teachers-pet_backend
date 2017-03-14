@@ -1,6 +1,7 @@
 package backend;
 
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.sql.Statement;
@@ -34,11 +35,12 @@ public class ServerDatabaseConnection {
 		try{
 			connect();
 			Statement s = con.createStatement();
+			//Making insert query
 			String values = "(";
 			for (String arg:args) values+=arg+",";
 			values = values.substring(0, values.length()-1);
 			String query = "INSERT INTO "+tableName+" VALUES "+values+");";
-			System.out.println(query);
+			
 			s.execute(query);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -49,7 +51,20 @@ public class ServerDatabaseConnection {
 		}
 	}
 	
+	public int getInt(String from, String what, String condition){
+		return 0;
+	}
 	
+	public String getString(String from, String what, String Condition){
+		return null;
+	}
+	
+	public String[] getList(String table, String what, String condition1, String condition2){
+		Statement s = con.createStatement()
+		String query = "SELECT "+what+" FROM "+table.split("(")[0]+"WHERE "+condition1+"="+condition2+";";
+		ResultSet rs = s.executeQuery(query);
+		return null;
+	}
 	
 	/**
 	 * Used by testclass to test connection. 

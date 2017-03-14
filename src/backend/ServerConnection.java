@@ -43,9 +43,11 @@ public class ServerConnection implements Runnable {
 					break;
 				case "GET_AVERAGESUBJECTRATING":
 					String gasrSuID = in.next();
-					sdc.getInt(sdc.SUBJECTRANKING, input)
+					sdc.getList(ServerDatabaseConnection.SUBJECTRANKING, "'Ranking'",gasrSuID);
 					break;
 				case "SET_SUBJECT":
+					String gasrSuID = in.next();
+					sdc.getInt(command, gasrSuID);
 					break;
 				case "GET_LECTURE":
 					break;
