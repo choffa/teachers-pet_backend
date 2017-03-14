@@ -35,12 +35,7 @@ public class ServerConnection implements Runnable {
 					getSubjects();
 					break;
 				case "SET_SUBJECTRATING":
-					String ssrSuID = in.next();
-					String ssrSID = in.next();
-					String ssrRat = in.next();
-					String ssrComment = "''";
-					if(in.hasNext()) ssrComment = "'"+in.next()+"'";
-					sdc.insert(ServerDatabaseConnection.SUBJECTRANKING, new String[] {ssrSuID,ssrRat,ssrComment,ssrSID});
+					setSubjectRating();
 					break;
 				case "GET_AVERAGESUBJECTRATING":
 					getAverageSubjectRating();
@@ -70,6 +65,14 @@ public class ServerConnection implements Runnable {
 					break;
 			}
 		}
+	}
+
+	private void setSubjectRating(){
+		String ssrSuID = in.next();
+		String ssrSID = in.next();
+		String ssrRat = in.next();
+		String ssrComment = "'"+in.next()+"'";
+		sdc.insert(ServerDatabaseConnection.SUBJECTRANKING, new String[] {ssrSuID,ssrRat,ssrComment,ssrSID});
 	}
 
 	private void getAverageSubjectRating(){
