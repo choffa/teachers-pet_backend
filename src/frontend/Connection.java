@@ -227,10 +227,11 @@ public class Connection implements Closeable, AutoCloseable {
 	 *
 	 * @param lectureID The ID of the lecture to associate the subject with
 	 */
-	public void createSubject(int lectureID) {
+	public void createSubject(int lectureID, String name) {
 		//TODO: Create method for creating subject associated with specific lecture
 		checkState();
-		out.println("SET_SUBJECT " + lectureID);
+		checkSubjectInput(name);
+		out.println("SET_SUBJECT " +lectureID+" "+name);
 	}
 
 	private void checkSubjectInput(String name){

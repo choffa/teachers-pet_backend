@@ -35,19 +35,13 @@ public class ServerConnection implements Runnable {
 					getSubjects();
 					break;
 				case "SET_SUBJECTRATING":
-					String ssrSuID = in.next();
-					String ssrSID = in.next();
-					String ssrRat = in.next();
-					String ssrComment = "''";
-					if(in.hasNext()) ssrComment = "'"+in.next()+"'";
-					sdc.insert(ServerDatabaseConnection.SUBJECTRANKING, new String[] {ssrSuID,ssrRat,ssrComment,ssrSID});
+					setSubjectRating();
 					break;
 				case "GET_AVERAGESUBJECTRATING":
 					getAverageSubjectRating();
 					break;
 				case "SET_SUBJECT":
-					String ssSuID = in.next();
-					//sdc.getInt(command, gasrSuID);
+					setSubject();
 					break;
 				case "GET_LECTURE":
 					getLecture();
@@ -83,6 +77,22 @@ public class ServerConnection implements Runnable {
 		
 		/*out.println("SET_LECTURE " + professorID + " " + courseID + " " + date + " " + start + " "
 				+ end + " " + room);*/
+}
+	private void setSubject(){
+		String table = "subjects";
+		int lectureID = in.nextInt();
+		String name = "'"+in.next()+"'";
+		String[] args = {Integer.toString(lectureID), name};
+		sdc.insert(table, args);
+	}
+
+	private void setSubjectRating(){
+		String ssrSuID = in.next();
+		String ssrSID = in.next();
+		String ssrRat = in.next();
+		String ssrComment = "'"+in.next()+"'";
+		sdc.insert(ServerDatabaseConnection.SUBJECTRANKING, new String[] {ssrSuID,ssrRat,ssrComment,ssrSID});
+
 	}
 
 	private void getAverageSubjectRating(){
