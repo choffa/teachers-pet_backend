@@ -1,5 +1,5 @@
 CREATE TABLE Lectures (
-    LectureID 	    VARCHAR(32) PRIMARY KEY NOT NULL,
+    LectureID 	    INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     LectureDate     DATE NOT NULL,
     StartTime 	    TIME NOT NULL,
     EndTime 	      TIME NOT NULL,
