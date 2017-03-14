@@ -43,7 +43,10 @@ public class ServerConnection implements Runnable {
 					break;
 				case "GET_AVERAGESUBJECTRATING":
 					String gasrSuID = in.next();
-					sdc.getList(ServerDatabaseConnection.SUBJECTRANKING, "'Ranking'",gasrSuID);
+					String[] returnList = sdc.getList(ServerDatabaseConnection.SUBJECTRANKING, "'Ranking'",gasrSuID, "'StudentID'");
+					int avg = 0;
+					for (String s:returnList) avg+=Integer.parseInt(s);
+					out.println(avg);
 					break;
 				case "SET_SUBJECT":
 					String gasrSuID = in.next();
@@ -52,6 +55,11 @@ public class ServerConnection implements Runnable {
 				case "GET_LECTURE":
 					break;
 				case "GET_ALLLECTURES":
+					String galLID = in.next();
+					String[] galreturnList = sdc.getList(ServerDatabaseConnection.LECTURES, "*","'DATE'", "NOW()");
+					int galavg = 0;
+					for (String s:returnList) +=Integer.parseInt(s);
+					out.println(avg);
 					break;
 				case "SET_LECTURE":
 					break;
@@ -62,6 +70,11 @@ public class ServerConnection implements Runnable {
 					sdc.insert(ServerDatabaseConnection.SPEEDRANKING, new String[] {ssprLID, ssprRat,ssprSID});
 					break;
 				case "GET_AVERAGESPEEDRATING":
+					String gasprLID = in.next();
+					String[] gasprreturnList = sdc.getList(ServerDatabaseConnection.SPEEDRANKING, "'Ranking'",gasprLID, "'LectureID'");
+					int gaspravg = 0;
+					for (String s:returnList) gaspravg+=Integer.parseInt(s);
+					out.println(avg);
 					break;
 				default:
 					break;

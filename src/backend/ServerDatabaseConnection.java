@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.sql.Statement;
-
+import java.util.ArrayList;
 import java.sql.Connection;
 
 
@@ -63,7 +63,13 @@ public class ServerDatabaseConnection {
 		Statement s = con.createStatement()
 		String query = "SELECT "+what+" FROM "+table.split("(")[0]+"WHERE "+condition1+"="+condition2+";";
 		ResultSet rs = s.executeQuery(query);
-		return null;
+		ArrayList<String> list = new ArrayList<String>();
+		
+		if (rs.getString(what)!=null) list.add(rs.getString(what));
+		while(rs.next()) list.add(rs.getString(what));
+		
+		
+		return (String[]) list.toArray();
 	}
 	
 	/**
