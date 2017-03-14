@@ -1,11 +1,6 @@
 package backend;
 
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
-import java.sql.Statement;
-
-import java.sql.Connection;
+import java.sql.*;
 
 
 public class ServerDatabaseConnection {
@@ -49,7 +44,20 @@ public class ServerDatabaseConnection {
 		}
 	}
 	
-	
+	public double getAverage(String table, String column, int id){
+		String query = "SELECT AVG("+column+") FROM "+table+" WHERE " + table + "id";
+		Statement s;
+		try {
+			s = con.createStatement();
+			ResultSet r = s.executeQuery(query);
+			if (r.next()){
+				return r.getDouble(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0.0;
+	}
 	
 	/**
 	 * Used by testclass to test connection. 
