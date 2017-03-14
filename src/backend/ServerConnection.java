@@ -59,12 +59,10 @@ public class ServerConnection implements Runnable {
 					//sdc.getInt(command, gasrSuID);
 					break;
 				case "GET_LECTURE":
+					getLecture();
 					break;
 				case "GET_ALLLECTURES":
-					String galLID = in.next();
-					String[] galreturnList = sdc.getList(ServerDatabaseConnection.LECTURES, "*","'DATE'", "NOW()");
-					int galavg = 0;
-					for (String s:returnList) out.println(avg);
+					getAllLectures();
 					break;
 				case "SET_LECTURE":
 					break;
@@ -113,5 +111,22 @@ public class ServerConnection implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	
+	private void getAllLectures(){
+		String galLID = in.next();
+		String[] galReturnList = sdc.getList(ServerDatabaseConnection.LECTURES, "*","'DATE'", "NOW()");
+		String galReturnString="";
+		for (String s:galReturnList) galReturnString+=s+" ";
+		out.println(galReturnString);
+	}
+	
+	private void getLecture2(){
+		String LID = in.next();
+		String[] galReturnList = sdc.getList(ServerDatabaseConnection.LECTURES, "*","'DATE'", "NOW()");
+		String galReturnString="";
+		for (String s:galReturnList) galReturnString+=s+" ";
+		out.println(galReturnString);
 	}
 }

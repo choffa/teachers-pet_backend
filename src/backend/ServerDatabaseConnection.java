@@ -75,6 +75,15 @@ public class ServerDatabaseConnection {
 		return null;
 	}
 	
+	
+	/**
+	 * Sends a query which returns a list.
+	 * @param table
+	 * @param condition1
+	 * @param condition2
+	 * @param what
+	 * @return
+	 */
 	public String[] getList(String table, String condition1, String condition2, String... what){
 		Statement s;
 		try {
