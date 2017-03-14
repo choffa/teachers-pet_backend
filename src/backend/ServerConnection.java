@@ -10,12 +10,14 @@ public class ServerConnection implements Runnable {
 	private Socket client;
 	private Scanner in;
 	private PrintWriter out;
+	private ServerDatabaseConnection sdc;
 	
 	public ServerConnection(Socket client){
 		this.client = client;
 		try {
 			this.in = new Scanner(client.getInputStream());
 			this.out = new PrintWriter(client.getOutputStream());
+			sdc = new ServerDatabaseConnection();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -32,20 +34,47 @@ public class ServerConnection implements Runnable {
 				case "GET_SUBJECTS":
 					break;
 				case "SET_SUBJECTRATING":
+					String ssrSuID = in.next();
+					String ssrSID = in.next();
+					String ssrRat = in.next();
+					String ssrComment = "''";
+					if(in.hasNext()) ssrComment = "'"+in.next()+"'";
+					sdc.insert(ServerDatabaseConnection.SUBJECTRANKING, new String[] {ssrSuID,ssrRat,ssrComment,ssrSID});
 					break;
 				case "GET_AVERAGESUBJECTRATING":
+					String gasrSuID = in.next();
+					String[] returnList = sdc.getList(ServerDatabaseConnection.SUBJECTRANKING, "'Ranking'",gasrSuID, "'StudentID'");
+					int avg = 0;
+					for (String s:returnList) avg+=Integer.parseInt(s);
+					out.println(avg);
 					break;
 				case "SET_SUBJECT":
+					String gasrSuID = in.next();
+					sdc.getInt(command, gasrSuID);
 					break;
 				case "GET_LECTURE":
 					break;
 				case "GET_ALLLECTURES":
+					String galLID = in.next();
+					String[] galreturnList = sdc.getList(ServerDatabaseConnection.LECTURES, "*","'DATE'", "NOW()");
+					int galavg = 0;
+					for (String s:returnList) +=Integer.parseInt(s);
+					out.println(avg);
 					break;
 				case "SET_LECTURE":
 					break;
 				case "SET_SPEEDRATING":
+					String ssprLID = in.next();
+					String ssprSID = in.next();
+					String ssprRat = in.next();
+					sdc.insert(ServerDatabaseConnection.SPEEDRANKING, new String[] {ssprLID, ssprRat,ssprSID});
 					break;
 				case "GET_AVERAGESPEEDRATING":
+					String gasprLID = in.next();
+					String[] gasprreturnList = sdc.getList(ServerDatabaseConnection.SPEEDRANKING, "'Ranking'",gasprLID, "'LectureID'");
+					int gaspravg = 0;
+					for (String s:returnList) gaspravg+=Integer.parseInt(s);
+					out.println(avg);
 					break;
 				default:
 					break;
