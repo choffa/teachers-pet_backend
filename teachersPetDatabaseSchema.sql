@@ -8,11 +8,11 @@ CREATE TABLE Lectures (
 
 CREATE TABLE SubjectS (
     SubjectID      	INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    LectureID 	    VARCHAR(32) NOT NULL,
+    LectureID 	    INTEGER NOT NULL,
     SubjectName     VARCHAR(32),
     
     CONSTRAINT Subject_LectureID_FK FOREIGN KEY (LectureID) REFERENCES Lectures(LectureID)
-																	ON UPDATE CASCADE
+																	                                  ON UPDATE CASCADE
                                                                     ON DELETE CASCADE
 );
 
@@ -29,12 +29,12 @@ CREATE TABLE SubjectRanking (
 );
 
 CREATE TABLE SpeedRanking (
-    LectureID    	VARCHAR(32) NOT NULL,
+    LectureID    	INTEGER NOT NULL,
     StudentID   	INTEGER NOT NULL,
     Ranking     	INTEGER NOT NULL,
 
     CONSTRAINT RankingConstraint CHECK (Ranking > 0 AND Ranking < 5),
     CONSTRAINT SpeedRanking_LectureID_FK FOREIGN KEY (LectureID) REFERENCES Lectures(LectureID)
-																		ON UPDATE CASCADE
+																		                                    ON UPDATE CASCADE
                                                                         ON DELETE CASCADE
 );
