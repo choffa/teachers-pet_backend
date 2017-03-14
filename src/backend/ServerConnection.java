@@ -86,6 +86,22 @@ public class ServerConnection implements Runnable {
 			}
 		}
 	}
+
+	private void getAverageSubjectRating(){
+		String table = "SubjectRanking";
+		String idColumn = "SubjectID";
+		int id = in.nextInt();
+		double avg = sdc.getAverage(table, idColumn, id);
+		out.println(avg);
+	}
+
+	private void getAverageSpeedRating(){
+		String table = "SpeedRanking";
+		String idColumn = "LectureID";
+		int id = in.nextInt();
+		double avg = sdc.getAverage(table, idColumn, id);
+		out.println(avg);
+	}
 	
 	private void close(){
 		out.flush();
