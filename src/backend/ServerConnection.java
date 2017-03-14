@@ -55,8 +55,8 @@ public class ServerConnection implements Runnable {
 
 					break;
 				case "SET_SUBJECT":
-					String gasrSuID = in.next();
-					sdc.getInt(command, gasrSuID);
+					String ssSuID = in.next();
+					//sdc.getInt(command, gasrSuID);
 					break;
 				case "GET_LECTURE":
 					break;
@@ -64,8 +64,7 @@ public class ServerConnection implements Runnable {
 					String galLID = in.next();
 					String[] galreturnList = sdc.getList(ServerDatabaseConnection.LECTURES, "*","'DATE'", "NOW()");
 					int galavg = 0;
-					for (String s:returnList) +=Integer.parseInt(s);
-					out.println(avg);
+					for (String s:returnList) out.println(avg);
 					break;
 				case "SET_LECTURE":
 					break;

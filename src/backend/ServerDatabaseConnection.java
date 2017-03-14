@@ -67,27 +67,36 @@ public class ServerDatabaseConnection {
 			e.printStackTrace();
 		}
 		return 0.0;
-}
-	public int getInt(String from, String what, String condition){
+	}
+	public int getInt(String from, String what, String condition1, String condition2){
 		return 0;
 	}
 	
-	public String getString(String from, String what, String Condition){
+	public String getString(String from, String what, String Condition1,String Condition2){
 		return null;
 	}
 	
-	public String[] getList(String table, String what, String condition1, String condition2){
-		Statement s = con.createStatement()
-		String query = "SELECT "+what+" FROM "+table.split("(")[0]+"WHERE "+condition1+"="+condition2+";";
+	public String[] getList(String table, String condition1, String condition2, String... what){
+		Statement s;
+		try {
+			s = con.createStatement();
+		String what2="";
+		for(String w:what) what2+=" "+w;
+		String query = "SELECT"+what2+" FROM "+table.split("(")[0]+"WHERE "+condition1+"="+condition2+";";
 		ResultSet rs = s.executeQuery(query);
+		int numCol = rs.getMetaData().getColumnCount();
 		ArrayList<String> list = new ArrayList<String>();
-		
-		if (rs.getString(what)!=null) list.add(rs.getString(what));
-		while(rs.next()) list.add(rs.getString(what));
-		
-		
+		while(rs.next()) {
+			for(int i=1;i<=numCol;i++){
+				list.add(rs.getString(i));
+			}
+		}
 		return (String[]) list.toArray();
-
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	/**
