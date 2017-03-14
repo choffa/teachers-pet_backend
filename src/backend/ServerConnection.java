@@ -32,6 +32,7 @@ public class ServerConnection implements Runnable {
 					close();
 					return;
 				case "GET_SUBJECTS":
+					getSubjects();
 					break;
 				case "SET_SUBJECTRATING":
 					String ssrSuID = in.next();
@@ -42,17 +43,7 @@ public class ServerConnection implements Runnable {
 					sdc.insert(ServerDatabaseConnection.SUBJECTRANKING, new String[] {ssrSuID,ssrRat,ssrComment,ssrSID});
 					break;
 				case "GET_AVERAGESUBJECTRATING":
-
-					String table = "subject";
-					String column = "rating";
-					int id = in.nextInt();
-
-					String gasrSuID = in.next();
-					String[] returnList = sdc.getList(ServerDatabaseConnection.SUBJECTRANKING, "'Ranking'",gasrSuID, "'StudentID'");
-					int avg = 0;
-					for (String s:returnList) avg+=Integer.parseInt(s);
-					out.println(avg);
-
+					getAverageSubjectRating();
 					break;
 				case "SET_SUBJECT":
 					String ssSuID = in.next();
@@ -73,11 +64,7 @@ public class ServerConnection implements Runnable {
 					sdc.insert(ServerDatabaseConnection.SPEEDRANKING, new String[] {ssprLID, ssprRat,ssprSID});
 					break;
 				case "GET_AVERAGESPEEDRATING":
-					String gasprLID = in.next();
-					String[] gasprreturnList = sdc.getList(ServerDatabaseConnection.SPEEDRANKING, "'Ranking'",gasprLID, "'LectureID'");
-					int gaspravg = 0;
-					for (String s:returnList) gaspravg+=Integer.parseInt(s);
-					out.println(avg);
+					getAverageSpeedRating();
 					break;
 				default:
 					break;
@@ -122,11 +109,19 @@ public class ServerConnection implements Runnable {
 		out.println(galReturnString);
 	}
 	
-	private void getLecture2(){
+	private void getLecture(){
+		String PID = in.next();
+		String[] ReturnList = sdc.getList(ServerDatabaseConnection.LECTURES, "*","'ProfessorID", "'"+PID+"'");
+		String ReturnString="";
+		for (String s:ReturnList) ReturnString+=s+" ";
+		out.println(ReturnString);
+	}
+	
+	private void getSubjects(){
 		String LID = in.next();
-		String[] galReturnList = sdc.getList(ServerDatabaseConnection.LECTURES, "*","'DATE'", "NOW()");
-		String galReturnString="";
-		for (String s:galReturnList) galReturnString+=s+" ";
-		out.println(galReturnString);
+		String[] ReturnList = sdc.getList(ServerDatabaseConnection.SUBJECTS, "*","'LectureID", "'"+LID+"'");
+		String ReturnString="";
+		for (String s:ReturnList) ReturnString+=s+" ";
+		out.println(ReturnString);
 	}
 }

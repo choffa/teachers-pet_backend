@@ -98,7 +98,10 @@ public class ServerDatabaseConnection {
 			for(int i=1;i<=numCol;i++){
 				list.add(rs.getString(i));
 			}
+			list.add("NEXT");
 		}
+		list.remove(list.size()-1);
+		list.add("END");
 		return (String[]) list.toArray();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

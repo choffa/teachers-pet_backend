@@ -214,7 +214,7 @@ public class Connection implements Closeable, AutoCloseable {
 	 */
 	public ArrayList<Subject> getSubjects(int lectureID) {
 		checkState();
-		out.println("GET_SUBJECTS");
+		out.println("GET_SUBJECTS"+lectureID);
 		ArrayList<Subject> res = new ArrayList<>();
 		while (in.next() == "NEXT"){
 			res.add(new Subject(in.nextInt(), in.next()));
