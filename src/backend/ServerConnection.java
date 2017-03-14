@@ -42,11 +42,17 @@ public class ServerConnection implements Runnable {
 					sdc.insert(ServerDatabaseConnection.SUBJECTRANKING, new String[] {ssrSuID,ssrRat,ssrComment,ssrSID});
 					break;
 				case "GET_AVERAGESUBJECTRATING":
+
+					String table = "subject";
+					String column = "rating";
+					int id = in.nextInt();
+
 					String gasrSuID = in.next();
 					String[] returnList = sdc.getList(ServerDatabaseConnection.SUBJECTRANKING, "'Ranking'",gasrSuID, "'StudentID'");
 					int avg = 0;
 					for (String s:returnList) avg+=Integer.parseInt(s);
 					out.println(avg);
+
 					break;
 				case "SET_SUBJECT":
 					String gasrSuID = in.next();
