@@ -56,6 +56,7 @@ public class ServerConnection implements Runnable {
 					getAllLectures();
 					break;
 				case "SET_LECTURE":
+					setLecture();
 					break;
 				case "SET_SPEEDRATING":
 					String ssprLID = in.next();
@@ -70,6 +71,18 @@ public class ServerConnection implements Runnable {
 					break;
 			}
 		}
+	}
+
+	private void setLecture() {
+		String PID= in.next();
+		String CID= in.next();
+		String date= in.next();
+		String start= in.next();
+		String end= in.next();
+		String room= in.next();
+		
+		/*out.println("SET_LECTURE " + professorID + " " + courseID + " " + date + " " + start + " "
+				+ end + " " + room);*/
 	}
 
 	private void getAverageSubjectRating(){
