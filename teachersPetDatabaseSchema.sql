@@ -38,3 +38,8 @@ CREATE TABLE SpeedRanking (
 																		                                    ON UPDATE CASCADE
                                                                         ON DELETE CASCADE
 );
+
+CREATE TABLE Users (
+    UserName    VARCHAR(32) NOT NULL,
+    PasswordHash VARCHAR(255)
+);
