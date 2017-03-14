@@ -10,12 +10,14 @@ public class ServerConnection implements Runnable {
 	private Socket client;
 	private Scanner in;
 	private PrintWriter out;
+	private ServerDatabaseConnection sdc;
 	
 	public ServerConnection(Socket client){
 		this.client = client;
 		try {
 			this.in = new Scanner(client.getInputStream());
 			this.out = new PrintWriter(client.getOutputStream());
+			sdc = new ServerDatabaseConnection();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -32,6 +34,12 @@ public class ServerConnection implements Runnable {
 				case "GET_SUBJECTS":
 					break;
 				case "SET_SUBJECTRATING":
+					String ssrSuID = in.next();
+					String ssrSID = in.next();
+					String ssrRat = in.next();
+					String ssrComment = "''";
+					if(in.hasNext()) ssrComment = "'"+in.next()+"'";
+					sdc.insert(ServerDatabaseConnection.SUBJECTRANKING, new String[] {ssrSuID,ssrRat,ssrComment,ssrSID});
 					break;
 				case "GET_AVERAGESUBJECTRATING":
 					break;
@@ -44,6 +52,10 @@ public class ServerConnection implements Runnable {
 				case "SET_LECTURE":
 					break;
 				case "SET_SPEEDRATING":
+					String ssprLID = in.next();
+					String ssprSID = in.next();
+					String ssprRat = in.next();
+					sdc.insert(ServerDatabaseConnection.SPEEDRANKING, new String[] {ssprLID, ssprRat,ssprSID});
 					break;
 				case "GET_AVERAGESPEEDRATING":
 					break;
