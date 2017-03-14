@@ -41,8 +41,7 @@ public class ServerConnection implements Runnable {
 					getAverageSubjectRating();
 					break;
 				case "SET_SUBJECT":
-					String ssSuID = in.next();
-					//sdc.getInt(command, gasrSuID);
+					setSubject();
 					break;
 				case "GET_LECTURE":
 					getLecture();
@@ -65,6 +64,14 @@ public class ServerConnection implements Runnable {
 					break;
 			}
 		}
+	}
+
+	private void setSubject(){
+		String table = "subjects";
+		int lectureID = in.nextInt();
+		String name = "'"+in.next()+"'";
+		String[] args = {Integer.toString(lectureID), name};
+		sdc.insert(table, args);
 	}
 
 	private void setSubjectRating(){
