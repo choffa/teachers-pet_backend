@@ -3,7 +3,7 @@ CREATE TABLE Lectures (
     LectureDate     DATE NOT NULL,
     StartTime 	    TIME NOT NULL,
     EndTime 	      TIME NOT NULL,
-    Professor 	    INTEGER
+    Professor 	    TEXT
 );
 
 CREATE TABLE SubjectS (
@@ -17,10 +17,10 @@ CREATE TABLE SubjectS (
 );
 
 CREATE TABLE SubjectRanking (
-    SubjectID    	INTEGER NOT NULL,
-    StudentID   	INTEGER NOT NULL,
-    Ranking     	INTEGER NOT NULL,
-    RankingComment  VARCHAR(255),
+    SubjectID    	  INTEGER NOT NULL,
+    StudentID   	  TEXT NOT NULL,
+    Ranking     	  INTEGER NOT NULL,
+    RankingComment  TEXT,
 
     CONSTRAINT RankingConstraint CHECK (Ranking > 1 AND Ranking < 5),
     CONSTRAINT SubjectRanking_SubjectID_FK FOREIGN KEY (SubjectID) REFERENCES Subjects(SubjectID)
@@ -30,7 +30,7 @@ CREATE TABLE SubjectRanking (
 
 CREATE TABLE SpeedRanking (
     LectureID    	INTEGER NOT NULL,
-    StudentID   	INTEGER NOT NULL,
+    StudentID   	TEXT NOT NULL,
     Ranking     	INTEGER NOT NULL,
 
     CONSTRAINT RankingConstraint CHECK (Ranking > 0 AND Ranking < 5),
