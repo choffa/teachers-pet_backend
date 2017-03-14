@@ -42,12 +42,17 @@ public class ServerConnection implements Runnable {
 					sdc.insert(ServerDatabaseConnection.SUBJECTRANKING, new String[] {ssrSuID,ssrRat,ssrComment,ssrSID});
 					break;
 				case "GET_AVERAGESUBJECTRATING":
-;					getAverageSubjectRating();
-					//String gasrSuID = in.next();
-					//String[] returnList = sdc.getList(ServerDatabaseConnection.SUBJECTRANKING, "'Ranking'",gasrSuID, "'StudentID'");
-					//int avg = 0;
-					//for (String s:returnList) avg+=Integer.parseInt(s);
-					//out.println(avg);
+
+					String table = "subject";
+					String column = "rating";
+					int id = in.nextInt();
+
+					String gasrSuID = in.next();
+					String[] returnList = sdc.getList(ServerDatabaseConnection.SUBJECTRANKING, "'Ranking'",gasrSuID, "'StudentID'");
+					int avg = 0;
+					for (String s:returnList) avg+=Integer.parseInt(s);
+					out.println(avg);
+
 					break;
 				case "SET_SUBJECT":
 					String gasrSuID = in.next();
@@ -71,33 +76,16 @@ public class ServerConnection implements Runnable {
 					sdc.insert(ServerDatabaseConnection.SPEEDRANKING, new String[] {ssprLID, ssprRat,ssprSID});
 					break;
 				case "GET_AVERAGESPEEDRATING":
-					getAverageSpeedRating();
-					//String gasprLID = in.next();
-					//String[] gasprreturnList = sdc.getList(ServerDatabaseConnection.SPEEDRANKING, "'Ranking'",gasprLID, "'LectureID'");
-					//int gaspravg = 0;
-					//for (String s:returnList) gaspravg+=Integer.parseInt(s);
-					//out.println(avg);
+					String gasprLID = in.next();
+					String[] gasprreturnList = sdc.getList(ServerDatabaseConnection.SPEEDRANKING, "'Ranking'",gasprLID, "'LectureID'");
+					int gaspravg = 0;
+					for (String s:returnList) gaspravg+=Integer.parseInt(s);
+					out.println(avg);
 					break;
 				default:
 					break;
 			}
 		}
-	}
-
-	private void getAverageSpeedRating(){
-		String table = "SpeedRaking";
-		String idColumn = "LectureID";
-		int id = in.nextInt();
-		double avg = sdc.getAverage(table, idColumn, id);
-		out.println(avg);
-	}
-
-	private void getAverageSubjectRating(){
-		String table = "subjectRanking";
-		String idColumn = "SubjectID";
-		int id = in.nextInt();
-		double avg = sdc.getAverage(table, idColumn, id);
-		out.println(avg);
 	}
 	
 	private void close(){
