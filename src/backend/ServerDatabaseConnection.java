@@ -16,8 +16,8 @@ public class ServerDatabaseConnection {
 	/**
 	 * Made so that other classes can add to the database without changes in the database affecting other classes than this class.
 	 */
-	public static final String LECTURES = "Lectures(LectureID,LectureDate,StartTime,EndTime,Professor)";
-	public static final String SUBJECTS = "Subjects(LectureID,SubjectID,SubjectName)";
+	public static final String LECTURES = "Lectures(LectureDate,StartTime,EndTime,Professor)";
+	public static final String SUBJECTS = "Subjects(LectureID,SubjectName)";
 	public static final String SUBJECTRANKING = "SubjectRanking(Ranking,RankingComment,SubjectID,StudentID)";
 	public static final String SPEEDRANKING = "SpeedRanking(LectureID,Ranking,StudentID)";
 	
@@ -34,7 +34,7 @@ public class ServerDatabaseConnection {
 			Statement s = con.createStatement();
 			//Making insert query
 			String values = "(";
-			for (String arg:args) values+=arg+",";
+			for (String arg:args) values+="'"+arg+"'"+",";
 			values = values.substring(0, values.length()-1);
 			String query = "INSERT INTO "+tableName+" VALUES "+values+");";
 			
@@ -50,7 +50,7 @@ public class ServerDatabaseConnection {
 	
 
 	public double getAverage(String table, String idColumn, int id){
-		String query = "SELECT AVG(ranking) FROM "+table+" WHERE " +idColumn+"="+id;
+		String query = "SELECT AVG(ranking) FROM "+table.split("\\(")[0]+" WHERE " +idColumn+"="+id;
 		double res = 0.0;
 		try {
 			connect();
@@ -59,15 +59,32 @@ public class ServerDatabaseConnection {
 			if (r.next()){
 				res = r.getDouble(1);
 			}
+			return res;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return res;
 		} finally {
 			close();
-			return res;
 		}
 	}
+	
 	public int getInt(String from, String what, String condition1, String condition2){
-		return 0;
+		String query = "SELECT "+what+" FROM "+from.split("\\(")[0]+" WHERE " +condition1+"="+condition2;
+		int res = -1;
+		try {
+			connect();
+			Statement s = con.createStatement();
+			ResultSet r = s.executeQuery(query);
+			if (r.next()){
+				res = r.getInt(1);
+			}
+			return res;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return res;
+		} finally {
+			close();
+		}
 	}
 	
 	public String getString(String from, String what, String Condition1,String Condition2){
@@ -88,7 +105,7 @@ public class ServerDatabaseConnection {
 			Statement s = con.createStatement();
 			String what2="";
 			for(String w:what) what2+=" "+w;
-			String query = "SELECT"+what2+" FROM "+table.split("(")[0]+"WHERE "+condition1+"="+condition2+";";
+			String query = "SELECT"+what2+" FROM "+table.split("\\(")[0]+"WHERE "+condition1+"="+condition2+";";
 			ResultSet rs = s.executeQuery(query);
 			int numCol = rs.getMetaData().getColumnCount();
 			ArrayList<String> list = new ArrayList<String>();
@@ -175,5 +192,7 @@ public class ServerDatabaseConnection {
 		sdc.testConnection();
 		sdc.insert(ServerDatabaseConnection.SUBJECTS, new String[] {"1", "2", "'testName'"});
 	}
+
+
 
 }

@@ -62,11 +62,13 @@ public class ServerConnection implements Runnable {
 					setUser();
 					break;
 				case "CHECK_USER":
-					checkUser();
+					checkUserName();
 					break;
 				case "VALIDATE":
 					validate();
 					break;
+				case "GET_NUMBEROFUSERS":
+					getTempoVotesInLecture();
 				default:
 					close();
 					return;
@@ -74,16 +76,16 @@ public class ServerConnection implements Runnable {
 		}
 	}
 
-	private void checkUser() {
 
+	private void checkUserName() {
+		
 	}
 
 	private void validate() {
-
+		
 	}
 
 	private void setUser() {
-
 	}
 
 
@@ -173,5 +175,12 @@ public class ServerConnection implements Runnable {
 		String ReturnString="";
 		for (String s:ReturnList) ReturnString+=s+" ";
 		out.println(ReturnString);
+	}
+	
+
+	private void getTempoVotesInLecture() {
+		String LID = in.next();
+		int numOfUsers = sdc.getInt(ServerDatabaseConnection.SPEEDRANKING, "COUNT(*)", "LectureID", LID);
+		
 	}
 }

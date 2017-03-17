@@ -106,6 +106,15 @@ public class Connection implements Closeable, AutoCloseable {
 		out.println("GET_ALLLECTURES");
 		return readLectureInput();
 	}
+	
+	public int getTempoVotesInLecture(int LectureID) {
+		checkState();
+		out.println("GET_NUMBEROFUSERS"+" "+LectureID);
+		return readUsersInput();
+	}
+		
+
+
 
 	/**
 	 * A method that request the lectures by a specific professor
@@ -133,6 +142,11 @@ public class Connection implements Closeable, AutoCloseable {
 			res.add(new Lecture(lectureID, professorID, courseID, date, start, end, room));
 		}
 		return res;
+	}
+	
+	private int readUsersInput() {
+			int ret = in.nextInt();
+		return ret;
 	}
 
 	/**
@@ -173,6 +187,7 @@ public class Connection implements Closeable, AutoCloseable {
 
 		if (flag){ throw new IllegalArgumentException("This is not a valid lecture"); }
 	}
+	
 
 	//------------------------------------------------------------------------
 	//The speed rating stuff
