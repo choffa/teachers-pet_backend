@@ -41,5 +41,6 @@ CREATE TABLE SpeedRanking (
 
 CREATE TABLE Users (
     UserName    VARCHAR(32) NOT NULL,
-    PasswordHash VARCHAR(255)
+    PasswordHash VARCHAR(255) NOT NULL,
+    Salt            CHAR(12) NOT NULL
 );
