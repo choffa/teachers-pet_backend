@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class Connection implements Closeable, AutoCloseable {
 
 	private final int PORT = 4728;
-	private final String HOST = "localhost";
+	private final String HOST = "doktor.pvv.org";
 	private Socket socket;
 	private PrintWriter out;
 	private Scanner in;
