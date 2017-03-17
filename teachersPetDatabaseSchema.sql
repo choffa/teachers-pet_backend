@@ -29,9 +29,9 @@ CREATE TABLE SubjectRanking (
 );
 
 CREATE TABLE SpeedRanking (
-    LectureID    	INTEGER NOT NULL,
-    StudentID   	TEXT NOT NULL,
-    Ranking     	INTEGER NOT NULL,
+    LectureID    	INTEGER   NOT NULL,
+    StudentID   	CHAR(16)  NOT NULL,
+    Ranking     	INTEGER   NOT NULL,
 
     CONSTRAINT RankingConstraint CHECK (Ranking > 0 AND Ranking < 5),
     CONSTRAINT SpeedRanking_LectureID_FK FOREIGN KEY (LectureID) REFERENCES Lectures(LectureID)
