@@ -61,6 +61,9 @@ public class ServerConnection implements Runnable {
 				case "SET_USER":
 					setUser();
 					break;
+				case "CHECK_USER":
+					checkUser();
+					break;
 				case "VALIDATE":
 					validate();
 					break;
@@ -68,6 +71,10 @@ public class ServerConnection implements Runnable {
 					break;
 			}
 		}
+	}
+
+	private void checkUser() {
+
 	}
 
 	private void validate() {
