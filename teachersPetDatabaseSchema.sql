@@ -2,8 +2,8 @@ CREATE TABLE Lectures (
     LectureID 	    INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     LectureDate     DATE NOT NULL,
     StartTime 	    TIME NOT NULL,
-    EndTime 	    TIME NOT NULL,
-    Professor 	    TEXT
+    EndTime 	      TIME NOT NULL,
+    Professor 	    CHAR(16)
 );
 
 CREATE TABLE Subjects (
@@ -18,7 +18,7 @@ CREATE TABLE Subjects (
 
 CREATE TABLE SubjectRanking (
     SubjectID    	  INTEGER NOT NULL,
-    StudentID   	  TEXT NOT NULL,
+    StudentID   	  CHAR(16) NOT NULL,
     Ranking     	  INTEGER NOT NULL,
     RankingComment  TEXT,
 
@@ -40,7 +40,7 @@ CREATE TABLE SpeedRanking (
 );
 
 CREATE TABLE Users (
-    UserName    VARCHAR(32) NOT NULL,
-    PasswordHash VARCHAR(255) NOT NULL,
+    UserName        VARCHAR(32) NOT NULL,
+    PasswordHash    VARCHAR(255) NOT NULL,
     Salt            CHAR(12) NOT NULL
 );
