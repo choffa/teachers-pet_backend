@@ -53,18 +53,37 @@ public class ServerConnection implements Runnable {
 					setLecture();
 					break;
 				case "SET_SPEEDRATING":
-					String ssprLID = in.next();
-					String ssprSID = in.next();
-					String ssprRat = in.next();
-					sdc.insert(ServerDatabaseConnection.SPEEDRANKING, new String[] {ssprLID, ssprRat,ssprSID});
+					setSpeedRating();
 					break;
 				case "GET_AVERAGESPEEDRATING":
 					getAverageSpeedRating();
+					break;
+				case "SET_USER":
+					setUser();
+					break;
+				case "VALIDATE":
+					validate();
 					break;
 				default:
 					break;
 			}
 		}
+	}
+
+	private void validate() {
+
+	}
+
+	private void setUser() {
+
+	}
+
+
+	private void setSpeedRating(){
+		String ssprLID = in.next();
+		String ssprSID = in.next();
+		String ssprRat = in.next();
+		sdc.insert(ServerDatabaseConnection.SPEEDRANKING, new String[] {ssprLID, ssprRat,ssprSID});
 	}
 
 	private void setLecture() {
