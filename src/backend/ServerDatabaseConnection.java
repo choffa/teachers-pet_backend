@@ -112,13 +112,27 @@ public class ServerDatabaseConnection {
 	public boolean checkUsername(String username) {
 		try {
 			Statement s = con.createStatement();
-			String query = "SELECT username FROM Users WHERE username=" + username;
+			String query = "SELECT username FROM Users WHERE username="+username;
 			ResultSet rs = s.executeQuery(query);
 			return rs.next();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	public String[] getUserData(String username) {
+		try {
+			Statement s = con.createStatement();
+			String query = "SELECT PasswordHash, Salt FROM Users WHERE Username="+username;
+			ResultSet r = s.executeQuery(query);
+			if (r.next()) {
+				return new String[] {r.getString(1), r.getString(2)};
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	/**
