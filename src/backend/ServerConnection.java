@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class ServerConnection implements Runnable {
 
@@ -83,7 +84,11 @@ public class ServerConnection implements Runnable {
 	}
 
 	private void setUser() {
-
+		String userName = in.next();
+		String password = in.next();
+		String salt = BCrypt.gensalt();
+		String hash = BCrypt.hashpw(password, salt);
+		sdc.insert(ServerDatabaseConnection.USERS, new String[] {userName, hash, salt});
 	}
 
 

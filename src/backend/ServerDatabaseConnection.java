@@ -20,6 +20,7 @@ public class ServerDatabaseConnection {
 	public static final String SUBJECTS = "Subjects(LectureID,SubjectID,SubjectName)";
 	public static final String SUBJECTRANKING = "SubjectRanking(Ranking,RankingComment,SubjectID,StudentID)";
 	public static final String SPEEDRANKING = "SpeedRanking(LectureID,Ranking,StudentID)";
+	public static final String USERS = "Users(UserName, PasswordHash, Salt)";
 	
 	
 	
