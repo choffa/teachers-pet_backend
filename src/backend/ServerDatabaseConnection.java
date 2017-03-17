@@ -20,6 +20,7 @@ public class ServerDatabaseConnection {
 	public static final String SUBJECTS = "Subjects(LectureID,SubjectName)";
 	public static final String SUBJECTRANKING = "SubjectRanking(Ranking,RankingComment,SubjectID,StudentID)";
 	public static final String SPEEDRANKING = "SpeedRanking(LectureID,Ranking,StudentID)";
+	public static final String USERS = "Users(UserName, PasswordHash, Salt)";
 	
 	
 	
@@ -128,13 +129,27 @@ public class ServerDatabaseConnection {
 	public boolean checkUsername(String username) {
 		try {
 			Statement s = con.createStatement();
-			String query = "SELECT username FROM Users WHERE username=" + username;
+			String query = "SELECT username FROM Users WHERE username="+username;
 			ResultSet rs = s.executeQuery(query);
 			return rs.next();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	public String getHash(String username) {
+		try {
+			Statement s = con.createStatement();
+			String query = "SELECT PasswordHash FROM Users WHERE Username="+username;
+			ResultSet rs = s.executeQuery(query);
+			if (r.next()) {
+				return rs.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	/**
