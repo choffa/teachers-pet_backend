@@ -121,13 +121,13 @@ public class ServerDatabaseConnection {
 		}
 	}
 
-	public String[] getUserData(String username) {
+	public String getHash(String username) {
 		try {
 			Statement s = con.createStatement();
-			String query = "SELECT PasswordHash, Salt FROM Users WHERE Username="+username;
-			ResultSet r = s.executeQuery(query);
+			String query = "SELECT PasswordHash FROM Users WHERE Username="+username;
+			ResultSet rs = s.executeQuery(query);
 			if (r.next()) {
-				return new String[] {r.getString(1), r.getString(2)};
+				return rs.getString(1);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

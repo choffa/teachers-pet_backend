@@ -82,10 +82,8 @@ public class ServerConnection implements Runnable {
 	private void validate() {
 		String username = in.next();
 		String password = in.next();
-		String[] s = sdc.getUserData(username);
-		String hash = s[0];
-		String salt = s[1];
-		boolean res = BCrypt.checkpw(password+salt, hash);
+		String hash = sdc.getHash(username);
+		boolean res = BCrypt.checkpw(password, hash);
 		out.print(res);
 	}
 
