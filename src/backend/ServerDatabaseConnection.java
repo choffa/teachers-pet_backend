@@ -143,7 +143,7 @@ public class ServerDatabaseConnection {
 			Statement s = con.createStatement();
 			String query = "SELECT PasswordHash FROM Users WHERE Username="+username;
 			ResultSet rs = s.executeQuery(query);
-			if (r.next()) {
+			if (rs.next()) {
 				return rs.getString(1);
 			}
 		} catch (SQLException e) {
