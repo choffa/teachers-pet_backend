@@ -68,7 +68,8 @@ public class ServerConnection implements Runnable {
 					validate();
 					break;
 				default:
-					break;
+					close();
+					return;
 			}
 		}
 	}

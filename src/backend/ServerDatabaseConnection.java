@@ -1,14 +1,9 @@
 package backend;
 
 
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.sql.Connection;
-
 
 
 public class ServerDatabaseConnection {
@@ -110,6 +105,18 @@ public class ServerDatabaseConnection {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
+		}
+	}
+
+	public boolean checkUsername(String username) {
+		try {
+			Statement s = con.createStatement();
+			String query = "SELECT username FROM Users WHERE username=" + username;
+			ResultSet rs = s.executeQuery(query);
+			return rs.next();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 	
