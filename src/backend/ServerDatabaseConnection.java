@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 public class ServerDatabaseConnection {
 	private Connection con  =  null;
-	private String url = "jdbc:mysql://mysql.idi.ntnu.no/p_teacherspet"; 
-	private String user = "tpbackend_adm";
-	private String pw = "ang4OhmieD7aefo";
+	private String url = "jdbc:mysql://mysql.stud.ntnu.no/mathilie_teacherspet"; 
+	private String user = "mathilie_pu";
+	private String pw = "pu123";
 	
 	
 	/**
