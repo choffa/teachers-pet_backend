@@ -82,6 +82,7 @@ public class ServerConnection implements Runnable {
 
 	private void checkUser() {
 		out.print(sdc.checkUsername(in.next()));
+		out.flush();
 	}
 
 	private void validate() {
@@ -90,6 +91,7 @@ public class ServerConnection implements Runnable {
 		String hash = sdc.getHash(username);
 		boolean res = BCrypt.checkpw(password, hash);
 		out.print(res);
+		out.flush();
 	}
 
 	private void setUser() {
@@ -143,6 +145,7 @@ public class ServerConnection implements Runnable {
 		int id = in.nextInt();
 		double avg = sdc.getAverage(table, idColumn, id);
 		out.println(avg);
+		out.flush();
 	}
 
 	private void getAverageSpeedRating(){
@@ -151,6 +154,7 @@ public class ServerConnection implements Runnable {
 		int id = in.nextInt();
 		double avg = sdc.getAverage(table, idColumn, id);
 		out.println(avg);
+		out.flush();
 	}
 	
 	private void close(){
@@ -172,6 +176,7 @@ public class ServerConnection implements Runnable {
 		String galReturnString="";
 		for (String s:galReturnList) galReturnString+=s+" ";
 		out.println(galReturnString);
+		out.flush();
 	}
 	
 	private void getLecture(){
@@ -180,6 +185,7 @@ public class ServerConnection implements Runnable {
 		String ReturnString="";
 		for (String s:ReturnList) ReturnString+=s+" ";
 		out.println(ReturnString);
+		out.flush();
 	}
 	
 	private void getSubjects(){
@@ -188,6 +194,7 @@ public class ServerConnection implements Runnable {
 		String ReturnString="";
 		for (String s:ReturnList) ReturnString+=s+" ";
 		out.println(ReturnString);
+		out.flush();
 	}
 	
 
