@@ -205,7 +205,7 @@ public class ServerDatabaseConnection {
 	public static void main(String[] args) {
 		ServerDatabaseConnection sdc = new ServerDatabaseConnection();
 		sdc.testConnection();
-		sdc.insert(ServerDatabaseConnection.SUBJECTS, new String[] {"1", "2", "'testName'"});
+		//sdc.insert(ServerDatabaseConnection.SUBJECTS, new String[] {"1", "2", "'testName'"});
 	}
 
 
