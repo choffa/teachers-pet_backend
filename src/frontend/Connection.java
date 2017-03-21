@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
-public class Connection implements Closeable, AutoCloseable {
+import backend.Lecture;
+
+public class Connection implements Closeable {
 
 	private final int PORT = 4728;
-	private final String HOST = "doktor.pvv.org";
+	private final String HOST = "localhost";
 	private Socket socket;
 	private PrintWriter out;
 	private Scanner in;
@@ -106,15 +108,6 @@ public class Connection implements Closeable, AutoCloseable {
 		out.println("GET_ALLLECTURES");
 		return readLectureInput();
 	}
-	
-	public int getTempoVotesInLecture(int LectureID) {
-		checkState();
-		out.println("GET_NUMBEROFUSERS"+" "+LectureID);
-		return readUsersInput();
-	}
-		
-
-
 
 	/**
 	 * A method that request the lectures by a specific professor
@@ -139,14 +132,9 @@ public class Connection implements Closeable, AutoCloseable {
 			int start = in.nextInt();
 			int end = in.nextInt();
 			String room = in.next();
-			res.add(new Lecture(lectureID, professorID, courseID, date, start, end, room));
+			res.add(new Lecture(lectureID, professorID, courseID, start, end, room, date));
 		}
 		return res;
-	}
-	
-	private int readUsersInput() {
-			int ret = in.nextInt();
-		return ret;
 	}
 
 	/**
@@ -187,7 +175,6 @@ public class Connection implements Closeable, AutoCloseable {
 
 		if (flag){ throw new IllegalArgumentException("This is not a valid lecture"); }
 	}
-	
 
 	//------------------------------------------------------------------------
 	//The speed rating stuff
@@ -229,7 +216,7 @@ public class Connection implements Closeable, AutoCloseable {
 	 */
 	public ArrayList<Subject> getSubjects(int lectureID) {
 		checkState();
-		out.println("GET_SUBJECTS"+lectureID);
+		out.println("GET_SUBJECTS");
 		ArrayList<Subject> res = new ArrayList<>();
 		while (in.next() == "NEXT"){
 			res.add(new Subject(in.nextInt(), in.next()));
@@ -242,17 +229,60 @@ public class Connection implements Closeable, AutoCloseable {
 	 *
 	 * @param lectureID The ID of the lecture to associate the subject with
 	 */
-	public void createSubject(int lectureID, String name) {
+	public void createSubject(int lectureID) {
 		//TODO: Create method for creating subject associated with specific lecture
 		checkState();
-		checkSubjectInput(name);
-		out.println("SET_SUBJECT " +lectureID+" "+name);
+		out.println("SET_SUBJECT " + lectureID);
 	}
 
 	private void checkSubjectInput(String name){
 		if (name.contains(" ")){
 			throw new IllegalArgumentException("Subject name should not contain space");
 		}
+	}
+
+	/**
+	 * This method creates new users in the database
+	 * @param username - Username for the new user
+	 * @param password - Password for the new user
+	 */
+	public void createUser(String username, String password) {
+		checkState();
+		out.println("SET_USER " + username + " " + password);
+	}
+
+	/**
+	 * This method checks the availability of the username in the database
+	 * @param username - The username that is to be checked in the databse
+	 * @return A boolean value representing the
+	 */
+	public boolean checkUsername(String username) {
+		checkState();
+		out.println("CHECK_USER " + username);
+		return in.nextBoolean();
+	}
+
+	/**
+	 * This methods gets the number of votes on speed i lecture
+	 * @param LectureID - the ID of the lecture in question
+	 * @return an int of the number of votes
+	 */
+	public int getTempoVotesInLecture(int LectureID) {
+		checkState();
+		out.println("GET_NUMBEROFUSERS"+" "+LectureID);
+		return readUsersInput();
+	}
+
+	private int readUsersInput() {
+		int ret = in.nextInt();
+		return ret;
+	}
+
+
+	public boolean validateUser(String username, String password) {
+		checkState();
+		out.println("VALIDATE " + username + " " + password);
+		return in.nextBoolean();
 	}
 
 	private void checkState() {
