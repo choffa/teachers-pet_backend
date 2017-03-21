@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
-import backend.Lecture;
+//import backend.Lecture;
 
 public class Connection implements Closeable {
 
