@@ -27,52 +27,54 @@ public class ServerConnection implements Runnable {
 	@Override
 	public void run() {
 		while (true){
-			String command = in.next();
-			switch (command){
-				case "CLOSE":
-					close();
-					return;
-				case "GET_SUBJECTS":
-					getSubjects();
-					break;
-				case "SET_SUBJECTRATING":
-					setSubjectRating();
-					break;
-				case "GET_AVERAGESUBJECTRATING":
-					getAverageSubjectRating();
-					break;
-				case "SET_SUBJECT":
-					setSubject();
-					break;
-				case "GET_LECTURE":
-					getLecture();
-					break;
-				case "GET_ALLLECTURES":
-					getAllLectures();
-					break;
-				case "SET_LECTURE":
-					setLecture();
-					break;
-				case "SET_SPEEDRATING":
-					setSpeedRating();
-					break;
-				case "GET_AVERAGESPEEDRATING":
-					getAverageSpeedRating();
-					break;
-				case "SET_USER":
-					setUser();
-					break;
-				case "CHECK_USER":
-					checkUser();
-					break;
-				case "VALIDATE":
-					validate();
-					break;
-				case "GET_NUMBEROFUSERS":
-					getTempoVotesInLecture();
-				default:
-					close();
-					return;
+			if(in.hasNext()){
+				String command = in.next();
+				switch (command){
+					case "CLOSE":
+						close();
+						return;
+					case "GET_SUBJECTS":
+						getSubjects();
+						break;
+					case "SET_SUBJECTRATING":
+						setSubjectRating();
+						break;
+					case "GET_AVERAGESUBJECTRATING":
+						getAverageSubjectRating();
+						break;
+					case "SET_SUBJECT":
+						setSubject();
+						break;
+					case "GET_LECTURE":
+						getLecture();
+						break;
+					case "GET_ALLLECTURES":
+						getAllLectures();
+						break;
+					case "SET_LECTURE":
+						setLecture();
+						break;
+					case "SET_SPEEDRATING":
+						setSpeedRating();
+						break;
+					case "GET_AVERAGESPEEDRATING":
+						getAverageSpeedRating();
+						break;
+					case "SET_USER":
+						setUser();
+						break;
+					case "CHECK_USER":
+						checkUser();
+						break;
+					case "VALIDATE":
+						validate();
+						break;
+					case "GET_NUMBEROFUSERS":
+						getTempoVotesInLecture();
+					default:
+						close();
+						return;
+				}
 			}
 		}
 	}

@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 public class ServerDatabaseConnection {
 	private Connection con  =  null;
-	private String url = "jdbc:mysql://mysql.idi.ntnu.no/p_teacherspet"; 
-	private String user = "tpbackend_adm";
-	private String pw = "ang4OhmieD7aefo";
+	private String url = "jdbc:mysql://mysql.stud.ntnu.no/mathilie_teacherspet"; 
+	private String user = "mathilie_pu";
+	private String pw = "pu123";
 	
 	
 	/**
@@ -205,7 +205,7 @@ public class ServerDatabaseConnection {
 	public static void main(String[] args) {
 		ServerDatabaseConnection sdc = new ServerDatabaseConnection();
 		sdc.testConnection();
-		sdc.insert(ServerDatabaseConnection.SUBJECTS, new String[] {"1", "2", "'testName'"});
+		//sdc.insert(ServerDatabaseConnection.SUBJECTS, new String[] {"1", "2", "'testName'"});
 	}
 
 
