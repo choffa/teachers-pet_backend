@@ -164,18 +164,20 @@ public class ServerConnection implements Runnable {
 	private void getAverageSubjectRating(){
 		String table = "SubjectRanking";
 		String idColumn = "SubjectID";
-		int id = in.nextInt();
+		String id = in.next();
 		double avg = sdc.getAverage(table, idColumn, id);
-		out.println(avg);
+		float ret = (float) avg;
+		out.println(ret);
 		out.flush();
 	}
 
 	private void getAverageSpeedRating(){
 		String table = "SpeedRanking";
 		String idColumn = "LectureID";
-		int id = in.nextInt();
+		String id = in.next();
 		double avg = sdc.getAverage(table, idColumn, id);
-		out.println(avg);
+		float ret = (float) avg;
+		out.println(ret);
 		out.flush();
 	}
 	
