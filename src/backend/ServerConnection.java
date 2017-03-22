@@ -128,7 +128,7 @@ public class ServerConnection implements Runnable {
 		String start= in.next();
 		String end= in.next();
 		String room= in.next();
-		sdc.insert(ServerDatabaseConnection.LECTURES, new String[] {PID, CID, date, start, end, room});
+		sdc.insert(ServerDatabaseConnection.LECTURES, new String[] {date, start, end, PID, room, CID});
 		/*out.println("SET_LECTURE " + professorID + " " + courseID + " " + date + " " + start + " "
 				+ end + " " + room);*/
 }
@@ -181,29 +181,39 @@ public class ServerConnection implements Runnable {
 	
 	
 	private void getAllLectures(){
-		String[] galReturnList = sdc.getList(ServerDatabaseConnection.LECTURES,"LectureDate", "NOW()","*");
+		String[] galReturnList = sdc.getList(ServerDatabaseConnection.LECTURES,"LectureDate", "NOW()",new String[] {"*"});
 		String galReturnString="";
-		for (String s:galReturnList) galReturnString+=s+" ";
+		if(galReturnList.length>0){
+			for (String s:galReturnList) galReturnString+=s+" ";
+		} else {
+			galReturnString = "END";
+		}
 		out.println(galReturnString);
 		out.flush();
 	}
 	
 	private void getLecture(){
-		System.out.println("ProffessorID came with the package: "+in.hasNext());
 		String PID = in.next();
-		System.out.println("PID: " +PID);
-		String[] ReturnList = sdc.getList(ServerDatabaseConnection.LECTURES, "Professor", "'"+PID+"'", "*");
+		String[] ReturnList = sdc.getList(ServerDatabaseConnection.LECTURES, "Professor", "'"+PID+"'",new String[] {"*"});
 		String ReturnString="";
-		for (String s:ReturnList) ReturnString+=s+" ";
+		if(ReturnList.length>0){
+			for (String s:ReturnList) ReturnString+=s+" ";
+		} else {
+			ReturnString = "END";
+		}
 		out.println(ReturnString);
 		out.flush();
 	}
 	
 	private void getSubjects(){
 		String LID = in.next();
-		String[] ReturnList = sdc.getList(ServerDatabaseConnection.SUBJECTS, "*","'LectureID", "'"+LID+"'");
+		String[] ReturnList = sdc.getList(ServerDatabaseConnection.SUBJECTS,"'LectureID", "'"+LID+"'", new String[] {"*"});
 		String ReturnString="";
-		for (String s:ReturnList) ReturnString+=s+" ";
+		if(ReturnList.length>0){
+			for (String s:ReturnList) ReturnString+=s+" ";
+		} else {
+			ReturnString = "END";
+		}
 		out.println(ReturnString);
 		out.flush();
 	}

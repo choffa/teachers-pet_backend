@@ -16,7 +16,7 @@ public class ServerDatabaseConnection {
 	/**
 	 * Made so that other classes can add to the database without changes in the database affecting other classes than this class.
 	 */
-	public static final String LECTURES = "Lectures(LectureDate,StartTime,EndTime,Professor)";
+	public static final String LECTURES = "Lectures(LectureDate,StartTime,EndTime,Professor,Room,CourseID)";
 	public static final String SUBJECTS = "Subjects(LectureID,SubjectName)";
 	public static final String SUBJECTRANKING = "SubjectRanking(Ranking,RankingComment,SubjectID,StudentID)";
 	public static final String SPEEDRANKING = "SpeedRanking(LectureID,Ranking,StudentID)";
@@ -43,8 +43,6 @@ public class ServerDatabaseConnection {
 			// TODO Auto-generated catch block
 			System.out.println("insert command failed");
 			e.printStackTrace();
-		}finally{
-			close();
 		}
 	}
 	
@@ -62,9 +60,7 @@ public class ServerDatabaseConnection {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return res;
-		} finally {
-			close();
-		}
+		} 
 	}
 	
 	public int getInt(String from, String what, String condition1, String condition2){
@@ -80,9 +76,7 @@ public class ServerDatabaseConnection {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return res;
-		} finally {
-			close();
-		}
+		} 
 	}
 	
 	public String getString(String from, String what, String Condition1,String Condition2){
@@ -98,33 +92,39 @@ public class ServerDatabaseConnection {
 	 * @param what
 	 * @return
 	 */
-	public String[] getList(String table, String condition1, String condition2, String... what){
+	public String[] getList(String table, String condition1, String condition2, String[] what){
 		try {
+			System.out.println(table+condition1+condition2+what);
 			Statement s = con.createStatement();
 			String what2="";
 			for(String w:what) what2+=" "+w;
 			String query = "SELECT"+what2+" FROM "+table.split("\\(")[0]+" WHERE "+condition1+"="+condition2+";";
+			System.out.println(query);
 			ResultSet rs = s.executeQuery(query);
+			System.out.println(rs);
 			int numCol = rs.getMetaData().getColumnCount();
+			System.out.println(numCol);
 			ArrayList<String> list = new ArrayList<String>();
 			while(rs.next()) {
+				System.out.println("While is running");
+				list.add("NEXT");
 				for(int i=1;i<=numCol;i++){
 					list.add(rs.getString(i));
 				}
-				list.add("NEXT");
 			}
 			if(list.size()>0){
 				list.remove(list.size()-1);
 				list.add("END");
 			}
-			return list.toArray(new String[list.size()]);
+			System.out.println(list.size());
+			String[] returnlist= list.toArray(new String[list.size()]);
+			for(String str:returnlist) System.out.println(str);
+			return returnlist;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
-		} finally{
-			close();
-		}
+		} 
 	}
 
 	public boolean checkUsername(String username) {
@@ -143,7 +143,7 @@ public class ServerDatabaseConnection {
 			e.printStackTrace();
 			System.out.println("returns false");
 			return false;
-		} finally{ close();}
+		} 
 	}
 
 	public String getHash(String username) {
@@ -156,7 +156,7 @@ public class ServerDatabaseConnection {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {close();}
+		} 
 		return null;
 	}
 	
@@ -192,14 +192,14 @@ public class ServerDatabaseConnection {
 	}
 
 	public ServerDatabaseConnection() {
-		this(this.url, this.user, this.pw);
+		this(url, user, pw);
 	}
 	
 	
 	/**
 	 * Closes database connection
 	 */
-	private void close(){
+	public void close(){
 		{
 		    try {
 		      if (con !=  null) con.close();
