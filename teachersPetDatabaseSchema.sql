@@ -1,40 +1,46 @@
 CREATE TABLE Lectures (
-    LectureID 	    VARCHAR(32) PRIMARY KEY NOT NULL,
+    LectureID 	    INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     LectureDate     DATE NOT NULL,
     StartTime 	    TIME NOT NULL,
     EndTime 	      TIME NOT NULL,
-    Professor 	    INTEGER
+    Professor 	    CHAR(32)
 );
 
-CREATE TABLE SubjectS (
+CREATE TABLE Subjects (
     SubjectID      	INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    LectureID 	    VARCHAR(32) NOT NULL,
+    LectureID 	    INTEGER NOT NULL,
     SubjectName     VARCHAR(32),
     
     CONSTRAINT Subject_LectureID_FK FOREIGN KEY (LectureID) REFERENCES Lectures(LectureID)
-																	ON UPDATE CASCADE
+																	                                  ON UPDATE CASCADE
                                                                     ON DELETE CASCADE
 );
 
 CREATE TABLE SubjectRanking (
-    SubjectID    	INTEGER NOT NULL,
-    StudentID   	INTEGER NOT NULL,
-    Ranking     	INTEGER NOT NULL,
-    RankingComment  VARCHAR(255),
+    SubjectID    	  INTEGER NOT NULL,
+    StudentID   	  CHAR(32) NOT NULL,
+    Ranking     	  INTEGER NOT NULL,
+    RankingComment  TEXT,
 
-    CONSTRAINT RankingConstraint CHECK (Ranking > 1 AND Ranking < 5),
+    CONSTRAINT RankingConstraint CHECK (Ranking > 0 AND Ranking < 5),
     CONSTRAINT SubjectRanking_SubjectID_FK FOREIGN KEY (SubjectID) REFERENCES Subjects(SubjectID)
 																			ON UPDATE CASCADE
                                                                             ON DELETE CASCADE
 );
 
 CREATE TABLE SpeedRanking (
-    LectureID    	VARCHAR(32) NOT NULL,
-    StudentID   	INTEGER NOT NULL,
-    Ranking     	INTEGER NOT NULL,
+    LectureID    	INTEGER   NOT NULL,
+    StudentID   	CHAR(32)  NOT NULL,
+    Ranking     	INTEGER   NOT NULL,
 
     CONSTRAINT RankingConstraint CHECK (Ranking > 0 AND Ranking < 5),
     CONSTRAINT SpeedRanking_LectureID_FK FOREIGN KEY (LectureID) REFERENCES Lectures(LectureID)
-																		ON UPDATE CASCADE
+																		                                    ON UPDATE CASCADE
                                                                         ON DELETE CASCADE
+);
+
+CREATE TABLE Users (
+    Username        CHAR(32) NOT NULL,
+    PasswordHash    VARCHAR(255) NOT NULL,
+    Salt            CHAR(12) NOT NULL
 );
