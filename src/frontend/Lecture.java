@@ -23,7 +23,7 @@ public class Lecture {
     }
 
     public Lecture(int lectureID, String professorID, String courseID,
-                   Date date, int start, int end, String room) {
+                   int start, int end, String room, Date date) {
 
         this.lectureID = lectureID;
         this.professorID = professorID;
