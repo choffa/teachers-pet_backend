@@ -171,6 +171,32 @@ public class ServerDatabaseConnection {
 	
 	
 	/**
+	 * Connects to database
+	 */
+	public ServerDatabaseConnection(String url, String user, String pw) {
+		try {
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+			con = DriverManager.getConnection(url,user,pw);
+			System.out.println("Database connected.");
+			  } catch (SQLException ex) {
+			    System.out.println("Tilkobling feilet: "+ex.getMessage());
+			  } catch (ClassNotFoundException ex) {
+			    System.out.println("Feilet under driverlasting: "+ex.getMessage());
+			  } catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			  } catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			  } 
+	}
+
+	public ServerDatabseConnection() {
+		this(this.url, this.user, this.pw);
+	}
+	
+	
+	/**
 	 * Closes database connection
 	 */
 	private void close(){
