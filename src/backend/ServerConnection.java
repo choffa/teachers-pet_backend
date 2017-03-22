@@ -94,6 +94,7 @@ public class ServerConnection implements Runnable {
 		out.println(outBool);
 		out.flush();
 	}
+	
 
 	private void validate() {
 		String username = in.next();
@@ -116,9 +117,20 @@ public class ServerConnection implements Runnable {
 
 	private void setSpeedRating(){
 		String ssprLID = in.next();
-		String ssprSID = in.next();
 		String ssprRat = in.next();
-		sdc.insert(ServerDatabaseConnection.SPEEDRANKING, new String[] {ssprLID, ssprRat,ssprSID});
+		String ssprSID = in.next();
+		if(checkIfUpdate(ssprSID, ssprLID)){
+			sdc.update(ServerDatabaseConnection.SPEEDRANKING, new String[] {"Ranking"}, new String[] {ssprRat}, "StudentID", "'"+ssprSID+"'", "LectureID", "'"+ssprLID+"'");
+		} else {
+			sdc.insert(ServerDatabaseConnection.SPEEDRANKING, new String[] {ssprLID, ssprRat,ssprSID});
+		}
+		
+	}
+
+	private boolean checkIfUpdate(String SID, String LID) {
+		String s;
+ 		s=sdc.getString(ServerDatabaseConnection.SPEEDRANKING, "StudentID", "StudentId", "'"+SID+"'", "LectureID", "'"+LID+"'");
+		return s.length()>0;
 	}
 
 	private void setLecture() {
@@ -181,13 +193,10 @@ public class ServerConnection implements Runnable {
 	
 	
 	private void getAllLectures(){
-		String[] galReturnList = sdc.getList(ServerDatabaseConnection.LECTURES,"LectureDate", "NOW()",new String[] {"*"});
+		String[] galReturnList = sdc.getList(ServerDatabaseConnection.LECTURES,"LectureDate", "CURDATE()",new String[] {"*"});
 		String galReturnString="";
-		if(galReturnList.length>0){
-			for (String s:galReturnList) galReturnString+=s+" ";
-		} else {
-			galReturnString = "END";
-		}
+		if(galReturnList.length>0)
+		for (String s:galReturnList) galReturnString+=s+" ";
 		out.println(galReturnString);
 		out.flush();
 	}
@@ -196,11 +205,7 @@ public class ServerConnection implements Runnable {
 		String PID = in.next();
 		String[] ReturnList = sdc.getList(ServerDatabaseConnection.LECTURES, "Professor", "'"+PID+"'",new String[] {"*"});
 		String ReturnString="";
-		if(ReturnList.length>0){
-			for (String s:ReturnList) ReturnString+=s+" ";
-		} else {
-			ReturnString = "END";
-		}
+		for (String s:ReturnList) ReturnString+=s+" ";
 		out.println(ReturnString);
 		out.flush();
 	}
@@ -209,11 +214,8 @@ public class ServerConnection implements Runnable {
 		String LID = in.next();
 		String[] ReturnList = sdc.getList(ServerDatabaseConnection.SUBJECTS,"'LectureID", "'"+LID+"'", new String[] {"*"});
 		String ReturnString="";
-		if(ReturnList.length>0){
-			for (String s:ReturnList) ReturnString+=s+" ";
-		} else {
-			ReturnString = "END";
-		}
+		if(ReturnList.length>0)
+		for (String s:ReturnList) ReturnString+=s+" ";
 		out.println(ReturnString);
 		out.flush();
 	}

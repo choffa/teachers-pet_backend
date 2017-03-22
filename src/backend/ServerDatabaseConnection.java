@@ -46,6 +46,23 @@ public class ServerDatabaseConnection {
 		}
 	}
 	
+	public void update(String tableName, String[] colNames, String[] values, String condition1,String condition2,/*Shortcut for updateSpeedRanking*/  String condition3, String condition4) {
+		try{
+			Statement s = con.createStatement();
+			//Making insert query
+			String set = "";
+			for (int i=0;i<colNames.length;i++) set+=colNames[i]+"="+"'"+values[i]+"',";
+			set = set.substring(0, set.length()-1);
+			String query = "UPDATE "+tableName.split("\\(")[0]+" SET "+set+" WHERE "+condition1+"="+condition2+/*Shortcut*/" AND "+condition3+"="+condition4+";";
+			
+			s.execute(query);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("update command failed");
+			e.printStackTrace();
+		}
+	}
+	
 
 	public double getAverage(String table, String idColumn, int id){
 		String query = "SELECT AVG(ranking) FROM "+table.split("\\(")[0]+" WHERE " +idColumn+"="+id;
@@ -79,8 +96,20 @@ public class ServerDatabaseConnection {
 		} 
 	}
 	
-	public String getString(String from, String what, String Condition1,String Condition2){
-		return null;
+	public String getString(String from, String what, String condition1,String condition2,/*Shortcut for checkuserID*/  String condition3, String condition4){
+		String query = "SELECT "+what+" FROM "+from.split("\\(")[0]+" WHERE " +condition1+"="+condition2+/*Shortcut*/" AND "+condition3+"="+condition4+";";
+		String res = "";
+		try {
+			Statement s = con.createStatement();
+			ResultSet r = s.executeQuery(query);
+			if (r.next()){
+				res = r.getString(1);
+			}
+			return res;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return res;
+		}
 	}
 	
 	
@@ -112,10 +141,7 @@ public class ServerDatabaseConnection {
 					list.add(rs.getString(i));
 				}
 			}
-			if(list.size()>0){
-				list.remove(list.size()-1);
-				list.add("END");
-			}
+			list.add("END");
 			System.out.println(list.size());
 			String[] returnlist= list.toArray(new String[list.size()]);
 			for(String str:returnlist) System.out.println(str);
@@ -218,6 +244,9 @@ public class ServerDatabaseConnection {
 		sdc.testConnection();
 		//sdc.insert(ServerDatabaseConnection.SUBJECTS, new String[] {"1", "2", "'testName'"});
 	}
+
+
+
 
 
 
