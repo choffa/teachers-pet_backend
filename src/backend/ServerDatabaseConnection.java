@@ -31,7 +31,6 @@ public class ServerDatabaseConnection {
 	 */
 	public void insert(String tableName, String[] args){
 		try{
-			connect();
 			Statement s = con.createStatement();
 			//Making insert query
 			String values = "(";
@@ -54,7 +53,6 @@ public class ServerDatabaseConnection {
 		String query = "SELECT AVG(ranking) FROM "+table.split("\\(")[0]+" WHERE " +idColumn+"="+id;
 		double res = 0.0;
 		try {
-			connect();
 			Statement s = con.createStatement();
 			ResultSet r = s.executeQuery(query);
 			if (r.next()){
@@ -73,7 +71,6 @@ public class ServerDatabaseConnection {
 		String query = "SELECT "+what+" FROM "+from.split("\\(")[0]+" WHERE " +condition1+"="+condition2;
 		int res = -1;
 		try {
-			connect();
 			Statement s = con.createStatement();
 			ResultSet r = s.executeQuery(query);
 			if (r.next()){
@@ -103,7 +100,6 @@ public class ServerDatabaseConnection {
 	 */
 	public String[] getList(String table, String condition1, String condition2, String... what){
 		try {
-			connect();
 			Statement s = con.createStatement();
 			String what2="";
 			for(String w:what) what2+=" "+w;
@@ -133,7 +129,6 @@ public class ServerDatabaseConnection {
 
 	public boolean checkUsername(String username) {
 		try {
-			connect();
 			Statement s = con.createStatement();
 			String query = "SELECT username FROM Users WHERE username="+"'"+username+"'";
 			ResultSet rs = s.executeQuery(query);
@@ -153,7 +148,6 @@ public class ServerDatabaseConnection {
 
 	public String getHash(String username) {
 		try {
-			connect();
 			Statement s = con.createStatement();
 			String query = "SELECT PasswordHash FROM Users WHERE Username="+"'"+username+"'";
 			ResultSet rs = s.executeQuery(query);
@@ -171,31 +165,8 @@ public class ServerDatabaseConnection {
 	 * @return true if method finishes (connection opens and closes)
 	 */
 	public boolean testConnection(){
-			connect();
 			close();
 		return true;
-	}
-	
-	
-	/**
-	 * Connects to database
-	 */
-	private void connect(){
-		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			con = DriverManager.getConnection(url,user,pw);
-			System.out.println("Database connected.");
-			  } catch (SQLException ex) {
-			    System.out.println("Tilkobling feilet: "+ex.getMessage());
-			  } catch (ClassNotFoundException ex) {
-			    System.out.println("Feilet under driverlasting: "+ex.getMessage());
-			  } catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			  } catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			  } 
 	}
 	
 	
