@@ -180,7 +180,7 @@ public class ServerDatabaseConnection {
 	/**
 	 * Connects to database
 	 */
-	private void connect(){
+	public ServerDatabaseConnection(String url, String user, String pw) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			con = DriverManager.getConnection(url,user,pw);
@@ -196,6 +196,10 @@ public class ServerDatabaseConnection {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			  } 
+	}
+
+	public ServerDatabseConnection() {
+		this(this.url, this.user, this.pw);
 	}
 	
 	
