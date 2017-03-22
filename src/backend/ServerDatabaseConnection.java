@@ -103,10 +103,11 @@ public class ServerDatabaseConnection {
 	 */
 	public String[] getList(String table, String condition1, String condition2, String... what){
 		try {
+			connect();
 			Statement s = con.createStatement();
 			String what2="";
 			for(String w:what) what2+=" "+w;
-			String query = "SELECT"+what2+" FROM "+table.split("\\(")[0]+"WHERE "+condition1+"="+condition2+";";
+			String query = "SELECT"+what2+" FROM "+table.split("\\(")[0]+" WHERE "+condition1+"="+condition2+";";
 			ResultSet rs = s.executeQuery(query);
 			int numCol = rs.getMetaData().getColumnCount();
 			ArrayList<String> list = new ArrayList<String>();
@@ -116,40 +117,52 @@ public class ServerDatabaseConnection {
 				}
 				list.add("NEXT");
 			}
-			list.remove(list.size()-1);
-			list.add("END");
-			return (String[]) list.toArray();
+			if(list.size()>0){
+				list.remove(list.size()-1);
+				list.add("END");
+			}
+			return list.toArray(new String[list.size()]);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
+		} finally{
+			close();
 		}
 	}
 
 	public boolean checkUsername(String username) {
 		try {
+			connect();
 			Statement s = con.createStatement();
-			String query = "SELECT username FROM Users WHERE username="+username;
+			String query = "SELECT username FROM Users WHERE username="+"'"+username+"'";
 			ResultSet rs = s.executeQuery(query);
-			if(rs.next()) System.out.println("Returns true"); return true;
+			if(rs.next()) {
+				System.out.println("Returns true"); 
+				return true;
+			} else {
+				System.out.println("retunt false");
+				return false;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("returns false");
 			return false;
-		}
+		} finally{ close();}
 	}
 
 	public String getHash(String username) {
 		try {
+			connect();
 			Statement s = con.createStatement();
-			String query = "SELECT PasswordHash FROM Users WHERE Username="+username;
+			String query = "SELECT PasswordHash FROM Users WHERE Username="+"'"+username+"'";
 			ResultSet rs = s.executeQuery(query);
 			if (rs.next()) {
 				return rs.getString(1);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
+		} finally {close();}
 		return null;
 	}
 	
@@ -171,7 +184,7 @@ public class ServerDatabaseConnection {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			con = DriverManager.getConnection(url,user,pw);
-			System.out.println("Tilkoblingen fungerte.");
+			System.out.println("Database connected.");
 			  } catch (SQLException ex) {
 			    System.out.println("Tilkobling feilet: "+ex.getMessage());
 			  } catch (ClassNotFoundException ex) {

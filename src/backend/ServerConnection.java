@@ -29,7 +29,7 @@ public class ServerConnection implements Runnable {
 		while (true){
 			if(in.hasNext()){
 				System.out.println("command recieved");
-				String command = in.nextLine();
+				String command = in.next();
 				System.out.println(command);
 				switch (command){
 					case "CLOSE":
@@ -83,7 +83,11 @@ public class ServerConnection implements Runnable {
 
 
 	private void checkUser() {
-		out.print(sdc.checkUsername(in.next()));
+		System.out.println("Entered checkUser method");
+		System.out.println("Socket has next: "+in.hasNext());
+		boolean outBool = sdc.checkUsername(in.next());
+		System.out.println("Returns boolean: "+outBool);
+		out.println(outBool);
 		out.flush();
 	}
 
@@ -92,7 +96,7 @@ public class ServerConnection implements Runnable {
 		String password = in.next();
 		String hash = sdc.getHash(username);
 		boolean res = BCrypt.checkpw(password, hash);
-		out.print(res);
+		out.println(res);
 		out.flush();
 	}
 
@@ -173,8 +177,7 @@ public class ServerConnection implements Runnable {
 	
 	
 	private void getAllLectures(){
-		String galLID = in.next();
-		String[] galReturnList = sdc.getList(ServerDatabaseConnection.LECTURES, "*","'DATE'", "NOW()");
+		String[] galReturnList = sdc.getList(ServerDatabaseConnection.LECTURES,"LectureDate", "NOW()","*");
 		String galReturnString="";
 		for (String s:galReturnList) galReturnString+=s+" ";
 		out.println(galReturnString);
@@ -182,8 +185,10 @@ public class ServerConnection implements Runnable {
 	}
 	
 	private void getLecture(){
+		System.out.println("ProffessorID came with the package: "+in.hasNext());
 		String PID = in.next();
-		String[] ReturnList = sdc.getList(ServerDatabaseConnection.LECTURES, "*","'ProfessorID", "'"+PID+"'");
+		System.out.println("PID: " +PID);
+		String[] ReturnList = sdc.getList(ServerDatabaseConnection.LECTURES, "Professor", "'"+PID+"'", "*");
 		String ReturnString="";
 		for (String s:ReturnList) ReturnString+=s+" ";
 		out.println(ReturnString);
@@ -202,7 +207,7 @@ public class ServerConnection implements Runnable {
 
 	private void getTempoVotesInLecture() {
 		String LID = in.next();
-		int numOfUsers = sdc.getInt(ServerDatabaseConnection.SPEEDRANKING, "COUNT(*)", "LectureID", LID);
+		int numOfUsers = sdc.getInt(ServerDatabaseConnection.SPEEDRANKING, "COUNT(*)", "LectureID", "'"+LID+"'");
 		
 	}
 }

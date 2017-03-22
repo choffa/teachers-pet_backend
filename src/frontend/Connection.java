@@ -132,7 +132,7 @@ public class Connection implements Closeable {
 			int start = in.nextInt();
 			int end = in.nextInt();
 			String room = in.next();
-			res.add(new Lecture(lectureID, professorID, courseID, date, start, end, room));
+			res.add(new Lecture(lectureID, professorID, courseID, start, end, room, date));
 		}
 		return res;
 	}
