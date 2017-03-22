@@ -28,7 +28,9 @@ public class ServerConnection implements Runnable {
 	public void run() {
 		while (true){
 			if(in.hasNext()){
-				String command = in.next();
+				System.out.println("command recieved");
+				String command = in.nextLine();
+				System.out.println(command);
 				switch (command){
 					case "CLOSE":
 						close();
