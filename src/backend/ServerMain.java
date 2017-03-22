@@ -33,7 +33,7 @@ public class ServerMain {
 				client = ss.accept();
 				System.out.println("Connection accepted");
 				new Thread(new ServerConnection(client)).start();
-				client.close();
+				client = null;
 			} catch (IOException e) {
 				e.printStackTrace();
 				continue;

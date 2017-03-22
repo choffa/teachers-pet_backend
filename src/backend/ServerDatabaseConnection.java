@@ -131,9 +131,10 @@ public class ServerDatabaseConnection {
 			Statement s = con.createStatement();
 			String query = "SELECT username FROM Users WHERE username="+username;
 			ResultSet rs = s.executeQuery(query);
-			return rs.next();
+			if(rs.next()) System.out.println("Returns true"); return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			System.out.println("returns false");
 			return false;
 		}
 	}
