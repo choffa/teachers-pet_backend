@@ -124,7 +124,7 @@ public class ServerConnection implements Runnable {
 		String start= in.next();
 		String end= in.next();
 		String room= in.next();
-		
+		sdc.insert(ServerDatabaseConnection.LECTURES, new String[] {PID, CID, date, start, end, room});
 		/*out.println("SET_LECTURE " + professorID + " " + courseID + " " + date + " " + start + " "
 				+ end + " " + room);*/
 }
@@ -207,6 +207,7 @@ public class ServerConnection implements Runnable {
 	private void getTempoVotesInLecture() {
 		String LID = in.next();
 		int numOfUsers = sdc.getInt(ServerDatabaseConnection.SPEEDRANKING, "COUNT(*)", "LectureID", LID);
-		
+		out.println(numOfUsers);
+		out.flush();
 	}
 }

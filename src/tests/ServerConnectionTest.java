@@ -25,6 +25,8 @@ public class ServerConnectionTest {
         when(dbcon.getInt(anyString(), anyString(), anyString(), anyString())).thenReturn(100);
         when(dbcon.getHash(anyString())).thenReturn("hdfksløafjdksløfjasklføsdjfkølsdjfkdlsø");
         when(dbcon.getAverage(anyString(), anyString(), anyInt())).thenReturn(4.55);
+        when(dbcon.checkUsername(anyString())).thenReturn(false);
+        when(dbcon.getString(anyString(), anyString(), anyString(), anyString())).thenReturn("THIS IS A STRING");
 
         con.run();
     }
