@@ -13,15 +13,19 @@ public class ServerConnection implements Runnable {
 	private PrintWriter out;
 	private ServerDatabaseConnection sdc;
 	
-	public ServerConnection(Socket client){
+	public ServerConnection(Socket client, ServerDatabaseConnection sdc){
 		this.client = client;
 		try {
 			this.in = new Scanner(client.getInputStream());
 			this.out = new PrintWriter(client.getOutputStream());
-			sdc = new ServerDatabaseConnection();
+			this.sdc = sdc;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public ServerConnection (Socket client) {
+		this(client, new ServerDatabaseConnection());
 	}
 	
 	@Override
@@ -124,7 +128,7 @@ public class ServerConnection implements Runnable {
 		String start= in.next();
 		String end= in.next();
 		String room= in.next();
-		
+		sdc.insert(ServerDatabaseConnection.LECTURES, new String[] {PID, CID, date, start, end, room});
 		/*out.println("SET_LECTURE " + professorID + " " + courseID + " " + date + " " + start + " "
 				+ end + " " + room);*/
 }
@@ -208,6 +212,7 @@ public class ServerConnection implements Runnable {
 	private void getTempoVotesInLecture() {
 		String LID = in.next();
 		int numOfUsers = sdc.getInt(ServerDatabaseConnection.SPEEDRANKING, "COUNT(*)", "LectureID", "'"+LID+"'");
-		
+		out.println(numOfUsers);
+		out.flush();
 	}
 }
