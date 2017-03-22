@@ -13,15 +13,19 @@ public class ServerConnection implements Runnable {
 	private PrintWriter out;
 	private ServerDatabaseConnection sdc;
 	
-	public ServerConnection(Socket client){
+	public ServerConnection(Socket client, ServerDatabaseConnection sdc){
 		this.client = client;
 		try {
 			this.in = new Scanner(client.getInputStream());
 			this.out = new PrintWriter(client.getOutputStream());
-			sdc = new ServerDatabaseConnection();
+			this.sdc = sdc;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public ServerConnection (Socket client) {
+		this(client, new ServerDatabaseConnection());
 	}
 	
 	@Override
@@ -29,7 +33,7 @@ public class ServerConnection implements Runnable {
 		while (true){
 			if(in.hasNext()){
 				System.out.println("command recieved");
-				String command = in.nextLine();
+				String command = in.next();
 				System.out.println(command);
 				switch (command){
 					case "CLOSE":
