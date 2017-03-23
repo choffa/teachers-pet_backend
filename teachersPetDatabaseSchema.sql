@@ -4,8 +4,8 @@ CREATE TABLE Lectures (
     StartTime 	    INTEGER NOT NULL,
     EndTime 	      INTEGER NOT NULL,
     Professor 	    CHAR(32),
-    Room            VARCHAR(16),
-    CourseID        VARCHAR(8)
+    Room            VARCHAR(32),
+    CourseID        VARCHAR(32)
 );
 
 CREATE TABLE Subjects (
@@ -44,5 +44,5 @@ CREATE TABLE SpeedRanking (
 CREATE TABLE Users (
     Username        CHAR(32) NOT NULL,
     PasswordHash    VARCHAR(255) NOT NULL,
-    Salt            CHAR(12) NOT NULL
+    Salt            CHAR(29) NOT NULL
 );
