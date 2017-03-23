@@ -31,6 +31,7 @@ public class ServerConnection implements Runnable {
 	@Override
 	public void run() {
 		while (true){
+			System.out.println("Run method while");
 			if(in.hasNext()){
 				System.out.println("command recieved");
 				String command = in.next();
@@ -77,11 +78,15 @@ public class ServerConnection implements Runnable {
 						break;
 					case "GET_NUMBEROFUSERS":
 						getTempoVotesInLecture();
+						break;
 					default:
 						close();
 						return;
 				}
-			}
+			} else {
+				close(); 
+				return;
+				}
 		}
 	}
 
