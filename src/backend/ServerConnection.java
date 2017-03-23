@@ -31,6 +31,7 @@ public class ServerConnection implements Runnable {
 	@Override
 	public void run() {
 		while (true){
+			System.out.println("Run method while");
 			if(in.hasNext()){
 				System.out.println("command recieved");
 				String command = in.next();
@@ -77,11 +78,15 @@ public class ServerConnection implements Runnable {
 						break;
 					case "GET_NUMBEROFUSERS":
 						getTempoVotesInLecture();
+						break;
 					default:
 						close();
 						return;
 				}
-			}
+			} else {
+				close(); 
+				return;
+				}
 		}
 	}
 
@@ -164,18 +169,20 @@ public class ServerConnection implements Runnable {
 	private void getAverageSubjectRating(){
 		String table = "SubjectRanking";
 		String idColumn = "SubjectID";
-		int id = in.nextInt();
+		String id = in.next();
 		double avg = sdc.getAverage(table, idColumn, id);
-		out.println(avg);
+		float ret = (float) avg;
+		out.println(ret);
 		out.flush();
 	}
 
 	private void getAverageSpeedRating(){
 		String table = "SpeedRanking";
 		String idColumn = "LectureID";
-		int id = in.nextInt();
+		String id = in.next();
 		double avg = sdc.getAverage(table, idColumn, id);
-		out.println(avg);
+		float ret = (float) avg;
+		out.println(ret);
 		out.flush();
 	}
 	

@@ -64,8 +64,8 @@ public class ServerDatabaseConnection {
 	}
 	
 
-	public double getAverage(String table, String idColumn, int id){
-		String query = "SELECT AVG(ranking) FROM "+table.split("\\(")[0]+" WHERE " +idColumn+"="+id;
+	public double getAverage(String table, String idColumn, String id){
+		String query = "SELECT AVG(Ranking) FROM "+table+" WHERE " +idColumn+"="+"'"+id+"';";
 		double res = 0.0;
 		try {
 			Statement s = con.createStatement();

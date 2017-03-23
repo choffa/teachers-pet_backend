@@ -1,9 +1,11 @@
 CREATE TABLE Lectures (
     LectureID 	    INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     LectureDate     DATE NOT NULL,
-    StartTime 	    TIME NOT NULL,
-    EndTime 	      TIME NOT NULL,
-    Professor 	    CHAR(32)
+    StartTime 	    INTEGER NOT NULL,
+    EndTime 	      INTEGER NOT NULL,
+    Professor 	    CHAR(32),
+    Room            VARCHAR(32),
+    CourseID        VARCHAR(32)
 );
 
 CREATE TABLE Subjects (
@@ -24,8 +26,8 @@ CREATE TABLE SubjectRanking (
 
     CONSTRAINT RankingConstraint CHECK (Ranking > 0 AND Ranking < 5),
     CONSTRAINT SubjectRanking_SubjectID_FK FOREIGN KEY (SubjectID) REFERENCES Subjects(SubjectID)
-																			ON UPDATE CASCADE
-                                                                            ON DELETE CASCADE
+																			                                  ON UPDATE CASCADE
+                                                                        ON DELETE CASCADE
 );
 
 CREATE TABLE SpeedRanking (
@@ -42,5 +44,5 @@ CREATE TABLE SpeedRanking (
 CREATE TABLE Users (
     Username        CHAR(32) NOT NULL,
     PasswordHash    VARCHAR(255) NOT NULL,
-    Salt            CHAR(12) NOT NULL
+    Salt            CHAR(29) NOT NULL
 );

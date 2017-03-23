@@ -3,7 +3,9 @@ package tests;
 import backend.ServerConnection;
 import backend.ServerDatabaseConnection;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.Socket;
 
 import static org.mockito.Mockito.*;
@@ -13,21 +15,19 @@ import static org.mockito.Mockito.*;
  */
 public class ServerConnectionTest {
 
+    public static String commands = "SET_USER test testpassword VALIDATE test testpassword CLOSE";
+
     public static void main(String[] args) throws IOException {
-        ServerDatabaseConnection dbcon = mock(ServerDatabaseConnection.class);
-        Socket client = mock(Socket.class);
-        when(client.getInputStream()).thenReturn(System.in);
-        when(client.getOutputStream()).thenReturn(System.out);
-        when(client.isConnected()).thenReturn(true);
+        String url = "jdbc:mysql://localhost:3306/teacherspet?useSSL=false";
+        String user = "root";
+        String pw = "root";
+        ServerDatabaseConnection dbc = new ServerDatabaseConnection(url, user, pw);
+        Socket s = mock(Socket.class);
+        InputStream is = new ByteArrayInputStream(commands.getBytes("UTF-8"));
+        when(s.getInputStream()).thenReturn(is);
+        when(s.getOutputStream()).thenReturn(System.out);
 
-        ServerConnection con = new ServerConnection(client, dbcon);
-
-        when(dbcon.getInt(anyString(), anyString(), anyString(), anyString())).thenReturn(100);
-        when(dbcon.getHash(anyString())).thenReturn("hdfksløafjdksløfjasklføsdjfkølsdjfkdlsø");
-        when(dbcon.getAverage(anyString(), anyString(), anyInt())).thenReturn(4.55);
-        when(dbcon.checkUsername(anyString())).thenReturn(false);
-        when(dbcon.getString(anyString(), anyString(), anyString(), anyString())).thenReturn("THIS IS A STRING");
-
-        con.run();
+        ServerConnection sc = new ServerConnection(s, dbc);
+        sc.run();
     }
 }
