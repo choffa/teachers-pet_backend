@@ -11,8 +11,8 @@ import java.util.Scanner;
 
 public class Connection implements Closeable {
 
-	private final int PORT = 4728;
-	private final String HOST = "localhost";
+	private static final int PORT = 4728;
+	private static final String HOST = "localhost";
 	private Socket socket;
 	private PrintWriter out;
 	private Scanner in;
@@ -22,15 +22,25 @@ public class Connection implements Closeable {
 	//The connection stuff
 
 	/**
-	 * A method that sets up the connection to the server
+	 * A method that sets up a connection on specific socket
+	 * mainly for testing
 	 *
 	 * @throws IOException
 	 */
 	public Connection() throws IOException {
+		this(new Socket(HOST, PORT));
+	}
+
+	/**
+	 * A method that sets up the connection to the server
+	 *
+	 * @throws IOException
+	 */
+	public Connection(Socket socket) throws IOException {
 		isClosed = false;
-		socket = new Socket(HOST, PORT);
-		out = new PrintWriter(socket.getOutputStream());
-		in = new Scanner(socket.getInputStream());
+		this.socket = socket;
+		this.out = new PrintWriter(socket.getOutputStream());
+		this.in = new Scanner(socket.getInputStream());
 	}
 
 	/**
