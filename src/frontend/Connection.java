@@ -81,7 +81,7 @@ public class Connection implements Closeable {
 	 * @param rating    The actual rating of the subject, this is a number between 1 and 5 (inclusive)
 	 * @throws IllegalArgumentException This is thrown if the ranking is wrong
 	 */
-	public void sendSubjectRating(int subjectID, int studentID, int rating, String comment)
+	public void sendSubjectRating(int subjectID, String studentID, int rating, String comment)
 			throws IllegalArgumentException {
 		checkState();
 		if (rating < 1 || rating > 5) {
@@ -100,7 +100,7 @@ public class Connection implements Closeable {
 	 */
 	public float getAverageSubjectRating(int subjectID) {
 		checkState();
-		out.println("GET_AVERAGESUBJECTRATING");
+		out.println("GET_AVERAGESUBJECTRATING " + subjectID);
 		out.flush();
 		return in.nextFloat();
 	}
@@ -116,6 +116,7 @@ public class Connection implements Closeable {
 	public ArrayList<Lecture> getLectures() {
 		checkState();
 		out.println("GET_ALLLECTURES");
+		out.flush();
 		return readLectureInput();
 	}
 
@@ -128,6 +129,7 @@ public class Connection implements Closeable {
 	public ArrayList<Lecture> getLectures(String professorID) {
 		checkState();
 		out.println("GET_LECTURE " + professorID);
+		out.flush();
 		return readLectureInput();
 	}
 
@@ -199,8 +201,9 @@ public class Connection implements Closeable {
 	 * @throws IllegalArgumentException if the rating is not between 1 and 5
 	 */
 	public void sendSpeedRating(int lectureID, String studentID, int rating) throws IllegalArgumentException {
-		if (rating < 1 | rating > 5) { throw new IllegalArgumentException(); }
+		if (rating < 1 || rating > 5) { throw new IllegalArgumentException("Bad rating"); }
 		out.println("SET_SPEEDRATING " + lectureID +" "+ rating +" " + studentID);
+		out.flush();
 		//Should the server respond with boolean?
 	}
 
@@ -213,6 +216,7 @@ public class Connection implements Closeable {
 	public float getAverageSpeedRating(int lectureID) {
 		checkState();
 		out.println("GET_AVERAGESPEEDRATING " + lectureID);
+		out.flush();
 		return in.nextFloat();
 	}
 
