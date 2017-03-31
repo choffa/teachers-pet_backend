@@ -186,7 +186,7 @@ public class ConnectionTest {
     @Test
     public void getSubjects() throws IOException {
         setUp(subjectResponse);
-        String expectedCommands = "GET_SUBJECTS\r\n";
+        String expectedCommands = "GET_SUBJECTS " + lectureID + "\r\n";
         ArrayList<Subject> response = c.getSubjects(lectureID);
 
         assertEquals(expectedCommands, out.toString());
