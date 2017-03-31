@@ -153,7 +153,8 @@ public class ServerConnection implements Runnable {
 		String table = "subjects";
 		int lectureID = in.nextInt();
 		String name = "'"+in.next()+"'";
-		String[] args = {Integer.toString(lectureID), name};
+		String comment = in.next();
+		String[] args = {Integer.toString(lectureID), name, comment};
 		sdc.insert(table, args);
 	}
 

@@ -231,7 +231,7 @@ public class Connection implements Closeable {
 	 */
 	public ArrayList<Subject> getSubjects(int lectureID) {
 		checkState();
-		out.println("GET_SUBJECTS");
+		out.println("GET_SUBJECTS " + lectureID);
 		out.flush();
 		ArrayList<Subject> res = new ArrayList<>();
 		while (in.next() == "NEXT"){
