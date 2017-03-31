@@ -232,6 +232,7 @@ public class Connection implements Closeable {
 	public ArrayList<Subject> getSubjects(int lectureID) {
 		checkState();
 		out.println("GET_SUBJECTS");
+		out.flush();
 		ArrayList<Subject> res = new ArrayList<>();
 		while (in.next() == "NEXT"){
 			res.add(new Subject(in.nextInt(), in.next()));
@@ -245,7 +246,6 @@ public class Connection implements Closeable {
 	 * @param lectureID The ID of the lecture to associate the subject with
 	 */
 	public void createSubject(int lectureID, String name) {
-		//TODO: Create method for creating subject associated with specific lecture
 		checkState();
 		checkSubjectInput(name);
 		out.println("SET_SUBJECT " + lectureID + " " + name);
@@ -266,6 +266,7 @@ public class Connection implements Closeable {
 	public void createUser(String username, String password) {
 		checkState();
 		out.println("SET_USER " + username + " " + password);
+		out.flush();
 	}
 
 	/**
@@ -276,6 +277,7 @@ public class Connection implements Closeable {
 	public boolean checkUsername(String username) {
 		checkState();
 		out.println("CHECK_USER " + username);
+		out.flush();
 		return in.nextBoolean();
 	}
 
@@ -287,6 +289,7 @@ public class Connection implements Closeable {
 	public int getTempoVotesInLecture(int LectureID) {
 		checkState();
 		out.println("GET_NUMBEROFUSERS"+" "+LectureID);
+		out.flush();
 		return readUsersInput();
 	}
 
@@ -299,6 +302,7 @@ public class Connection implements Closeable {
 	public boolean validateUser(String username, String password) {
 		checkState();
 		out.println("VALIDATE " + username + " " + password);
+		out.flush();
 		return in.nextBoolean();
 	}
 
