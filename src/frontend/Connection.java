@@ -245,10 +245,10 @@ public class Connection implements Closeable {
 	 *
 	 * @param lectureID The ID of the lecture to associate the subject with
 	 */
-	public void createSubject(int lectureID, String name) {
+	public void createSubject(int lectureID, String name, String comment) {
 		checkState();
 		checkSubjectInput(name);
-		out.println("SET_SUBJECT " + lectureID + " " + name);
+		out.println("SET_SUBJECT " + lectureID + " " + name + " " + comment);
 		out.flush();
 	}
 
