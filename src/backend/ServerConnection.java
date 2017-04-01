@@ -146,9 +146,15 @@ public class ServerConnection implements Runnable {
 		String end= in.next();
 		String room= in.next();
 		sdc.insert(ServerDatabaseConnection.LECTURES, new String[] {date, start, end, PID, room, CID});
-		/*out.println("SET_LECTURE " + professorID + " " + courseID + " " + date + " " + start + " "
-				+ end + " " + room);*/
-}
+		int ID=-1;
+		try{
+			ID = Integer.parseInt(sdc.getLastID());
+		} finally {
+		out.println(ID);
+		out.flush();
+		}
+	}
+	
 	private void setSubject(){
 		String table = "subjects";
 		int lectureID = in.nextInt();

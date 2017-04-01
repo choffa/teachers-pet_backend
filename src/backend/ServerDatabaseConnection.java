@@ -186,6 +186,21 @@ public class ServerDatabaseConnection {
 		return null;
 	}
 	
+	
+	public String getLastID(){
+		try {
+			Statement s = con.createStatement();
+			String query = "SELECT LAST_INSERTED_ID();";
+			ResultSet rs = s.executeQuery(query);
+			if (rs.next()) {
+				return rs.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		return null;
+	}
+	
 	/**
 	 * Used by testclass to test connection. 
 	 * @return true if method finishes (connection opens and closes)
