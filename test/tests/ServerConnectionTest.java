@@ -12,23 +12,16 @@ import frontend.Connection;
 
 import static org.junit.Test.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.io.PrintWriter;
-import java.io.StringBufferInputStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.stream.Stream;
 
 import static org.junit.Before.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import org.mindrot.jbcrypt.BCrypt;
 
 
 public class ServerConnectionTest {
@@ -36,38 +29,50 @@ public class ServerConnectionTest {
     private String commands = "SET_USER test testpassword VALIDATE test testpassword CLOSE";
     private ServerConnection sc;
     private ServerDatabaseConnection sdc;
-    private Socket s;
-    private ByteArrayOutputStream out;
-    private ByteArrayInputStream in;
+    private Socket skt;
+    private PipedOutputStream printOut;
+    private PipedInputStream in;
+    private PipedOutputStream out;
+    private PipedInputStream programReturn;
     private PrintWriter p;
-    private String serverReturn = "1.54 END END 4.355";
+    private Scanner s;
+   
     
     
     @Before
     public void init() throws IOException {
-    	s = mock(Socket.class);    	
-    	when(s.getOutputStream()).thenReturn(out);
-    	when(s.getInputStream()).thenReturn(in);
-    	when(s.isConnected()).thenReturn(true);
-    	sdc = mock(ServerDatabaseConnection.class);
-    	sc = new ServerConnection(s, sdc);
-    	when(sdc.testConnection()).thenReturn(true);
+    	printOut = new PipedOutputStream();
+    	in = new PipedInputStream(printOut);
+    	p = new PrintWriter(printOut);
     	
-    	byte[] b = serverReturn.getBytes();
+    	out = new PipedOutputStream();
+    	programReturn = new PipedInputStream(out);
+    	s = new Scanner(programReturn);
+
+    	
+ 
+    	skt = mock(Socket.class);    	
+    	when(skt.getOutputStream()).thenReturn(out);
+    	when(skt.getInputStream()).thenReturn(in);
+    	when(skt.isConnected()).thenReturn(true);
+    	sdc = mock(ServerDatabaseConnection.class);
+    	sc = new ServerConnection(skt, sdc);
+    	when(sdc.checkUsername(anyString())).thenReturn(true);
     }
     
-    public void test2(){
-    	
-    	
-    	
-    }
+ 
 
     
+    @Test(timeout=2000)
+    public void testCheckUser() throws NumberFormatException, IOException{
+    			p.println("CHECK_USER aljsd");
+    			p.flush();
+    			new Thread(sc).start();
+    	    	assertTrue(s.nextBoolean());
+    }
+    
     @Test
-    public void closeTest() throws NumberFormatException, IOException{
-    	out = new ByteArrayOutputStream();
-    	out.write(Integer.valueOf("ClOSE"));
-    	sc.run();
+    public void testValidate(){
     	
     }
     
