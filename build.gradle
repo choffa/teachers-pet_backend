@@ -34,6 +34,10 @@ dependencies {
 jar {
     baseName = 'tp_server'
     version = '0.5'
+
+    manifest {
+        attributes 'Main-Class': 'src-backend.ServerMain'
+    }
 }
 
 mainClassName = 'src/backend/ServerMain'
