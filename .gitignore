@@ -13,6 +13,8 @@ hs_err_pid*
 /bin/
 /test/
 
+# IDEA and gradle ignores
+/.gradle/
 *.iml
 .classpath
 /.idea/
