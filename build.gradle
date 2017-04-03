@@ -31,4 +31,9 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
+jar {
+    baseName = 'tp_server'
+    version = '0.5'
+}
+
 mainClassName = 'src/backend/ServerMain'
