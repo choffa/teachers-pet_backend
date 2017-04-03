@@ -52,7 +52,7 @@ jar {
 }
 
 task deploy {
-    pxrintln 'Deploying'
+    println 'Deploying'
 }
 
 mainClassName = 'backend.ServerMain'
