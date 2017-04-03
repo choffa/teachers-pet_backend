@@ -190,9 +190,10 @@ public class ServerDatabaseConnection {
 	public String getLastID(){
 		try {
 			Statement s = con.createStatement();
-			String query = "SELECT LAST_INSERTED_ID();";
+			String query = "SELECT last_insert_id()";
 			ResultSet rs = s.executeQuery(query);
 			if (rs.next()) {
+				System.out.println("got "+rs.getString(1));
 				return rs.getString(1);
 			}
 			System.out.println("RS had no next");

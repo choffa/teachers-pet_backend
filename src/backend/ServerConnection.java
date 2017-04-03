@@ -31,7 +31,7 @@ public class ServerConnection implements Runnable {
 	@Override
 	public void run() {
 		while (true){
-			System.out.println("Run method while");
+			System.out.println("Run method while HOY HOY");
 			if(in.hasNext()){
 				System.out.println("command recieved");
 				String command = in.next();
@@ -59,6 +59,7 @@ public class ServerConnection implements Runnable {
 						getAllLectures();
 						break;
 					case "SET_LECTURE":
+						System.out.println("entered setLecture case");
 						setLecture();
 						break;
 					case "SET_SPEEDRATING":
