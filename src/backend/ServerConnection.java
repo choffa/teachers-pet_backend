@@ -139,27 +139,37 @@ public class ServerConnection implements Runnable {
 	}
 
 	private void setLecture() {
+		System.out.println("in set lecture");
 		String PID= in.next();
+		System.out.println("got Pid");
 		String CID= in.next();
+		System.out.println("got cid");
 		String date= in.next();
+		System.out.println("got date");
 		String start= in.next();
+		System.out.println("got start");
 		String end= in.next();
+		System.out.println("got end");
 		String room= in.next();
+		System.out.println("data recieved: "+PID+CID+date+start+end+room);
 		sdc.insert(ServerDatabaseConnection.LECTURES, new String[] {date, start, end, PID, room, CID});
 		int ID=-1;
 		try{
+			System.out.println("insertion done, getting id");
 			ID = Integer.parseInt(sdc.getLastID());
 		} finally {
+		System.out.println("Created Lecture ID: "+ID);
 		out.println(ID);
 		out.flush();
 		}
 	}
 	
 	private void setSubject(){
-		String table = "subjects";
+		String table = ServerDatabaseConnection.SUBJECTS;
 		int lectureID = in.nextInt();
-		String name = "'"+in.next()+"'";
-		String[] args = {Integer.toString(lectureID), name};
+		String name = in.next();
+		String comment = in.next();
+		String[] args = {Integer.toString(lectureID), name, comment};
 		sdc.insert(table, args);
 	}
 
