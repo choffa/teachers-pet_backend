@@ -13,7 +13,10 @@
 hs_err_pid*
 /bin/
 
+# IDEA and gradle ignores
+/.gradle/
 *.iml
 .classpath
 /.idea/
+build/
 PasswordTest.java
