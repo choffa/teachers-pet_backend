@@ -18,4 +18,5 @@ hs_err_pid*
 *.iml
 .classpath
 /.idea/
+build/
 PasswordTest.java
