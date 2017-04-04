@@ -123,28 +123,22 @@ public class ServerDatabaseConnection {
 	 */
 	public String[] getList(String table, String condition1, String condition2, String[] what){
 		try {
-			System.out.println(table+condition1+condition2+what);
 			Statement s = con.createStatement();
 			String what2="";
-			for(String w:what) what2+=" "+w;
+			for(String w:what) what2+=" "+w+",";
+			what2 = what2.substring(0, what2.length()-1);
 			String query = "SELECT"+what2+" FROM "+table.split("\\(")[0]+" WHERE "+condition1+"="+condition2+";";
-			System.out.println(query);
 			ResultSet rs = s.executeQuery(query);
-			System.out.println(rs);
 			int numCol = rs.getMetaData().getColumnCount();
-			System.out.println(numCol);
 			ArrayList<String> list = new ArrayList<String>();
 			while(rs.next()) {
-				System.out.println("While is running");
 				list.add("NEXT");
 				for(int i=1;i<=numCol;i++){
 					list.add(rs.getString(i));
 				}
 			}
 			list.add("END");
-			System.out.println(list.size());
 			String[] returnlist= list.toArray(new String[list.size()]);
-			for(String str:returnlist) System.out.println(str);
 			return returnlist;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -159,15 +153,12 @@ public class ServerDatabaseConnection {
 			String query = "SELECT username FROM Users WHERE username="+"'"+username+"'";
 			ResultSet rs = s.executeQuery(query);
 			if(rs.next()) {
-				System.out.println("Returns true"); 
 				return true;
 			} else {
-				System.out.println("retunt false");
 				return false;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("returns false");
 			return false;
 		} 
 	}

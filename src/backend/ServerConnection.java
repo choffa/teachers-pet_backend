@@ -31,7 +31,7 @@ public class ServerConnection implements Runnable {
 	@Override
 	public void run() {
 		while (true){
-			System.out.println("Run method while HOY HOY");
+			System.out.println("You're a good lad");
 			if(in.hasNext()){
 				System.out.println("command recieved");
 				String command = in.next();
@@ -93,10 +93,7 @@ public class ServerConnection implements Runnable {
 
 
 	private void checkUser() {
-		System.out.println("Entered checkUser method");
-		System.out.println("Socket has next: "+in.hasNext());
 		boolean outBool = sdc.checkUsername(in.next());
-		System.out.println("Returns boolean: "+outBool);
 		out.println(outBool);
 		out.flush();
 	}
@@ -127,8 +124,10 @@ public class ServerConnection implements Runnable {
 		String ssprSID = in.next();
 		if(checkIfUpdate(ssprSID, ssprLID)){
 			sdc.update(ServerDatabaseConnection.SPEEDRANKING, new String[] {"Ranking"}, new String[] {ssprRat}, "StudentID", "'"+ssprSID+"'", "LectureID", "'"+ssprLID+"'");
+			System.out.println("Rating updated");
 		} else {
 			sdc.insert(ServerDatabaseConnection.SPEEDRANKING, new String[] {ssprLID, ssprRat,ssprSID});
+			System.out.println("New rating inserted");
 		}
 		
 	}
@@ -140,23 +139,15 @@ public class ServerConnection implements Runnable {
 	}
 
 	private void setLecture() {
-		System.out.println("in set lecture");
 		String PID= in.next();
-		System.out.println("got Pid");
 		String CID= in.next();
-		System.out.println("got cid");
 		String date= in.next();
-		System.out.println("got date");
 		String start= in.next();
-		System.out.println("got start");
 		String end= in.next();
-		System.out.println("got end");
 		String room= in.next();
-		System.out.println("data recieved: "+PID+CID+date+start+end+room);
 		sdc.insert(ServerDatabaseConnection.LECTURES, new String[] {date, start, end, PID, room, CID});
 		int ID=-1;
 		try{
-			System.out.println("insertion done, getting id");
 			ID = Integer.parseInt(sdc.getLastID());
 		} finally {
 		System.out.println("Created Lecture ID: "+ID);
@@ -172,6 +163,7 @@ public class ServerConnection implements Runnable {
 		String comment = in.next();
 		String[] args = {Integer.toString(lectureID), name, comment};
 		sdc.insert(table, args);
+		System.out.println("Subject inserted");
 	}
 
 	private void setSubjectRating(){
@@ -236,7 +228,7 @@ public class ServerConnection implements Runnable {
 	
 	private void getSubjects(){
 		String LID = in.next();
-		String[] ReturnList = sdc.getList(ServerDatabaseConnection.SUBJECTS,"'LectureID", "'"+LID+"'", new String[] {"*"});
+		String[] ReturnList = sdc.getList(ServerDatabaseConnection.SUBJECTS,"LectureID", "'"+LID+"'", new String[] {"SubjectID","SubjectName", "Comment"});
 		String ReturnString="";
 		if(ReturnList.length>0)
 		for (String s:ReturnList) ReturnString+=s+" ";
