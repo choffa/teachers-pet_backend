@@ -80,6 +80,8 @@ public class ServerConnection implements Runnable {
 					case "GET_NUMBEROFUSERS":
 						getTempoVotesInLecture();
 						break;
+					case "UPDATE_SUBJECT":
+						updateSubject();
 					default:
 						close();
 						return;
@@ -164,6 +166,13 @@ public class ServerConnection implements Runnable {
 		String[] args = {Integer.toString(lectureID), name, comment};
 		sdc.insert(table, args);
 		System.out.println("Subject inserted");
+	}
+	
+	private void updateSubject(){
+		String subID = in.nextLine();
+		String subName = in.nextLine();
+		String subComment = in.nextLine();
+		sdc.update(ServerDatabaseConnection.SUBJECTS, new String[]{"SubjectName", "Comment"}, new String[]{subName,subComment}, "SubjectID", "'"+subID+"'", "'1'", "'1'");
 	}
 
 	private void setSubjectRating(){
