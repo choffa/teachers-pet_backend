@@ -6,10 +6,25 @@
  * user guide available at https://docs.gradle.org/3.4.1/userguide/tutorial_java_projects.html
  */
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'org.hidetake:gradle-ssh-plugin:2.8.0'
+        classpath 'org.codehaus.groovy:groovy-backports-compat23:2.4.6'
+    }
+}
+
+plugins {
+    id 'com.github.johnrengelman.shadow' version '1.2.4'
+}
 
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
 apply plugin: 'application'
+apply plugin: 'org.hidetake.ssh'
+
 // In this section you declare where to find the dependencies of your project
 repositories {
     // Use 'jcenter' for resolving your dependencies.
@@ -40,19 +55,40 @@ sourceSets {
     }
 }
 
-
-jar {
-    baseName = 'tp_server'
-    version = '0.5'
-
-    manifest {
-        attributes 'Main-Class': 'backend.ServerMain'
-    }
-
+shadowJar {
+    baseName 'Server'
 }
 
 task deploy {
-    println 'Deploying'
+    doLast {
+        remotes {
+            pvv {
+                host = 'doktor.pvv.org'
+                user = System.console().readLine('> username: ').toString()
+                password = System.console().readPassword('> password: ').toString()
+            }
+        }
+        ssh.run {
+            settings {
+                knownHosts = allowAnyHosts
+            }
+
+            session(remotes.pvv) {
+                put from: file('build/libs/Server-all.jar'), into: '.'
+                //put from: file('build/distributions/teachers-pet_backend.zip'), into: '.'
+                def res = execute 'ls -a'
+                if (!res.contains('tp')){
+                    execute 'mkdir tp'
+                }
+                //execute 'rm -rf ./tp/*'
+                execute 'mv Server-all.jar tp/'
+                //execute 'unzip -o -j tp/teachers-pet_backend.zip -d tp/'
+                //execute 'A'
+            }
+        }
+    }
 }
+
+build.dependsOn(shadowJar)
 
 mainClassName = 'backend.ServerMain'

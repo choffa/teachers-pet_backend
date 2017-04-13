@@ -19,7 +19,8 @@ hs_err_pid*
 *.iml
 .classpath
 /.idea/
-build/
+/build/
+/out/
 PasswordTest.java
-META-INF/
-out/
+META-INF
+!/gradle/wrapper/gradle-wrapper.jar
