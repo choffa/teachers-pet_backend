@@ -17,11 +17,7 @@ public class ServerDatabaseConnection {
 	 * Made so that other classes can add to the database without changes in the database affecting other classes than this class.
 	 */
 	public static final String LECTURES = "Lectures(LectureDate,StartTime,EndTime,Professor,Room,CourseID)";
-<<<<<<< HEAD
-	public static final String SUBJECTS = "Subjects(LectureID,SubjectName, comment)";
-=======
 	public static final String SUBJECTS = "Subjects(LectureID,SubjectName,Comment)";
->>>>>>> origin/gradle
 	public static final String SUBJECTRANKING = "SubjectRanking(Ranking,RankingComment,SubjectID,StudentID)";
 	public static final String SPEEDRANKING = "SpeedRanking(LectureID,Ranking,StudentID)";
 	public static final String USERS = "Users(UserName, PasswordHash, Salt)";
