@@ -5,6 +5,4 @@ jdk:
 script:
   - ./gradlew test -i
   - ./gradlew jacocoTestReport
-
-after_success:
   - bash <(curl -s https://codecov.io/bash)
