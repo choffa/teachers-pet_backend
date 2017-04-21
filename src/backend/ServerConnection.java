@@ -84,9 +84,9 @@ public class ServerConnection implements Runnable {
 						return;
 				}
 			} else {
-				close(); 
+				close();
 				return;
-				}
+			}
 		}
 	}
 
