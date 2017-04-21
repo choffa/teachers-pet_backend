@@ -5,6 +5,9 @@ jdk:
 services:
   - mysql
 
+before_install:
+  - mysql -e 'CREATE SCHEMA test_teacherspet;'
+
 script:
   - ./gradlew test -i
   - ./gradlew jacocoTestReport
