@@ -22,16 +22,16 @@ public class DatabaseConnectionTest {
     private static String user = "root";
     private static String pw = "";
 
-    @BeforeClass
+    /*@BeforeClass
     public static void setUpClass() throws Exception {
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             dbcon = DriverManager.getConnection(baseUrl,user,pw);
             Statement s = dbcon.createStatement();
-            //s.execute("CREATE SCHEMA test_teacherspet;");
-            //s.execute("USE test_teacherspet;");
+            s.execute("CREATE SCHEMA test_teacherspet;");
+            s.execute("USE test_teacherspet;");
             Scanner scanner = new Scanner(new FileInputStream("teachersPetDatabaseSchema.sql"));
-            String sql;
+            String sql = "";
             scanner.useDelimiter(";");
             while (scanner.hasNext()){
                 sql = scanner.next();
@@ -41,7 +41,7 @@ public class DatabaseConnectionTest {
         } catch (Exception ex) {
             fail("Could not set up test database properly");
         }
-    }
+    }*/
 
     @Before
     public void setUp() throws Exception {
