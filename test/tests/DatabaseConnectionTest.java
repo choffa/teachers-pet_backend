@@ -37,6 +37,7 @@ public class DatabaseConnectionTest {
                 sql = scanner.next();
                 s.execute(sql);
             }
+            System.out.println(sql);
         } catch (Exception ex) {
             fail("Could not set up test database properly");
         }
