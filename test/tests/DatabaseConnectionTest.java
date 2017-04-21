@@ -28,8 +28,8 @@ public class DatabaseConnectionTest {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             dbcon = DriverManager.getConnection(baseUrl,user,pw);
             Statement s = dbcon.createStatement();
-            s.execute("CREATE SCHEMA test_teacherspet;");
-            s.execute("USE test_teacherspet;");
+            //s.execute("CREATE SCHEMA test_teacherspet;");
+            //s.execute("USE test_teacherspet;");
             Scanner scanner = new Scanner(new FileInputStream("teachersPetDatabaseSchema.sql"));
             String sql;
             scanner.useDelimiter(";");
