@@ -86,7 +86,7 @@ public class ConnectionTest {
     @Test
     public void sendSubjectRating() throws IOException {
         setUp("");
-        String expectedCommand = "SET_SUBJECTRATING " + subjectID +  " " + studentID + " " + rating + " " + comment +"\r\n";
+        String expectedCommand = "SET_SUBJECTRATING " + subjectID +  " " + studentID + " " + rating + " " + comment +"\n";
         c.sendSubjectRating(subjectID, studentID, rating, comment);
 
         assertEquals(expectedCommand, out.toString());
@@ -101,7 +101,7 @@ public class ConnectionTest {
     @Test
     public void getAverageSubjectRating() throws IOException {
         setUp(averageString);
-        String expectedCommands = "GET_AVERAGESUBJECTRATING " + subjectID + "\r\n";
+        String expectedCommands = "GET_AVERAGESUBJECTRATING " + subjectID + "\n";
         double rating = c.getAverageSubjectRating(subjectID);
 
         assertEquals(expectedCommands, out.toString());
@@ -112,7 +112,7 @@ public class ConnectionTest {
     @Test
     public void getLectures() throws IOException {
         setUp(lectureResponse);
-        String expectedCommands = "GET_ALLLECTURES\r\n";
+        String expectedCommands = "GET_ALLLECTURES\n";
         ArrayList<Lecture> lectureList = c.getLectures();
 
         assertEquals(expectedCommands, out.toString());
@@ -122,7 +122,7 @@ public class ConnectionTest {
     @Test
     public void getLecturesFromProfessorID () throws IOException {
         setUp(lectureResponse);
-        String expectedCommands = "GET_LECTURE " + professorID + "\r\n";
+        String expectedCommands = "GET_LECTURE " + professorID + "\n";
         ArrayList<Lecture> lectureList = c.getLectures(professorID);
 
         assertEquals(expectedCommands, out.toString());
@@ -134,7 +134,7 @@ public class ConnectionTest {
     @Test
     public void createLecture() throws IOException {
         setUp("");
-        String expectedCommands = "SET_LECTURE " + professorID + " " + courseID + " " + date + " " + start + " " + end + " " + room + "\r\n";
+        String expectedCommands = "SET_LECTURE " + professorID + " " + courseID + " " + date + " " + start + " " + end + " " + room + "\n";
         c.createLecture(professorID, courseID, date, start, end, room);
 
         assertEquals(expectedCommands, out.toString());
@@ -150,7 +150,7 @@ public class ConnectionTest {
     public void createLectureFromObject() throws IOException {
         setUp("");
         Lecture lecture = new Lecture(-1, professorID, courseID, start, end, room, date);
-        String expectedCommands = "SET_LECTURE " + professorID + " " + courseID + " " + date + " " + start + " " + end + " " + room + "\r\n";
+        String expectedCommands = "SET_LECTURE " + professorID + " " + courseID + " " + date + " " + start + " " + end + " " + room + "\n";
         c.createLecture(lecture);
 
         assertEquals(expectedCommands, out.toString());
@@ -159,7 +159,7 @@ public class ConnectionTest {
     @Test
     public void sendSpeedRating() throws IOException {
         setUp("");
-        String expectedCommands = "SET_SPEEDRATING " + lectureID + " " + rating + " " + studentID + "\r\n";
+        String expectedCommands = "SET_SPEEDRATING " + lectureID + " " + rating + " " + studentID + "\n";
         c.sendSpeedRating(lectureID, studentID, rating);
 
         assertEquals(expectedCommands, out.toString());
@@ -174,7 +174,7 @@ public class ConnectionTest {
     @Test
     public void getAverageSpeedRating() throws IOException {
         setUp(averageString);
-        String expectedCommands = "GET_AVERAGESPEEDRATING " + lectureID + "\r\n";
+        String expectedCommands = "GET_AVERAGESPEEDRATING " + lectureID + "\n";
         double response = c.getAverageSpeedRating(lectureID);
 
         assertEquals(expectedCommands, out.toString());
@@ -185,7 +185,7 @@ public class ConnectionTest {
     @Test
     public void getSubjects() throws IOException {
         setUp(subjectResponse);
-        String expectedCommands = "GET_SUBJECTS " + lectureID + "\r\n";
+        String expectedCommands = "GET_SUBJECTS " + lectureID + "\n";
         ArrayList<Subject> response = c.getSubjects(lectureID);
 
         assertEquals(expectedCommands, out.toString());
@@ -195,7 +195,7 @@ public class ConnectionTest {
     @Test
     public void createSubject() throws IOException {
         setUp("");
-        String expectedCommands = "SET_SUBJECT " + lectureID + " " + subjectName + " " + comment + "\r\n";
+        String expectedCommands = "SET_SUBJECT " + lectureID + " " + subjectName + " " + comment + "\n";
         c.createSubject(lectureID, subjectName, comment);
 
         assertEquals(expectedCommands, out.toString());
@@ -210,7 +210,7 @@ public class ConnectionTest {
     @Test
     public void validateUser() throws IOException {
         setUp("true false");
-        String expectedCommands = "VALIDATE " + userName + " " + password + "\r\n";
+        String expectedCommands = "VALIDATE " + userName + " " + password + "\n";
         boolean response = c.validateUser(userName, password);
 
         assertEquals(expectedCommands, out.toString());
@@ -226,7 +226,7 @@ public class ConnectionTest {
     @Test
     public void createUser() throws IOException {
         setUp("");
-        String expectedCommands = "SET_USER " + userName + " " + password + "\r\n";
+        String expectedCommands = "SET_USER " + userName + " " + password + "\n";
         c.createUser(userName, password);
 
         assertEquals(expectedCommands, out.toString());
@@ -235,7 +235,7 @@ public class ConnectionTest {
     @Test
     public void checkUserName() throws IOException {
         setUp("false true");
-        String expectedCommands = "CHECK_USER " + userName + "\r\n";
+        String expectedCommands = "CHECK_USER " + userName + "\n";
         boolean response = c.checkUsername(userName);
 
         assertEquals(expectedCommands, out.toString());
@@ -251,7 +251,7 @@ public class ConnectionTest {
     @Test
     public void getTempoVotesInLecture() throws IOException {
         setUp(ratingsString);
-        String expectedCommands = "GET_NUMBEROFUSERS " + lectureID + "\r\n";
+        String expectedCommands = "GET_NUMBEROFUSERS " + lectureID + "\n";
         int response = c.getTempoVotesInLecture(lectureID);
 
         assertEquals(expectedCommands, out.toString());
