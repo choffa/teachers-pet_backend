@@ -91,7 +91,7 @@ public class DatabaseConnectionTest {
     //TODO: use hashmap to avoid dependece on order
     private void compare(String[] args, String table, String message, int resultCorrection) throws Exception {
         Statement s = dbcon.createStatement();
-        String sql = "SELECT * FROM test_teacherspet." + table;
+        String sql = "SELECT * FROM " + table;
         ResultSet r = s.executeQuery(sql);
         r.next();
         for(int i = 0; i < args.length; i++) {
