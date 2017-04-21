@@ -6,9 +6,10 @@ services:
   - mysql
 
 before_install:
-  - mysql -e 'CREATE SCHEMA test_teacherspet;'
+  - mysql -u root -e 'CREATE SCHEMA test_teacherspet;'
   - cat teachersPetDatabaseSchema.sql
   - mysql -u root test_teacherspet < teachersPetDatabaseSchema.sql
+  - mysql -u root show tables;
 
 script:
   - ./gradlew test -i
