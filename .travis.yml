@@ -2,6 +2,9 @@ language: java
 jdk:
   - oraclejdk8
 
+services:
+  - mysql
+
 script:
   - ./gradlew test -i
   - ./gradlew jacocoTestReport
