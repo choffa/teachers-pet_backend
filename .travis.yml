@@ -6,12 +6,16 @@ services:
   - mysql
 
 before_install:
-  - mysql -e 'CREATE DATABASE test_teacherspet;'
-  - mysql show schemas
-  - mysql use test_teacherspet
-  - cat teachersPetDatabaseSchema.sql
-  - mysql test_teacherspet < teachersPetDatabaseSchema.sql
-  - mysql -u root show tables;
+  #- mysql -e 'CREATE DATABASE test_teacherspet;'
+  #- mysql show schemas
+  #- mysql use test_teacherspet
+  #- cat teachersPetDatabaseSchema.sql
+  #- mysql test_teacherspet < teachersPetDatabaseSchema.sql
+  #- mysql -u root show tables;
+  - mysql -u root
+  - CREATE SCHEMA test_teacherspet;
+  - SHOW SCHEMAS;
+  - EXIT
 
 script:
   - ./gradlew test -i
