@@ -3,7 +3,7 @@ jdk:
   - oraclejdk8
 
 script:
-  - ./gradlew build
+  - ./gradlew test -i
   - ./gradlew jacocoTestReport
 
 after_success:
