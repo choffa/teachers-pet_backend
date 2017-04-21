@@ -7,7 +7,8 @@ services:
 
 before_install:
   - mysql -e 'CREATE DATABASE test_teacherspet;'
-  - mysql 'USE test_teacherspet';
+  - mysql show schemas
+  - mysql use test_teacherspet
   - cat teachersPetDatabaseSchema.sql
   - mysql test_teacherspet < teachersPetDatabaseSchema.sql
   - mysql -u root show tables;
