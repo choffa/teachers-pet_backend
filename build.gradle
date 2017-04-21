@@ -24,6 +24,7 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'org.hidetake.ssh'
+apply plugin: 'jacoco'
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -55,13 +56,20 @@ sourceSets {
     }
     test {
         java {
-	        srcDirs = ['test']
-	    }
+            srcDirs = ['test']
 	}
+    }
 }
 
 shadowJar {
     baseName 'Server'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+	html.enabled false
+    }
 }
 
 task deploy {
