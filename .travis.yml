@@ -1,1 +1,21 @@
 language: java
+jdk:
+  - oraclejdk8
+
+services:
+  - mysql
+
+before_install:
+  #- mysql -e 'CREATE DATABASE test_teacherspet;'
+  #- mysql show schemas
+  #- mysql use test_teacherspet
+  #- cat teachersPetDatabaseSchema.sql
+  #- mysql test_teacherspet < teachersPetDatabaseSchema.sql
+  #- mysql -u root show tables;
+  - mysql -u root CREATE SCHEMA test_teacherspet;
+  - mysql -u root SHOW SCHEMAS;
+
+script:
+  - ./gradlew test -i
+  - ./gradlew jacocoTestReport
+  - bash <(curl -s https://codecov.io/bash)

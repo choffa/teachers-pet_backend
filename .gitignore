@@ -7,16 +7,20 @@
 *.jar
 *.war
 *.ear
+*.zip
+!gradle/wrapper/gradle-wrapper.jar
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 /bin/
-/test/
 
 # IDEA and gradle ignores
 /.gradle/
 *.iml
 .classpath
 /.idea/
-build/
-PasswordTest.java
+/build/
+/out/
+src/tests/
+META-INF
+!/gradle/wrapper/gradle-wrapper.jar
