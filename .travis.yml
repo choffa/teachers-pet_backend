@@ -15,8 +15,7 @@ before_install:
   - mysql -u root -e 'CREATE SCHEMA test_teacherspet;'
   - mysql -u root -e 'SHOW SCHEMAS;'
   - mysql test_teacherspet < teachersPetDatabaseSchema.sql
-  - mysql -u root -e 'USE test_teacherspet;'
-  - mysql -u root -e 'SHOW tables;'
+  - mysql -u root -e 'USE test_teacherspet; SHOW tables;'
 
 script:
   - ./gradlew test -i
