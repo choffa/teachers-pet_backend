@@ -63,14 +63,14 @@ public class DatabaseConnectionTest {
         //for (int i = 0; i < args.length; i++) {
         //    assertEquals(args[i], res.getString(i+2));
         //}
-        compare(args, "lectures", "Lecture input not as expected", 2);
+        compare(args, "Lectures", "Lecture input not as expected", 2);
     }
 
     private void testSpeedRankingInsertion() throws Exception {
         String[] args = {"1", "4", "qwertyuioplkjhgfdsazxcvbnmnbvcxz"};
         sdbc.insert(ServerDatabaseConnection.SPEEDRANKING, args);
         Statement s = dbcon.createStatement();
-        ResultSet res = s.executeQuery("SELECT * FROM speedranking");
+        ResultSet res = s.executeQuery("SELECT * FROM Speedranking");
         res.next();
         for(int i = 0; i < args.length; i++) {
             assertEquals(args[i], res.getString(i+1));
