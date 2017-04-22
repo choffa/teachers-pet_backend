@@ -70,7 +70,7 @@ public class DatabaseConnectionTest {
         String[] args = {"1", "4", "qwertyuioplkjhgfdsazxcvbnmnbvcxz"};
         sdbc.insert(ServerDatabaseConnection.SPEEDRANKING, args);
         Statement s = dbcon.createStatement();
-        ResultSet res = s.executeQuery("SELECT * FROM Speedranking");
+        ResultSet res = s.executeQuery("SELECT * FROM SpeedRanking");
         res.next();
         for(int i = 0; i < args.length; i++) {
             assertEquals(args[i], res.getString(i+1));
