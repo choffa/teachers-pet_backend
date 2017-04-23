@@ -195,6 +195,31 @@ public class ServerDatabaseConnection {
 		return null;
 	}
 	
+	public String getStats(String SubjectID){
+		int[] Return = {0,0,0,0,0,0};
+		try {
+			Statement s = con.createStatement();
+			String query = "SELECT Ranking, COUNT(RANKING) FROM SubjectRanking WHERE Subject="+"'"+SubjectID+"'"+" GROUP BY Ranking";
+			ResultSet rs = s.executeQuery(query);
+			if (rs.next()) {
+				int ranking = Integer.parseInt(rs.getString(1));
+				int count = Integer.parseInt(rs.getString(2));
+				Return[ranking] = count;
+			}
+			String returnString = "";
+			for(short i = 0;i<5;i++){
+				returnString+=Return[i];
+				returnString+=(" NEXT ");
+			}
+			returnString+=Return[5];
+			returnString+=" END";
+			return returnString;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		return null;
+	}
+	
 	/**
 	 * Used by testclass to test connection. 
 	 * @return true if method finishes (connection opens and closes)

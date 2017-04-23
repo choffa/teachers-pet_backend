@@ -82,6 +82,10 @@ public class ServerConnection implements Runnable {
 						break;
 					case "UPDATE_SUBJECT":
 						updateSubject();
+						break;
+					case "GET_STATS":
+						getStats();
+						break;
 					default:
 						close();
 						return;
@@ -124,7 +128,7 @@ public class ServerConnection implements Runnable {
 		String ssprLID = in.next();
 		String ssprRat = in.next();
 		String ssprSID = in.next();
-		if(checkIfUpdate(ssprSID, ssprLID)){
+		if(checkIfUpdate(ServerDatabaseConnection.SPEEDRANKING,new String[] {"StudentID", "LectureID"},new String[] {ssprSID,ssprLID})){
 			sdc.update(ServerDatabaseConnection.SPEEDRANKING, new String[] {"Ranking"}, new String[] {ssprRat}, "StudentID", "'"+ssprSID+"'", "LectureID", "'"+ssprLID+"'");
 			System.out.println("Rating updated");
 		} else {
@@ -134,9 +138,9 @@ public class ServerConnection implements Runnable {
 		
 	}
 
-	private boolean checkIfUpdate(String SID, String LID) {
+	private boolean checkIfUpdate(String table, String[] what, String[] values) {
 		String s;
- 		s=sdc.getString(ServerDatabaseConnection.SPEEDRANKING, "StudentID", "StudentId", "'"+SID+"'", "LectureID", "'"+LID+"'");
+ 		s=sdc.getString(table, "*", what[0], "'"+values[0]+"'", what[1], "'"+values[1]+"'");
 		return s.length()>0;
 	}
 
@@ -169,9 +173,9 @@ public class ServerConnection implements Runnable {
 	}
 	
 	private void updateSubject(){
-		String subID = in.nextLine();
-		String subName = in.nextLine();
-		String subComment = in.nextLine();
+		String subID = in.next();
+		String subName = in.next();
+		String subComment = in.next();
 		sdc.update(ServerDatabaseConnection.SUBJECTS, new String[]{"SubjectName", "Comment"}, new String[]{subName,subComment}, "SubjectID", "'"+subID+"'", "'1'", "'1'");
 	}
 
@@ -179,9 +183,15 @@ public class ServerConnection implements Runnable {
 		String ssrSuID = in.next();
 		String ssrSID = in.next();
 		String ssrRat = in.next();
-		String ssrComment = "'"+in.next()+"'";
-		sdc.insert(ServerDatabaseConnection.SUBJECTRANKING, new String[] {ssrSuID,ssrRat,ssrComment,ssrSID});
-
+		String ssrComment = in.next();
+		sdc.insert(ServerDatabaseConnection.SUBJECTRANKING, new String[] {ssrRat,ssrComment,ssrSuID,ssrSID});
+		if(checkIfUpdate(ServerDatabaseConnection.SUBJECTRANKING,new String[] {"StudentID", "SubjectID"},new String[] {ssrSID, ssrSuID})){
+			sdc.update(ServerDatabaseConnection.SPEEDRANKING, new String[] {"Ranking", "Comment"}, new String[] {ssrRat, ssrComment}, "StudentID", "'"+ssrSID+"'", "SubjectID", "'"+ssrSuID+"'");
+			System.out.println("Rating updated");
+		} else {
+			sdc.insert(ServerDatabaseConnection.SPEEDRANKING, new String[] {ssrRat,ssrComment,ssrSuID,ssrSID});
+			System.out.println("New rating inserted");
+		}
 	}
 
 	private void getAverageSubjectRating(){
@@ -252,4 +262,11 @@ public class ServerConnection implements Runnable {
 		out.println(numOfUsers);
 		out.flush();
 	}
+	
+	 private void getStats(){
+		 String SuID = in.next();
+		 String stats = sdc.getStats(SuID);
+		 out.println(stats);
+		 out.flush();
+	 }
 }
