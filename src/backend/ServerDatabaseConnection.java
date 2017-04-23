@@ -199,14 +199,14 @@ public class ServerDatabaseConnection {
 		int[] Return = {0,0,0,0,0,0};
 		try {
 			Statement s = con.createStatement();
-			String query = "SELECT Ranking, COUNT(RANKING) FROM SubjectRanking WHERE Subject="+"'"+SubjectID+"'"+" GROUP BY Ranking";
+			String query = "SELECT Ranking, COUNT(RANKING) FROM SubjectRanking WHERE SubjectID="+"'"+SubjectID+"'"+" GROUP BY Ranking";
 			ResultSet rs = s.executeQuery(query);
-			if (rs.next()) {
+			while (rs.next()) {
 				int ranking = Integer.parseInt(rs.getString(1));
 				int count = Integer.parseInt(rs.getString(2));
 				Return[ranking] = count;
 			}
-			String returnString = "";
+			String returnString = "NEXT ";
 			for(short i = 0;i<5;i++){
 				returnString+=Return[i];
 				returnString+=(" NEXT ");

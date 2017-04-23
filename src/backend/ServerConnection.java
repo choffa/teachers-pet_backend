@@ -184,12 +184,11 @@ public class ServerConnection implements Runnable {
 		String ssrSID = in.next();
 		String ssrRat = in.next();
 		String ssrComment = in.next();
-		sdc.insert(ServerDatabaseConnection.SUBJECTRANKING, new String[] {ssrRat,ssrComment,ssrSuID,ssrSID});
 		if(checkIfUpdate(ServerDatabaseConnection.SUBJECTRANKING,new String[] {"StudentID", "SubjectID"},new String[] {ssrSID, ssrSuID})){
-			sdc.update(ServerDatabaseConnection.SPEEDRANKING, new String[] {"Ranking", "Comment"}, new String[] {ssrRat, ssrComment}, "StudentID", "'"+ssrSID+"'", "SubjectID", "'"+ssrSuID+"'");
+			sdc.update(ServerDatabaseConnection.SUBJECTRANKING, new String[] {"Ranking", "RankingComment"}, new String[] {ssrRat, ssrComment}, "StudentID", "'"+ssrSID+"'", "SubjectID", "'"+ssrSuID+"'");
 			System.out.println("Rating updated");
 		} else {
-			sdc.insert(ServerDatabaseConnection.SPEEDRANKING, new String[] {ssrRat,ssrComment,ssrSuID,ssrSID});
+			sdc.insert(ServerDatabaseConnection.SUBJECTRANKING, new String[] {ssrRat,ssrComment,ssrSuID,ssrSID});
 			System.out.println("New rating inserted");
 		}
 	}
@@ -266,6 +265,7 @@ public class ServerConnection implements Runnable {
 	 private void getStats(){
 		 String SuID = in.next();
 		 String stats = sdc.getStats(SuID);
+		 //System.out.println("Server returning: "+stats);
 		 out.println(stats);
 		 out.flush();
 	 }
