@@ -3,6 +3,7 @@ package backend;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -86,6 +87,18 @@ public class ServerConnection implements Runnable {
 					case "GET_STATS":
 						getStats();
 						break;
+					case "GET_STUDENTSUBJECTRATING":
+						getStudSubRating();
+						break;
+					case "GET_STUDENTSPEEDRATING":
+						getStudSpeedRating();
+						break;
+					case "SET_LECTURECOMMENT":
+						setLectureComment();
+						break;
+					case "GET_LECTURECOMMENTS":
+						getLectureComments();
+						break;
 					default:
 						close();
 						return;
@@ -97,6 +110,42 @@ public class ServerConnection implements Runnable {
 		}
 	}
 
+
+	private void getLectureComments() {
+		String LID = in.next();
+		String[] comments = new ServerDatabaseConnection().getList(ServerDatabaseConnection.LECTURECOMMENTS, "LectureID", LID, new String[]{"Comment"});
+		String returnString = "";
+		for (String comment:comments) {
+			returnString+= comment+" ";
+		}
+		out.println(returnString);
+		out.flush();
+	}
+
+
+	private void getStudSpeedRating() {
+		String SID = "'"+in.next()+"'";
+		String LID = "'"+in.next()+"'";
+		String rating = sdc.getString(ServerDatabaseConnection.SPEEDRANKING, "Ranking", "StudentID", SID, "LectureID", LID);
+		if(rating.length()>0){
+			out.println(rating);
+		} else {
+			out.println("NOSTRING");
+		}
+		out.flush();
+	}
+
+	private void getStudSubRating() {
+		String SID = "'"+in.next()+"'";
+		String SuID = "'"+in.next()+"'";
+		String rating = sdc.getString(ServerDatabaseConnection.SUBJECTRANKING, "Ranking", "StudentID", SID, "SubjectID", SuID);
+		if(rating.length()>0){
+			out.println(rating);
+		} else {
+			out.println("NOSTRING");
+		}
+		out.flush();
+	}
 
 	private void checkUser() {
 		boolean outBool = sdc.checkUsername(in.next());
@@ -160,6 +209,12 @@ public class ServerConnection implements Runnable {
 		out.println(ID);
 		out.flush();
 		}
+	}
+	
+	private void setLectureComment() {
+		String LID = in.next();
+		String comment = in.next();
+		sdc.insert(ServerDatabaseConnection.LECTURECOMMENTS, new String[]{LID, comment});
 	}
 	
 	private void setSubject(){
