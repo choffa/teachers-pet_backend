@@ -286,6 +286,7 @@ public class ServerConnectionTest {
 		rs.next();
     	assertEquals("3", rs.getString(1));
     }
+    
 
     @Test
     public void getAverageSubjectRating() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, InterruptedException{
