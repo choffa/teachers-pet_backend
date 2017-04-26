@@ -149,6 +149,7 @@ public class ServerConnectionTest {
     	assertEquals("0 1 0 0 0 0",stats);
 	}
 	
+	@Test
 	public void setLectureComments() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, InterruptedException{
 		String lec = insertLecture(insertThomas());
 		p.println("SET_LECTURECOMMENT "+lec+" "+"HelloWorld");
@@ -271,7 +272,7 @@ case "GET_STATS":
     	p.println("GET_AVERAGESUBJECTRATING "+subID);
     	p.flush();
     	new Thread(sc).start();
-    	Thread.sleep(100);
+    	Thread.sleep(200);
     	String avg = s.nextLine();
     	assertEquals("1.0",avg);
     }
