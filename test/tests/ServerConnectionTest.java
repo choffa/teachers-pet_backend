@@ -212,23 +212,21 @@ public class ServerConnectionTest {
 		
     }
 
+    
+    //ok
 	@Test
-    public void getLecture(){
-    	try{
-    	String lec = insertLecture(insertThomas());
-    	state.execute("INSERT INTO Subjects(LectureID,SubjectName) VALUES ('"+lec+"','name1')");
-    	state.execute("INSERT INTO Subjects(LectureID,SubjectName) VALUES ('"+lec+"','name2')");
-    	state.execute("INSERT INTO Subjects(LectureID,SubjectName) VALUES ('"+lec+"','name3')");
-    	p.println("GET_SUBJECTS "+lec);
+    public void getLecture() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, InterruptedException{
+    	String prof = insertThomas();
+    	String lec = insertLecture(prof);
+    	p.println("GET_LECTURE "+prof);
     	p.flush();
     	new Thread(sc).start();
-    	while("NEXT".equals(s.next())){
-    		String Subject[][];
-    	}
-    	}catch (Exception e){e.printStackTrace();}
+    	Thread.sleep(100);
+    	ResultSet rs = state.executeQuery("SELECT * FROM Lectures WHERE Professor = "+prof);
+    	assertTrue(rs.getString(1).length()>0);
     }
 
-
+	//ok
     @Test
     public void setLecture() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, InterruptedException{
     		String prof = insertThomas();
@@ -264,19 +262,18 @@ public class ServerConnectionTest {
         	assertEquals("halla", rs.getString(1));    		
     }
 
+    //ok
     @Test
-    public void getAverageSpeedRating(){
-    	try{
+    public void getAverageSpeedRating() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, InterruptedException{
     	String lec = insertLecture(insertThomas());
-    	state.execute("INSERT INTO Subjects(LectureID,SubjectName) VALUES ('"+lec+"','name1')");
-    	
-    	p.println("GET_SUBJECTS "+lec);
+    	String stud = insertHarald();
+    	state.execute("INSERT INTO SpeedRanking(LectureID,Ranking,StudentID) VALUES ('"+lec+"','2','"+stud+"')");
+    	p.println("GET_AVERAGESPEEDRATING"+lec);
     	p.flush();
     	new Thread(sc).start();
-    	while("NEXT".equals(s.next())){
-    		String Subject[][];
-    	}
-    	}catch (Exception e){e.printStackTrace();}
+    	Thread.sleep(100);
+    	int rank = s.nextInt();
+    	assertEquals(2,rank);
     }
 
 
@@ -314,12 +311,21 @@ public class ServerConnectionTest {
 		rs.next();
 		System.out.println("Thomases ID = "+rs.getString(1));
 		return rs.getString(1);
-		
 	}
 
+    private String insertHarald() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException{
+		String usr = md5("Harald");
+		String salt = BCrypt.gensalt();
+		String pwd = BCrypt.hashpw(SHA1("123"), salt);
+		state.execute("INSERT INTO Users(UserName, PasswordHash, Salt) VALUES('"+usr+"','"+pwd+"','"+salt+"')");
+		ResultSet rs = state.executeQuery("SELECT LAST_INSERT_ID()");
+		rs.next();
+		System.out.println("Haralds ID = "+rs.getString(1));
+		return rs.getString(1);
+	}
+    
     private String insertLecture(String prof) throws SQLException {
-		connect();
-		state.execute("INSERT INTO Lectures(LectureDate,StartTime,EndTime,Professor,Room,CourseID) VALUES('1995-03-02','14','15','"+prof+"','R1','1')");
+		state.execute("INSERT INTO Lectures(LectureDate,StartTime,EndTime,Professor,Room,CourseID) VALUES('1995-03-02','14','15','"+prof+"','R1','TDT4145')");
 		ResultSet rs = state.executeQuery("SELECT LAST_INSERT_ID()");
 		rs.next();
 		return rs.getString(1);
