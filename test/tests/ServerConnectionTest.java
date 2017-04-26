@@ -197,7 +197,6 @@ public class ServerConnectionTest {
 		ResultSet rs = state.executeQuery("SELECT SubjectName FROM Subjects WHERE SubjectName='halla'");
 		rs.next();
     	assertEquals("halla", rs.getString(1));
-		
     }
 
     
@@ -261,8 +260,8 @@ public class ServerConnectionTest {
     	p.flush();
     	new Thread(sc).start();
     	Thread.sleep(100);
-    	float rank = s.nextFloat();
-    	assertEquals((float)2.0, (float) rank, 0.001);
+    	String rank = s.nextLine();
+    	assertEquals(2,rank);
     }
 
 
@@ -276,9 +275,9 @@ public class ServerConnectionTest {
     	p.println("GET_NUMBEROFUSERS "+lec);
     	p.flush();
     	new Thread(sc).start();
-    	Thread.sleep(100);
+    	Thread.sleep(300);
     	String num = s.next();
-    	assertEquals(1,num);
+    	assertEquals(1,Integer.parseInt(num));
     	
     }
 
