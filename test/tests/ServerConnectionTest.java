@@ -175,13 +175,29 @@ public class ServerConnectionTest {
     	}catch (Exception e){e.printStackTrace();}
     }
 
-    public void setSubjectRating(){
-    	
+    public void setSubjectRating() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, InterruptedException{
+    	String subID = insertSubject(insertLecture(insertThomas()),"helloworld");
+    	String stud = insertHarald();
+    	p.println("SET_SUBJECTRATING "+subID+" "+stud+" "+"3"+"NOCOMMENTS");
+    	p.flush();
+    	new Thread(sc).start();
+    	Thread.sleep(100);
+    	ResultSet rs = state.executeQuery("SELECT Ranking FROM SubjectRanking WHERE SubjectID='"+subID+"' AND StudentID='"+stud+"';");
+		rs.next();
+    	assertEquals("3", rs.getString(1));
     }
 
     @Test
-    public void getAverageSubjectRating(){
-    
+    public void getAverageSubjectRating() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, InterruptedException{
+    	String subID = insertSubject(insertLecture(insertThomas()),"helloworld");
+    	String stud = insertHarald();
+    	state.execute("INSERT INTO SubjectRanking(Ranking,RankingComment,SubjectID,StudentID) VALUES ('1','hei','"+subID+"','"+stud+");");
+    	p.println("GET_AVERAGESUBJECTRATING "+subID);
+    	p.flush();
+    	new Thread(sc).start();
+    	Thread.sleep(100);
+    	String avg = s.nextLine();
+    	assertEquals("1.0",avg);
     }
 
     @Test(timeout=2000)
