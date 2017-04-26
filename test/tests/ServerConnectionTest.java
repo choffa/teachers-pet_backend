@@ -215,6 +215,25 @@ public class ServerConnectionTest {
     	assertEquals("3",rs.getString(1));
     }
 	
+	public void updateSubjectRating() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, InterruptedException{
+		String lec = insertLecture(insertThomas());
+    	String stud = insertHarald();
+    	String subID=insertSubject("sub1", lec);
+    	state.execute("INSERT INTO SubjectRanking(Ranking,RankingComment,SubjectID,StudentID) VALUES ('1','hei','"+subID+"','"+stud+"');");
+    	ResultSet rs = state.executeQuery("SELECT Ranking FROM SubjectRanking WHERE LectureID='"+lec+"';");
+		rs.next();
+    	assertEquals("1",rs.getString(1));
+    	
+    	p.println("SET_SPEEDRATING "+lec+" "+"3"+" "+stud);
+    	p.flush();
+    	new Thread(sc).start();
+    	Thread.sleep(100);
+    	rs = state.executeQuery("SELECT Ranking FROM SubjectRanking WHERE LectureID='"+lec+"';");
+		rs.next();
+    	assertEquals("3",rs.getString(1));
+    }
+	
+	
 	
 	@Test
 	public void getStats() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, InterruptedException{
@@ -384,14 +403,15 @@ public class ServerConnectionTest {
     public void setSpeedRating() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, InterruptedException{
     		String prof = insertThomas();
     		String lec = insertLecture(prof);
-    		p.println("SET_SUBJECT "+lec+" halla hei");
+    		String stud = insertHarald();
+    		p.println("SET_SPEEDRATING "+lec+" '2' '"+stud+"';");
     		p.flush();
     		new Thread(sc).start();
     		Thread.sleep(100);
     		connect();
-    		ResultSet rs = state.executeQuery("SELECT SubjectName FROM Subjects WHERE SubjectName='halla'");
+    		ResultSet rs = state.executeQuery("SELECT Ranking FROM SpeedRanking WHERE StudentID='"+stud+"';");
     		rs.next();
-        	assertEquals("halla", rs.getString(1));    		
+        	assertEquals("2", rs.getString(1));    		
     }
 
     //ok
