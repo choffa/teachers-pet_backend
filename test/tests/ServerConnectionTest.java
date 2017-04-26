@@ -274,6 +274,7 @@ case "GET_STATS":
     	new Thread(sc).start();
     	Thread.sleep(200);
     	String avg = s.next();
+    	System.out.println("Recieved avg: "+avg);
     	assertEquals("1.0",avg);
     }
 
