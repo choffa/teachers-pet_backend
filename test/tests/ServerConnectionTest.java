@@ -22,11 +22,12 @@ import java.net.Socket;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import java.text.SimpleDateFormat;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.stream.Stream;
@@ -141,44 +142,64 @@ public class ServerConnectionTest {
     	assertFalse(th.isAlive());
     }
     
+    @Test
+    public void getStudentSubjectRating() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, InterruptedException{
+    	String lec = insertLecture(insertThomas());
+    	String subID = insertSubject("name",lec);
+    	String stud = insertHarald();
+    	state.execute("INSERT INTO SubjectRanking(Ranking,RankingComment,SubjectID,StudentID) VALUES ('2','comment','"+subID+"','"+stud+"')");
+    	p.println("GET_STUDENTSUBJECTRATING "+stud+" "+subID);
+    	p.flush();
+    	new Thread(sc).start();
+    	Thread.sleep(100);
+    	String rating = s.next();
+    	assertEquals("2",rating);
+    }
+    
+    @Test
+    public void getStudentSpeedRating() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, InterruptedException{
+    	String lec = insertLecture(insertThomas());
+    	String stud = insertHarald();
+    	state.execute("INSERT INTO SpeedRanking(LectureID,Ranking,StudentID) VALUES ('"+lec+"','2','"+stud+"')");
+    	p.println("GET_STUDENTSPEEDRATING "+stud+" "+lec);
+    	p.flush();
+    	new Thread(sc).start();
+    	Thread.sleep(100);
+    	String rating = s.next();
+    	assertEquals("2",rating);
+    }
+    
+    @Test
+    public void getLectureComments() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, InterruptedException{
+		String lec = insertLecture(insertThomas());
+		state.execute("INSERT INTO LectureComments(LectureID,Comment) VALUES ('"+lec+"',Comment1);");
+		state.execute("INSERT INTO LectureComments(LectureID,Comment) VALUES ('"+lec+"',Comment2);");
+		state.execute("INSERT INTO LectureComments(LectureID,Comment) VALUES ('"+lec+"',Comment3);");
+		p.println("GET_LECTURECOMMENTS "+lec);
+		p.flush();
+		new Thread(sc).start();
+		Thread.sleep(100);
+		String returnLectures = s.nextLine();
+    	String expected = "NEXT Comment1 NEXT Comment2 NEXT Comment3 END";
+    	assertEquals(expected,returnLectures);
+    }
+    
+    @Test
+    public void getAllLectures() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, InterruptedException{
+    	String prof = insertThomas();
+    	String prof2 = insertHarald();
+    	String lec = insertLecture(prof);
+    	String lec2 = insertLecture(prof2);
+    	p.println("GET_ALLLECTURES");
+    	p.flush();
+    	new Thread(sc).start();
+    	Thread.sleep(100);
+    	String returnLectures = s.nextLine();
+    	String expected = "NEXT "+new Date(System.currentTimeMillis())+" 14 15 "+prof+" R1 TDT4145 NEXT "+new Date(System.currentTimeMillis())+" 14 15 "+prof2+" R1 TDT4145 END";
+    	assertEquals(expected,returnLectures);
+    }
 
     
-    /*
-     * 
-     * case "SET_SUBJECTRATING":
-48		
-						setSubjectRating();
-49		
-						break;
-     * 					case "GET_ALLLECTURES":
-60		
-						getAllLectures();
-61		
-						break;
-     * case "GET_LECTURECOMMENTS":
-100		
-						getLectureComments();
-101		
-						break;
-102		
-					default:
-103		
-						close();
-104		
-						return;
-						
-						case "GET_STUDENTSUBJECTRATING":
-91		
-						getStudSubRating();
-92		
-						break;
-93		
-					case "GET_STUDENTSPEEDRATING":
-94		
-						getStudSpeedRating();
-95		
-						break;
-  */  
 	@Test
     public void updateSpeedRating() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, InterruptedException {
     	String lec = insertLecture(insertThomas());
@@ -447,13 +468,12 @@ public class ServerConnectionTest {
 	}
     
     private String insertLecture(String prof) throws SQLException {
-		state.execute("INSERT INTO Lectures(LectureDate,StartTime,EndTime,Professor,Room,CourseID) VALUES('1995-03-02','14','15','"+prof+"','R1','TDT4145')");
+		state.execute("INSERT INTO Lectures(LectureDate,StartTime,EndTime,Professor,Room,CourseID) VALUES('"+new Date(System.currentTimeMillis())+"','14','15','"+prof+"','R1','TDT4145')");
 		ResultSet rs = state.executeQuery("SELECT LAST_INSERT_ID()");
 		rs.next();
 		return rs.getString(1);
 	}
 
-    
     
     protected String md5(String id) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MessageDigest md=MessageDigest.getInstance("MD5");
