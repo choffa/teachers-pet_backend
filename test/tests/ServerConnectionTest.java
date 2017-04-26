@@ -127,7 +127,6 @@ public class ServerConnectionTest {
 		p.flush();
 		new Thread(sc).start();
 		Thread.sleep(500);
-    	connect();
     	ResultSet rs = state.executeQuery("SELECT Username FROM Users WHERE Username='"+usr+"'");
     	rs.next();
     	assertEquals(usr, rs.getString(1));
@@ -150,15 +149,11 @@ public class ServerConnectionTest {
     
     
     @Test
-    public void setUserAndValidate() throws SQLException, InterruptedException, NoSuchAlgorithmException, IOException{
-    	String usr = md5("Harald");
-    	String pwd = SHA1("rex");
-		p.println("SET_USER "+usr+" "+pwd);
-		p.flush();
-		new Thread(sc).start();
-		Thread.sleep(500);
-		p.println("VALIDATE "+usr+" "+pwd);
+    public void validate() throws SQLException, InterruptedException, NoSuchAlgorithmException, IOException{
+    	insertThomas();
+		p.println("VALIDATE "+md5("Thomas")+" "+SHA1("123"));
     	p.flush();
+    	new Thread(sc).start();
 		Thread.sleep(500);
 		assertTrue(s.nextBoolean());
     }
@@ -237,15 +232,22 @@ public class ServerConnectionTest {
     @Test
     public void setLecture() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, InterruptedException{
     		String prof = insertThomas();
-    		String lec = insertLecture(prof);
-    		p.println("SET_SUBJECT "+lec+" halla hei");
+    		String CID = "TDT4145";
+    		String start = "12";
+    		String end = "13";
+    		String date = "2017-03-04";
+    		String room = "R1";
+    		p.println("SET_LECTURE "+prof+" "+CID+" "+date+" "+start+" "+end+" "+room);
     		p.flush();
     		new Thread(sc).start();
     		Thread.sleep(100);
-    		connect();
-    		ResultSet rs = state.executeQuery("SELECT SubjectName FROM Subjects WHERE SubjectName='halla'");
+    		String lec = s.nextLine();
+    		ResultSet rs = state.executeQuery("SELECT Professor, start, end, date FROM Lectures WHERE SubjectName='halla'");
     		rs.next();
-        	assertEquals("halla", rs.getString(1)); 		
+        	assertEquals(prof, rs.getString(1));
+        	assertEquals(start,rs.getString(2));
+        	assertEquals(end,rs.getString(3));
+        	assertEquals(date,rs.getString(4));
     }
 
     @Test
