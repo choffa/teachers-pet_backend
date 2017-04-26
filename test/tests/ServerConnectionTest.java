@@ -96,6 +96,7 @@ public class ServerConnectionTest {
     	state.execute("DELETE FROM Users WHERE 1=1");
     	state.execute("DELETE FROM SpeedRanking WHERE 1=1");
     	state.execute("DELETE FROM SubjectRanking WHERE 1=1");
+    	state.execute("DELETE FROM LecturesComments WHERE 1=1");
 	}
 
     
@@ -273,9 +274,13 @@ case "GET_STATS":
     	p.flush();
     	new Thread(sc).start();
     	Thread.sleep(200);
+    	if(s.hasNext()){
     	String avg = s.next();
     	System.out.println("Recieved avg: "+avg);
     	assertEquals("1.0",avg);
+    	}else{
+    		fail("No return");
+    	}
     }
 
     @Test(timeout=2000)
@@ -457,7 +462,7 @@ case "GET_STATS":
     }
 
     private String insertSubject(String name, String lecture) throws SQLException {
-		state.execute("INSERT INTO Subjects(LectureID,SubjectName,Comment) VALUES ('"+lecture+"','"+name+"','comment')");
+		state.execute("INSERT INTO Subjects(LectureID,SubjectName,Comment) VALUES ('"+lecture+"','"+name+"','comment');");
 		ResultSet rs = state.executeQuery("SELECT LAST_INSERT_ID()");
 		rs.next();
 		return rs.getString(1);
