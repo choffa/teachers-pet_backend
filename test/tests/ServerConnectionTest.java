@@ -141,15 +141,7 @@ public class ServerConnectionTest {
     	assertFalse(th.isAlive());
     }
     
-    @Test
-    public void whileClose() throws InterruptedException{
-    	Thread th = new Thread(sc);
-    	th.start();
-    	Thread.sleep(100);
-    	assertFalse(th.isAlive());
-    }
-    
-    
+
     
     /*
      * 
