@@ -21,6 +21,7 @@ public class ServerDatabaseConnection {
 	public static final String SUBJECTRANKING = "SubjectRanking(Ranking,RankingComment,SubjectID,StudentID)";
 	public static final String SPEEDRANKING = "SpeedRanking(LectureID,Ranking,StudentID)";
 	public static final String USERS = "Users(UserName, PasswordHash, Salt)";
+	public static final String LECTURECOMMENTS = "LectureComments(LectureID,Comment)";
 	
 	
 	
@@ -189,6 +190,31 @@ public class ServerDatabaseConnection {
 			}
 			System.out.println("RS had no next");
 			return null;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		return null;
+	}
+	
+	public String getStats(String SubjectID){
+		int[] Return = {0,0,0,0,0,0};
+		try {
+			Statement s = con.createStatement();
+			String query = "SELECT Ranking, COUNT(RANKING) FROM SubjectRanking WHERE SubjectID="+"'"+SubjectID+"'"+" GROUP BY Ranking";
+			ResultSet rs = s.executeQuery(query);
+			while (rs.next()) {
+				int ranking = Integer.parseInt(rs.getString(1));
+				int count = Integer.parseInt(rs.getString(2));
+				Return[ranking] = count;
+			}
+			String returnString = "NEXT ";
+			for(short i = 0;i<5;i++){
+				returnString+=Return[i];
+				returnString+=(" NEXT ");
+			}
+			returnString+=Return[5];
+			returnString+=" END";
+			return returnString;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} 
