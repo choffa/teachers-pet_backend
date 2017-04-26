@@ -169,6 +169,7 @@ public class ServerConnectionTest {
     	assertEquals("2",rating);
     }
     
+   
     @Test
     public void getLectureComments() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, InterruptedException{
 		String lec = insertLecture(insertThomas());
