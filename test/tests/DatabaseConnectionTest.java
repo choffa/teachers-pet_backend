@@ -17,7 +17,7 @@ public class DatabaseConnectionTest {
 
     private ServerDatabaseConnection sdbc;
     private static Connection dbcon;
-    private static String url = "jdbc:mysql://127.0.0.1/teachers-pet_test_database";
+    private static String url = "jdbc:mysql://127.0.0.1/test_teacherspet";
     //private static String baseUrl = "jdbc:mysql://localhost:3306?useSSL=false";
     private static String user = "root";
     private static String pw = "123";
