@@ -55,6 +55,7 @@ public class ServerConnectionTest {
     private Scanner s;
     private static Statement state;
     private static  Connection con;
+    private static String database="jdbc:mysql://localhost/test_teacherspet";
 
     
     @Before
@@ -83,7 +84,7 @@ public class ServerConnectionTest {
 
     	//initializing classes
     	sc = new ServerConnection(skt, sdc);
-    	sdc = new ServerDatabaseConnection("jdbc:mysql://localhost/teachers-pet_test_database", "root", "123");
+    	sdc = new ServerDatabaseConnection(database, "root", "");
 	}
 
 
@@ -105,7 +106,7 @@ public class ServerConnectionTest {
 	public static void connect(){
 		try{
     	Class.forName("com.mysql.jdbc.Driver").newInstance();
-    	con = DriverManager.getConnection("jdbc:mysql://127.0.0.1/teachers-pet_test_database", "root", "123");
+    	con = DriverManager.getConnection(database, "root", "");
     	state = con.createStatement();
 		}catch(Exception e){e.printStackTrace();}
 	}
