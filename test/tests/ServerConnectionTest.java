@@ -151,17 +151,16 @@ public class ServerConnectionTest {
     
     @Test
     public void setUserAndValidate() throws SQLException, InterruptedException, NoSuchAlgorithmException, IOException{
-    	
     	String usr = md5("Harald");
-    	String pwd = "rex";
-		p.println("SET_USER "+usr+" "+SHA1(pwd));
+    	String pwd = SHA1("rex");
+		p.println("SET_USER "+usr+" "+pwd);
 		p.flush();
 		new Thread(sc).start();
 		Thread.sleep(500);
-		p.println("VALIDATE "+usr+" "+SHA1(pwd));
+		p.println("VALIDATE "+usr+" "+pwd);
     	p.flush();
 		Thread.sleep(500);
-
+		assertTrue(s.nextBoolean());
     }
 
     
