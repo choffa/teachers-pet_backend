@@ -261,16 +261,25 @@ public class ServerConnectionTest {
     	p.flush();
     	new Thread(sc).start();
     	Thread.sleep(100);
-    	int rank = s.nextInt();
-    	assertEquals(2,rank);
+    	float rank = s.nextFloat();
+    	assertEquals((float)2.0, (float) rank, 0.001);
     }
 
 
 
 
     @Test
-    public void getTempoVotesInLecture(){
-  
+    public void getTempoVotesInLecture() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, InterruptedException{
+    	String lec = insertLecture(insertThomas());
+    	String stud = insertHarald();
+    	state.execute("INSERT INTO SpeedRanking(LectureID,Ranking,StudentID) VALUES ('"+lec+"','2','"+stud+"')");
+    	p.println("GET_NUMBEROFUSERS "+lec);
+    	p.flush();
+    	new Thread(sc).start();
+    	Thread.sleep(100);
+    	String num = s.next();
+    	assertEquals(1,num);
+    	
     }
 
 
