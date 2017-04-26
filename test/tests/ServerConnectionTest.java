@@ -154,11 +154,11 @@ public class ServerConnectionTest {
     	
     	String usr = md5("Harald");
     	String pwd = "rex";
-		p.print("SET_USER "+usr+" "+SHA1(pwd));
+		p.println("SET_USER "+usr+" "+SHA1(pwd));
 		p.flush();
 		new Thread(sc).start();
 		Thread.sleep(500);
-		p.print("VALIDATE "+usr+" "+SHA1(pwd));
+		p.println("VALIDATE "+usr+" "+SHA1(pwd));
     	p.flush();
 		Thread.sleep(500);
 
