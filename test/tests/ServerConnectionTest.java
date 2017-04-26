@@ -1,6 +1,5 @@
 package tests;
 
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -55,17 +54,9 @@ public class ServerConnectionTest {
     private Scanner s;
 
     private static Statement state;
-    private static Connection con;
+    private static  Connection con;
 
-    @BeforeClass
-	public static void setUpClass() throws Exception{
-		try{
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1/test_teacherspet", "root", "");
-			state = con.createStatement();
-		}catch(Exception e){e.printStackTrace();}
-	}
-
+    
     @Before
     public void init() throws IOException, SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException {
     	//clearing testdatabase
@@ -101,7 +92,7 @@ public class ServerConnectionTest {
 
 
 	private void clearSchema() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-
+    	connect();
     	try{
     	state.execute("DELETE FROM Lectures WHERE 1=1");
     	state.execute("DELETE FROM Subjects WHERE 1=1");
@@ -109,13 +100,24 @@ public class ServerConnectionTest {
     	state.execute("DELETE FROM SpeedRanking WHERE 1=1");
     	state.execute("DELETE FROM SubjectRanking WHERE 1=1");
     	}catch(Exception e)  {e.printStackTrace();}
-
+    	close();
 	}
 
-    @AfterClass
+    
     private void close() throws SQLException {
     	state.close();
     	con.close();
+	}
+
+
+
+
+	private void connect(){
+		try{
+    	Class.forName("com.mysql.jdbc.Driver").newInstance();
+    	con = DriverManager.getConnection("jdbc:mysql://127.0.0.1/test_teacherspet", "root", "");
+    	state = con.createStatement();
+		}catch(Exception e){e.printStackTrace();}
 	}
 
 
@@ -129,7 +131,7 @@ public class ServerConnectionTest {
 		p.flush();
 		new Thread(sc).start();
 		Thread.sleep(500);
-
+    	connect();
     	ResultSet rs = state.executeQuery("SELECT Username FROM Users WHERE Username='"+usr+"'");
     	rs.next();
     	assertEquals(usr, rs.getString(1));
@@ -212,13 +214,13 @@ public class ServerConnectionTest {
 		p.flush();
 		new Thread(sc).start();
 		Thread.sleep(100);
-
+		connect();
 		ResultSet rs = state.executeQuery("SELECT SubjectName FROM Subjects WHERE SubjectName='halla'");
 		rs.next();
     	assertEquals("halla", rs.getString(1));
 		} catch (Exception e) {e.printStackTrace();fail("stuff crashed");}
 		finally{
-
+			close();
 		}
     }
 
@@ -248,13 +250,13 @@ public class ServerConnectionTest {
     		p.flush();
     		new Thread(sc).start();
     		Thread.sleep(100);
-
+    		connect();
     		ResultSet rs = state.executeQuery("SELECT SubjectName FROM Subjects WHERE SubjectName='halla'");
     		rs.next();
         	assertEquals("halla", rs.getString(1));
     		} catch (Exception e) {e.printStackTrace();fail("stuff crashed");}
     		finally{
-
+    			close();
     		}
     }
 
@@ -267,13 +269,13 @@ public class ServerConnectionTest {
     		p.flush();
     		new Thread(sc).start();
     		Thread.sleep(100);
-
+    		connect();
     		ResultSet rs = state.executeQuery("SELECT SubjectName FROM Subjects WHERE SubjectName='halla'");
     		rs.next();
         	assertEquals("halla", rs.getString(1));
     		} catch (Exception e) {e.printStackTrace();fail("stuff crashed");}
     		finally{
-
+    			close();
     		}
     }
 
@@ -319,7 +321,7 @@ public class ServerConnectionTest {
     
     private String insertThomas() throws SQLException{
 		try{
-
+    	connect();
 		String usr = md5("Thomas");
 		state.execute("INSERT INTO Users(UserName, PasswordHash, Salt) VALUES('"+usr+"','1','"+BCrypt.gensalt()+"')");
 		ResultSet rs = state.executeQuery("SELECT LAST_INSERT_ID()");
@@ -327,20 +329,20 @@ public class ServerConnectionTest {
 		return rs.getString(1);
 	    } catch (Exception e) {return null;}
 		finally{
-
+			close();
 		}
 	}
 
     private String insertLecture(String prof) throws SQLException {
     	try{
-
+		connect();
 		state.execute("INSERT INTO Lectures(LectureDate,StartTime,EndTime,Professor,Room,CourseID) VALUES('1995-03-02','14','15','"+prof+"','R1','1')");
 		ResultSet rs = state.executeQuery("SELECT LAST_INSERT_ID()");
 		rs.next();
 		return rs.getString(1);
 	    } catch (Exception e) {e.printStackTrace();;return null;}
 		finally{
-
+			close();
 		}
 	}
 
