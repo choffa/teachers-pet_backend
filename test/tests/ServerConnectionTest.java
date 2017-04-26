@@ -283,10 +283,22 @@ public class ServerConnectionTest {
 
 
     @Test
-    public void updateSubject(){
-    	
+    public void updateSubject() throws SQLException, InterruptedException, NoSuchAlgorithmException, UnsupportedEncodingException{
+		String prof = insertThomas();
+		String lec = insertLecture(prof);
+		String subID = insertSubject("sub1",lec);
+		ResultSet rs = state.executeQuery("SELECT SubjectName FROM Subjects WHERE SubjectID='"+subID+"';");
+		rs.next();
+    	assertEquals("sub1", rs.getString(1));
+		p.println("UPDATE_SUBJECT "+subID+" "+"name2"+"comment");
+		p.flush();
+		rs = state.executeQuery("SELECT SubjectName FROM Subjects WHERE SubjectID='"+subID+"';");
+		rs.next();
+    	assertEquals("name2", rs.getString(1));
     }
-    
+
+
+	//------------------------------------Support methodes----------------
     
     private String insertThomas() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException{
 		String usr = md5("Thomas");
@@ -348,6 +360,11 @@ public class ServerConnectionTest {
         return convertToHex(sha1hash);
     }
 
-
+    private String insertSubject(String name, String lecture) throws SQLException {
+		state.execute("INSERT INTO Subjects(LectureID,SubjectName,Comment) VALUES ('"+lecture+"','"+name+"','comment')");
+		ResultSet rs = state.executeQuery("SELECT LAST_INSERT_ID()");
+		rs.next();
+		return rs.getString(1);
+	}
     
 }
