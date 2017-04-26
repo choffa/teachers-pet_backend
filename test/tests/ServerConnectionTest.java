@@ -115,7 +115,7 @@ public class ServerConnectionTest {
 	private void connect(){
 		try{
     	Class.forName("com.mysql.jdbc.Driver").newInstance();
-    	con = DriverManager.getConnection("jdbc:mysql://localhost/teachers-pet_test_database?autoReconnect=true&useSSL=false", "root", "123");
+    	con = DriverManager.getConnection("jdbc:mysql://localhost/test_teacherspet?autoReconnect=true&useSSL=false", "root", "");
     	state = con.createStatement();
 		}catch(Exception e){e.printStackTrace();}
 	}
