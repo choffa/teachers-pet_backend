@@ -25,7 +25,7 @@ CREATE TABLE SubjectRanking (
     Ranking     	  INTEGER NOT NULL,
     RankingComment  TEXT,
 
-    CONSTRAINT SubjectRanking_SubjectID_FK FOREIGN KEY (SubjectID) REFERENCES Subjects(SubjectID),
+    CONSTRAINT SubjectRanking_SubjectID_FK FOREIGN KEY (SubjectID) REFERENCES Subjects(SubjectID)
 																			                                  ON UPDATE CASCADE
                                                                         ON DELETE CASCADE
 );
@@ -51,5 +51,8 @@ CREATE TABLE LectureComment (
 	LectureID	INTEGER NOT NULL,
 	Comment		VARCHAR(255),
 	
-	CONSTRAINT LID_FK FOREIGN KEY (LectureID) REFERENCES Lectures(LectureID) ON UPDATE CASCADE ON DELETE CASCADE
-	);
+	CONSTRAINT LID_FK FOREIGN KEY (LectureID) REFERENCES Lectures(LectureID)
+	
+																											ON UPDATE CASCADE
+																		ON DELETE CASCADE
+);
