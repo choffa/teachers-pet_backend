@@ -19,8 +19,10 @@ hs_err_pid*
 *.iml
 .classpath
 /.idea/
+
 /build/
 /out/
 src/tests/
 META-INF
 !/gradle/wrapper/gradle-wrapper.jar
+

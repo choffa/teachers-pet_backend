@@ -17,8 +17,8 @@ public class DatabaseConnectionTest {
 
     private ServerDatabaseConnection sdbc;
     private static Connection dbcon;
-    private static String url = "jdbc:mysql://localhost:3306/test_teacherspet?useSSL=false";
-    private static String baseUrl = "jdbc:mysql://localhost:3306?useSSL=false";
+    private static String url = "jdbc:mysql://127.0.0.1/test_teacherspet";
+    //private static String baseUrl = "jdbc:mysql://localhost:3306?useSSL=false";
     private static String user = "root";
     private static String pw = "";
 
@@ -51,7 +51,6 @@ public class DatabaseConnectionTest {
     @Test
     public void testInsert() throws Exception {
         testLectureInsertion();
-        testSpeedRankingInsertion();
     }
 
     private void testLectureInsertion() throws Exception {
@@ -63,32 +62,9 @@ public class DatabaseConnectionTest {
         //for (int i = 0; i < args.length; i++) {
         //    assertEquals(args[i], res.getString(i+2));
         //}
-        compare(args, "lectures", "Lecture input not as expected", 2);
+        compare(args, "Lectures", "Lecture input not as expected", 2);
     }
 
-    private void testSpeedRankingInsertion() throws Exception {
-        String[] args = {"1", "4", "qwertyuioplkjhgfdsazxcvbnmnbvcxz"};
-        sdbc.insert(ServerDatabaseConnection.SPEEDRANKING, args);
-        Statement s = dbcon.createStatement();
-        ResultSet res = s.executeQuery("SELECT * FROM speedranking");
-        res.next();
-        for(int i = 0; i < args.length; i++) {
-            assertEquals(args[i], res.getString(i+1));
-        }
-    }
-
-    private void testSubjectInsertion() throws Exception {
-        String[] args = {"1", "4", "This is a rather long string of text isnt it?"};
-        sdbc.insert(ServerDatabaseConnection.SUBJECTS, args);
-        Statement s = dbcon.createStatement();
-        ResultSet r = s.executeQuery("");
-    }
-
-    private void testSubjectRankingInsertion() throws Exception {
-        String[] args = {};
-    }
-
-    //TODO: use hashmap to avoid dependece on order
     private void compare(String[] args, String table, String message, int resultCorrection) throws Exception {
         Statement s = dbcon.createStatement();
         String sql = "SELECT * FROM " + table;
