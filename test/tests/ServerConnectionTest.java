@@ -269,9 +269,9 @@ case "GET_STATS":
     public void getAverageSubjectRating() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, InterruptedException{
     	String subID = insertSubject("helloworld",insertLecture(insertThomas()));
     	String stud = insertHarald();
-    	state.execute("INSERT INTO SubjectRanking(Ranking,RankingComment,SubjectID,StudentID) VALUES (1,'hei','"+subID+"','"+stud+"');");
+    	state.execute("INSERT INTO SubjectRanking(Ranking,RankingComment,SubjectID,StudentID) VALUES ('1','hei','"+subID+"','"+stud+"');");
     	
-		ResultSet rs = state.executeQuery("SELECT SubjectID FROM Subjects'");
+		ResultSet rs = state.executeQuery("SELECT SubjectID FROM Subjects");
 		rs.next();
     	System.out.println(rs.getString(1));  
     	
