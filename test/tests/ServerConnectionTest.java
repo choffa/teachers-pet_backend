@@ -174,8 +174,11 @@ public class ServerConnectionTest {
     public void getLectureComments() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, InterruptedException{
 		String lec = insertLecture(insertThomas());
 		state.execute("INSERT INTO LectureComments(LectureID,Comment) VALUES ('"+lec+"','Comment1');");
+		Thread.sleep(100);
 		state.execute("INSERT INTO LectureComments(LectureID,Comment) VALUES ('"+lec+"','Comment2');");
+		Thread.sleep(100);
 		state.execute("INSERT INTO LectureComments(LectureID,Comment) VALUES ('"+lec+"','Comment3');");
+		Thread.sleep(100);
 		p.println("GET_LECTURECOMMENTS "+lec);
 		p.flush();
 		new Thread(sc).start();
