@@ -225,7 +225,7 @@ public class ServerConnectionTest {
 		rs.next();
     	assertEquals("1",rs.getString(1));
     	
-    	p.println("SET_SUBJECTRATING "+subID+" "+"3"+" "+stud);
+    	p.println("SET_SUBJECTRATING "+subID+" "+stud+" "+"3"+" "+"comment");
     	p.flush();
     	new Thread(sc).start();
     	Thread.sleep(100);
