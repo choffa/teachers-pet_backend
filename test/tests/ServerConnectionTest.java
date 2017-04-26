@@ -278,7 +278,7 @@ public class ServerConnectionTest {
     public void setSubjectRating() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, InterruptedException{
     	String subID = insertSubject("helloworld" ,insertLecture(insertThomas()));
     	String stud = insertHarald();
-    	p.println("SET_SUBJECTRATING "+subID+" "+stud+" "+"3"+"NOCOMMENTS");
+    	p.println("SET_SUBJECTRATING "+subID+" "+stud+" "+"3"+" "+"NOCOMMENTS");
     	p.flush();
     	new Thread(sc).start();
     	Thread.sleep(100);
