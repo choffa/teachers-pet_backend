@@ -196,7 +196,7 @@ public class ServerConnectionTest {
     	new Thread(sc).start();
     	Thread.sleep(100);
     	String returnLectures = s.nextLine();
-    	String expected = "NEXT "+lec+" "+new Date(System.currentTimeMillis())+" 14 15 "+prof+" R1 TDT4145 NEXT "+lec2+" "+new Date(System.currentTimeMillis())+" 14 15 "+prof2+" R1 TDT4145 END";
+    	String expected = "NEXT "+lec+" "+new Date(System.currentTimeMillis())+" 14 15 "+prof+" R1 TDT4145 NEXT "+lec2+" "+new Date(System.currentTimeMillis())+" 14 15 "+prof2+" R1 TDT4145 END ";
     	assertEquals(expected,returnLectures);
     }
 
