@@ -172,9 +172,9 @@ public class ServerConnectionTest {
     @Test
     public void getLectureComments() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, InterruptedException{
 		String lec = insertLecture(insertThomas());
-		state.execute("INSERT INTO LectureComments(LectureID,Comment) VALUES ('"+lec+"',Comment1);");
-		state.execute("INSERT INTO LectureComments(LectureID,Comment) VALUES ('"+lec+"',Comment2);");
-		state.execute("INSERT INTO LectureComments(LectureID,Comment) VALUES ('"+lec+"',Comment3);");
+		state.execute("INSERT INTO LectureComments(LectureID,Comment) VALUES ('"+lec+"','Comment1');");
+		state.execute("INSERT INTO LectureComments(LectureID,Comment) VALUES ('"+lec+"','Comment2');");
+		state.execute("INSERT INTO LectureComments(LectureID,Comment) VALUES ('"+lec+"','Comment3');");
 		p.println("GET_LECTURECOMMENTS "+lec);
 		p.flush();
 		new Thread(sc).start();
@@ -195,7 +195,7 @@ public class ServerConnectionTest {
     	new Thread(sc).start();
     	Thread.sleep(100);
     	String returnLectures = s.nextLine();
-    	String expected = "NEXT "+new Date(System.currentTimeMillis())+" 14 15 "+prof+" R1 TDT4145 NEXT "+new Date(System.currentTimeMillis())+" 14 15 "+prof2+" R1 TDT4145 END";
+    	String expected = "NEXT "+lec+" "+new Date(System.currentTimeMillis())+" 14 15 "+prof+" R1 TDT4145 NEXT "+lec2+" "+new Date(System.currentTimeMillis())+" 14 15 "+prof2+" R1 TDT4145 END";
     	assertEquals(expected,returnLectures);
     }
 
