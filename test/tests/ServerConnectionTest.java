@@ -118,6 +118,85 @@ public class ServerConnectionTest {
     }
 
 
+    //---------------------TESTS----------------------------
+    
+    
+	@Test
+    public void updateSpeedRating() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, InterruptedException {
+    	String lec = insertLecture(insertThomas());
+    	String stud = insertHarald();
+    	state.execute("INSERT INTO SpeedRanking(LectureID,Ranking,StudentID) VALUES ('"+lec+"','2','"+stud+"')");
+    	p.println("SET_SPEEDRATING "+lec+" "+"3"+" "+stud);
+    	p.flush();
+    	new Thread(sc).start();
+    	Thread.sleep(100);
+    	ResultSet rs = state.executeQuery("SELECT Ranking FROM SpeedRanking WHERE LectureID='"+lec+"';");
+		rs.next();
+    	assertEquals("3",rs.getString(1));
+    }
+	
+	
+	@Test
+	public void getStats() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, InterruptedException{
+    	String subID = insertSubject("helloworld",insertLecture(insertThomas()));
+    	String stud = insertHarald();
+    	state.execute("INSERT INTO SubjectRanking(Ranking,RankingComment,SubjectID,StudentID) VALUES ('1','hei','"+subID+"','"+stud+"');");
+    	p.println("GET_STATS "+subID);
+    	p.flush();
+    	new Thread(sc).start();
+    	Thread.sleep(100);
+    	String stats = s.nextLine();
+    	assertEquals("0 1 0 0 0 0",stats);
+	}
+	
+	public void setLectureComments() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, InterruptedException{
+		String lec = insertLecture(insertThomas());
+		p.println("SET_LECTURECOMMENT "+lec+" "+"HelloWorld");
+		p.flush();
+		new Thread(sc).start();
+		Thread.sleep(100);
+    	ResultSet rs = state.executeQuery("SELECT Comment FROM LectureComments WHERE LectureID='"+lec+"';");
+		rs.next();
+    	assertEquals("HelloWorld", rs.getString(1));
+	}
+	/*
+case "GET_STATS":
+88		
+					getStats();
+89		
+					break;
+90		
+				case "GET_STUDENTSUBJECTRATING":
+91		
+					getStudSubRating();
+92		
+					break;
+93		
+				case "GET_STUDENTSPEEDRATING":
+94		
+					getStudSpeedRating();
+95		
+					break;
+96		
+				case "SET_LECTURECOMMENT":
+97		
+					setLectureComment();
+98		
+					break;
+99		
+				case "GET_LECTURECOMMENTS":
+100		
+					getLectureComments();
+101		
+					break;
+102		
+				default:
+103		
+					close();
+104		
+					return;
+	*/
+    
 	@Test
     public void setUser() throws NoSuchAlgorithmException, SQLException, InterruptedException, InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
     	String usr = md5("Harald");
@@ -143,9 +222,6 @@ public class ServerConnectionTest {
     	    	assertTrue(s.nextBoolean());
     }
 
-
-	
-    // public void checkIfUpdate() {	} ikke testbar
     
     
     @Test
@@ -191,7 +267,7 @@ public class ServerConnectionTest {
     public void getAverageSubjectRating() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, InterruptedException{
     	String subID = insertSubject("helloworld",insertLecture(insertThomas()));
     	String stud = insertHarald();
-    	state.execute("INSERT INTO SubjectRanking(Ranking,RankingComment,SubjectID,StudentID) VALUES ('1','hei','"+subID+"','"+stud+");");
+    	state.execute("INSERT INTO SubjectRanking(Ranking,RankingComment,SubjectID,StudentID) VALUES ('1','hei','"+subID+"','"+stud+"');");
     	p.println("GET_AVERAGESUBJECTRATING "+subID);
     	p.flush();
     	new Thread(sc).start();
