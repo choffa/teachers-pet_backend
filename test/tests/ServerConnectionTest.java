@@ -178,7 +178,7 @@ public class ServerConnectionTest {
     public void setSubjectRating(){
     	
     }
-
+/*
     @Test
     public void getAverageSubjectRating(){
     	try{
@@ -195,7 +195,7 @@ public class ServerConnectionTest {
 	    	}
     	}catch (Exception e){e.printStackTrace();}
     }
-
+*/
     @Test(timeout=2000)
     public void setSubject() throws SQLException, InterruptedException, NoSuchAlgorithmException, UnsupportedEncodingException{
 
