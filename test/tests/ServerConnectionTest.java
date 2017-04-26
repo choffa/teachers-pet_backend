@@ -273,7 +273,7 @@ case "GET_STATS":
     	p.flush();
     	new Thread(sc).start();
     	Thread.sleep(200);
-    	String avg = s.nextLine();
+    	String avg = s.next();
     	assertEquals("1.0",avg);
     }
 
