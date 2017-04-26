@@ -20,7 +20,7 @@ public class DatabaseConnectionTest {
     private static String url = "jdbc:mysql://127.0.0.1/test_teacherspet";
     //private static String baseUrl = "jdbc:mysql://localhost:3306?useSSL=false";
     private static String user = "root";
-    private static String pw = "123";
+    private static String pw = "";
 
     @BeforeClass
     public static void setUpClass() throws Exception {
