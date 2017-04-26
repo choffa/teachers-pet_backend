@@ -113,7 +113,7 @@ public class ServerConnection implements Runnable {
 
 	private void getLectureComments() {
 		String LID = in.next();
-		String[] comments = new ServerDatabaseConnection().getList(ServerDatabaseConnection.LECTURECOMMENTS, "LectureID", LID, new String[]{"Comment"});
+		String[] comments = sdc.getList(ServerDatabaseConnection.LECTURECOMMENTS, "LectureID", LID, new String[]{"Comment"});
 		String returnString = "";
 		for (String comment:comments) {
 			returnString+= comment+" ";
