@@ -225,7 +225,7 @@ public class ServerConnectionTest {
 		rs.next();
     	assertEquals("1",rs.getString(1));
     	
-    	p.println("SET_SPEEDRATING "+lec+" "+"3"+" "+stud);
+    	p.println("SET_SPEEDRATING "+subID+" "+"3"+" "+stud);
     	p.flush();
     	new Thread(sc).start();
     	Thread.sleep(100);
