@@ -27,6 +27,12 @@ public class DatabaseConnectionTest {
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             dbcon = DriverManager.getConnection(url,user,pw);
+            Statement state = dbcon.createStatement();
+        	state.execute("DELETE FROM Lectures WHERE 1=1");
+    	    state.execute("DELETE FROM Subjects WHERE 1=1");
+    	    state.execute("DELETE FROM Users WHERE 1=1");
+    	    state.execute("DELETE FROM SpeedRanking WHERE 1=1");
+    	    state.execute("DELETE FROM SubjectRanking WHERE 1=1");
             /*Statement s = dbcon.createStatement();
             s.execute("CREATE SCHEMA test_teacherspet;");
             s.execute("USE test_teacherspet;");
@@ -82,8 +88,6 @@ public class DatabaseConnectionTest {
 
     @AfterClass
     public static void tearDownClass() throws Exception {
-        Statement s = dbcon.createStatement();
-        s.execute("DROP SCHEMA test_teacherspet");
         dbcon.close();
     }
 }

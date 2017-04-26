@@ -85,7 +85,7 @@ public class ServerConnectionTest {
 
     	//initializing classes
     	sc = new ServerConnection(skt, sdc);
-    	sdc = new ServerDatabaseConnection("jdbc:mysql://localhost/teachers-pet_test_database?autoReconnect=true&useSSL=false", "root", "123");
+    	sdc = new ServerDatabaseConnection("jdbc:mysql://127.0.0.1/test_teacherspet", "root", "");
 	}
 
 
@@ -94,11 +94,11 @@ public class ServerConnectionTest {
 	private void clearSchema() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
     	connect();
     	try{
-    	state.execute("DELETE FROM lectures WHERE 1=1");
-    	state.execute("DELETE FROM subjects WHERE 1=1");
-    	state.execute("DELETE FROM users WHERE 1=1");
-    	state.execute("DELETE FROM speedranking WHERE 1=1");
-    	state.execute("DELETE FROM subjectranking WHERE 1=1");
+    	state.execute("DELETE FROM Lectures WHERE 1=1");
+    	state.execute("DELETE FROM Subjects WHERE 1=1");
+    	state.execute("DELETE FROM Users WHERE 1=1");
+    	state.execute("DELETE FROM SpeedRanking WHERE 1=1");
+    	state.execute("DELETE FROM SubjectRanking WHERE 1=1");
     	}catch(Exception e)  {e.printStackTrace();}
     	close();
 	}
@@ -115,7 +115,7 @@ public class ServerConnectionTest {
 	private void connect(){
 		try{
     	Class.forName("com.mysql.jdbc.Driver").newInstance();
-    	con = DriverManager.getConnection("jdbc:mysql://localhost/teachers-pet_test_database?autoReconnect=true&useSSL=false", "root", "123");
+    	con = DriverManager.getConnection("jdbc:mysql://127.0.0.1/test_teacherspet", "root", "");
     	state = con.createStatement();
 		}catch(Exception e){e.printStackTrace();}
 	}
@@ -132,7 +132,7 @@ public class ServerConnectionTest {
 		new Thread(sc).start();
 		Thread.sleep(500);
     	connect();
-    	ResultSet rs = state.executeQuery("SELECT Username FROM users WHERE Username='"+usr+"'");
+    	ResultSet rs = state.executeQuery("SELECT Username FROM Users WHERE Username='"+usr+"'");
     	rs.next();
     	assertEquals(usr, rs.getString(1));
     }
@@ -215,7 +215,7 @@ public class ServerConnectionTest {
 		new Thread(sc).start();
 		Thread.sleep(100);
 		connect();
-		ResultSet rs = state.executeQuery("SELECT SUbjectName FROM Subjects WHERE SubjectName='halla'");
+		ResultSet rs = state.executeQuery("SELECT SubjectName FROM Subjects WHERE SubjectName='halla'");
 		rs.next();
     	assertEquals("halla", rs.getString(1));
 		} catch (Exception e) {e.printStackTrace();fail("stuff crashed");}
@@ -240,19 +240,6 @@ public class ServerConnectionTest {
     	}catch (Exception e){e.printStackTrace();}
     }
 
-    @Test
-    public void getAllLectures(){
-    	try{
-    	connect();
-    	String lec = insertLecture(insertThomas());
-    	state.execute("INSERT INTO  VALUES ('"+lec+"','name1','comment1')");
-    	p.flush();
-    	new Thread(sc).start();
-    	while("NEXT".equals(s.next())){
-    		String Subject[][];
-    	}
-    	}catch (Exception e){e.printStackTrace();}
-    }
 
     @Test
     public void setLecture() throws SQLException{
@@ -264,7 +251,7 @@ public class ServerConnectionTest {
     		new Thread(sc).start();
     		Thread.sleep(100);
     		connect();
-    		ResultSet rs = state.executeQuery("SELECT SUbjectName FROM Subjects WHERE SubjectName='halla'");
+    		ResultSet rs = state.executeQuery("SELECT SubjectName FROM Subjects WHERE SubjectName='halla'");
     		rs.next();
         	assertEquals("halla", rs.getString(1));
     		} catch (Exception e) {e.printStackTrace();fail("stuff crashed");}
@@ -283,7 +270,7 @@ public class ServerConnectionTest {
     		new Thread(sc).start();
     		Thread.sleep(100);
     		connect();
-    		ResultSet rs = state.executeQuery("SELECT SUbjectName FROM Subjects WHERE SubjectName='halla'");
+    		ResultSet rs = state.executeQuery("SELECT SubjectName FROM Subjects WHERE SubjectName='halla'");
     		rs.next();
         	assertEquals("halla", rs.getString(1));
     		} catch (Exception e) {e.printStackTrace();fail("stuff crashed");}

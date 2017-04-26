@@ -112,7 +112,7 @@ public class ConnectionTest {
     @Test
     public void getLectures() throws IOException {
         setUp(lectureResponse);
-        String expectedCommands = "GET_ALLLECTURES\n";
+        String expectedCommands = "GET_ALLLECTURES \n";
         ArrayList<Lecture> lectureList = c.getLectures();
 
         assertEquals(expectedCommands, out.toString());

@@ -140,7 +140,8 @@ public class Connection implements Closeable {
 			int lectureID = in.nextInt();
 			String professorID = in.next();
 			String courseID = in.next();
-			Date date = new Date(in.next());
+			in.next();
+			Date date = new Date();
 			int start = in.nextInt();
 			int end = in.nextInt();
 			String room = in.next();
