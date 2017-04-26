@@ -121,6 +121,7 @@ public class ServerConnectionTest {
 
     //---------------------TESTS----------------------------
 
+    @Test
     public void testClose() throws InterruptedException{
     	p.println("CLOSE");
     	p.flush();
@@ -130,6 +131,7 @@ public class ServerConnectionTest {
     	assertFalse(th.isAlive());
     }
     
+    @Test
     public void defaultClose() throws InterruptedException{
     	p.println("asdsa");
     	p.flush();
@@ -139,6 +141,7 @@ public class ServerConnectionTest {
     	assertFalse(th.isAlive());
     }
     
+    @Test
     public void whileClose() throws InterruptedException{
     	Thread th = new Thread(sc);
     	th.start();
@@ -279,6 +282,7 @@ public class ServerConnectionTest {
     	}catch (Exception e){e.printStackTrace();}
     }
 
+    @Test
     public void setSubjectRating() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, InterruptedException{
     	String subID = insertSubject("helloworld" ,insertLecture(insertThomas()));
     	String stud = insertHarald();
