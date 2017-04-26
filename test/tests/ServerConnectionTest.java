@@ -290,9 +290,9 @@ public class ServerConnectionTest {
 		ResultSet rs = state.executeQuery("SELECT SubjectName FROM Subjects WHERE SubjectID='"+subID+"';");
 		rs.next();
     	assertEquals("sub1", rs.getString(1));
-    	rs.close();
 		p.println("UPDATE_SUBJECT "+subID+" "+"name2"+" "+"comment");
 		p.flush();
+		new Thread(sc).start();
 		Thread.sleep(300);
 		rs = state.executeQuery("SELECT SubjectName FROM Subjects WHERE SubjectID='"+subID+"';");
 		rs.next();
