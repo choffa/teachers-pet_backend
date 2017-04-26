@@ -47,7 +47,7 @@ CREATE TABLE Users (
     Salt            CHAR(29) NOT NULL
 );
 
-CREATE TABLE LectureComment (
+CREATE TABLE LectureComments (
 	LectureID	INTEGER NOT NULL,
 	Comment		VARCHAR(255),
 	
