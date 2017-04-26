@@ -169,7 +169,6 @@ public class ServerConnection implements Runnable {
 		String salt = BCrypt.gensalt();
 		String hash = BCrypt.hashpw(password, salt);
 		sdc.insert(ServerDatabaseConnection.USERS, new String[] {userName, hash, salt});
-
 	}
 
 
@@ -220,7 +219,7 @@ public class ServerConnection implements Runnable {
 	private void setSubject(){
 		String table = ServerDatabaseConnection.SUBJECTS;
 		int lectureID = in.nextInt();
-		String name = "'"+in.next()+"'";
+		String name = in.next();
 		String comment = in.next();
 		String[] args = {Integer.toString(lectureID), name, comment};
 		sdc.insert(table, args);

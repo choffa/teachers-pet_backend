@@ -1,5 +1,6 @@
 package tests;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -36,7 +37,7 @@ import static org.mockito.Mockito.*;
 
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 
-import org.mindrot.jbcrypt.BCrypt;
+import org.mindrot.jbcrypt.*;
 
 
 public class ServerConnectionTest {
@@ -52,7 +53,6 @@ public class ServerConnectionTest {
     private PipedInputStream programReturn;
     private PrintWriter p;
     private Scanner s;
-
     private static Statement state;
     private static  Connection con;
 
@@ -73,8 +73,6 @@ public class ServerConnectionTest {
     	serverSetup();
     }
     
- 
-
     
     private void serverSetup() throws IOException {
 
@@ -85,48 +83,45 @@ public class ServerConnectionTest {
 
     	//initializing classes
     	sc = new ServerConnection(skt, sdc);
-    	sdc = new ServerDatabaseConnection("jdbc:mysql://127.0.0.1/test_teacherspet", "root", "");
+    	sdc = new ServerDatabaseConnection("jdbc:mysql://localhost/teachers-pet_test_database", "root", "123");
 	}
 
 
 
 
 	private void clearSchema() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-    	connect();
-    	try{
     	state.execute("DELETE FROM Lectures WHERE 1=1");
     	state.execute("DELETE FROM Subjects WHERE 1=1");
     	state.execute("DELETE FROM Users WHERE 1=1");
     	state.execute("DELETE FROM SpeedRanking WHERE 1=1");
     	state.execute("DELETE FROM SubjectRanking WHERE 1=1");
-    	}catch(Exception e)  {e.printStackTrace();}
-    	close();
 	}
 
     
-    private void close() throws SQLException {
-    	state.close();
-    	con.close();
-	}
 
 
 
-
-	private void connect(){
+    @BeforeClass
+	public static void connect(){
 		try{
     	Class.forName("com.mysql.jdbc.Driver").newInstance();
-    	con = DriverManager.getConnection("jdbc:mysql://127.0.0.1/test_teacherspet", "root", "");
+    	con = DriverManager.getConnection("jdbc:mysql://127.0.0.1/teachers-pet_test_database", "root", "123");
     	state = con.createStatement();
 		}catch(Exception e){e.printStackTrace();}
 	}
 
-
+    @AfterClass
+    public static void closes() throws SQLException{
+    	state.close();
+    	con.close();
+    }
 
 
 	@Test
     public void setUser() throws NoSuchAlgorithmException, SQLException, InterruptedException, InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
     	String usr = md5("Harald");
     	String pwd = "rex";
+    	System.out.println("Adding Harald");
 		p.println("SET_USER "+usr+" "+SHA1(pwd));
 		p.flush();
 		new Thread(sc).start();
@@ -192,22 +187,23 @@ public class ServerConnectionTest {
     @Test
     public void getAverageSubjectRating(){
     	try{
-    	String lec = insertLecture(insertThomas());
-    	state.execute("INSERT INTO Subjects(LectureID,SubjectName,Comment) VALUES ('"+lec+"','name1','comment1')");
-    	state.execute("INSERT INTO Subjects(LectureID,SubjectName,Comment) VALUES ('"+lec+"','name2','comment2')");
-    	state.execute("INSERT INTO Subjects(LectureID,SubjectName,Comment) VALUES ('"+lec+"','name3','comment3')");
-    	p.println("GET_SUBJECTS "+lec);
-    	p.flush();
-    	new Thread(sc).start();
-    	while("NEXT".equals(s.next())){
-    		String Subject[][];
-    	}
+    		connect();
+	    	String lec = insertLecture(insertThomas());
+	    	state.execute("INSERT INTO Subjects(LectureID,SubjectName,Comment) VALUES ('"+lec+"','name1','comment1')");
+	    	state.execute("INSERT INTO Subjects(LectureID,SubjectName,Comment) VALUES ('"+lec+"','name2','comment2')");
+	    	state.execute("INSERT INTO Subjects(LectureID,SubjectName,Comment) VALUES ('"+lec+"','name3','comment3')");
+	    	p.println("GET_SUBJECTS "+lec);
+	    	p.flush();
+	    	new Thread(sc).start();
+	    	while("NEXT".equals(s.next())){
+	    		String Subject[][];
+	    	}
     	}catch (Exception e){e.printStackTrace();}
     }
 
     @Test(timeout=2000)
-    public void setSubject() throws SQLException{
-		try{
+    public void setSubject() throws SQLException, InterruptedException, NoSuchAlgorithmException, UnsupportedEncodingException{
+
 		String prof = insertThomas();
 		String lec = insertLecture(prof);
 		p.println("SET_SUBJECT "+lec+" halla hei");
@@ -218,10 +214,7 @@ public class ServerConnectionTest {
 		ResultSet rs = state.executeQuery("SELECT SubjectName FROM Subjects WHERE SubjectName='halla'");
 		rs.next();
     	assertEquals("halla", rs.getString(1));
-		} catch (Exception e) {e.printStackTrace();fail("stuff crashed");}
-		finally{
-			close();
-		}
+		
     }
 
 	@Test
@@ -242,8 +235,7 @@ public class ServerConnectionTest {
 
 
     @Test
-    public void setLecture() throws SQLException{
-    	try{
+    public void setLecture() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, InterruptedException{
     		String prof = insertThomas();
     		String lec = insertLecture(prof);
     		p.println("SET_SUBJECT "+lec+" halla hei");
@@ -253,16 +245,11 @@ public class ServerConnectionTest {
     		connect();
     		ResultSet rs = state.executeQuery("SELECT SubjectName FROM Subjects WHERE SubjectName='halla'");
     		rs.next();
-        	assertEquals("halla", rs.getString(1));
-    		} catch (Exception e) {e.printStackTrace();fail("stuff crashed");}
-    		finally{
-    			close();
-    		}
+        	assertEquals("halla", rs.getString(1)); 		
     }
 
     @Test
-    public void setSpeedRating() throws SQLException{
-    	try{
+    public void setSpeedRating() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, InterruptedException{
     		String prof = insertThomas();
     		String lec = insertLecture(prof);
     		p.println("SET_SUBJECT "+lec+" halla hei");
@@ -272,11 +259,7 @@ public class ServerConnectionTest {
     		connect();
     		ResultSet rs = state.executeQuery("SELECT SubjectName FROM Subjects WHERE SubjectName='halla'");
     		rs.next();
-        	assertEquals("halla", rs.getString(1));
-    		} catch (Exception e) {e.printStackTrace();fail("stuff crashed");}
-    		finally{
-    			close();
-    		}
+        	assertEquals("halla", rs.getString(1));    		
     }
 
     @Test
@@ -300,16 +283,17 @@ public class ServerConnectionTest {
     @Test
     public void getTempoVotesInLecture(){
     	try{
-    	String lec = insertLecture(insertThomas());
-    	state.execute("INSERT INTO Subjects(LectureID,SubjectName,Comment) VALUES ('"+lec+"','name1','comment1')");
+    		connect();
+    		String lec = insertLecture(insertThomas());
+    		state.execute("INSERT INTO Subjects(LectureID,SubjectName,Comment) VALUES ('"+lec+"','name1','comment1')");
     	
-    	p.println("GET_SUBJECTS "+lec);
-    	p.flush();
-    	new Thread(sc).start();
-    	while("NEXT".equals(s.next())){
+    		p.println("GET_SUBJECTS "+lec);
+    		p.flush();
+    		new Thread(sc).start();
+    		while("NEXT".equals(s.next())){
     		String Subject[][];
-    	}
-    	}catch (Exception e){e.printStackTrace();}
+    		}
+    		}catch (Exception e){e.printStackTrace();}
     }
 
 
@@ -319,31 +303,24 @@ public class ServerConnectionTest {
     }
     
     
-    private String insertThomas() throws SQLException{
-		try{
-    	connect();
+    private String insertThomas() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException{
 		String usr = md5("Thomas");
-		state.execute("INSERT INTO Users(UserName, PasswordHash, Salt) VALUES('"+usr+"','1','"+BCrypt.gensalt()+"')");
+		String salt = BCrypt.gensalt();
+		String pwd = BCrypt.hashpw(SHA1("123"), salt);
+		state.execute("INSERT INTO Users(UserName, PasswordHash, Salt) VALUES('"+usr+"','"+pwd+"','"+salt+"')");
 		ResultSet rs = state.executeQuery("SELECT LAST_INSERT_ID()");
 		rs.next();
+		System.out.println("Thomases ID = "+rs.getString(1));
 		return rs.getString(1);
-	    } catch (Exception e) {return null;}
-		finally{
-			close();
-		}
+		
 	}
 
     private String insertLecture(String prof) throws SQLException {
-    	try{
 		connect();
 		state.execute("INSERT INTO Lectures(LectureDate,StartTime,EndTime,Professor,Room,CourseID) VALUES('1995-03-02','14','15','"+prof+"','R1','1')");
 		ResultSet rs = state.executeQuery("SELECT LAST_INSERT_ID()");
 		rs.next();
 		return rs.getString(1);
-	    } catch (Exception e) {e.printStackTrace();;return null;}
-		finally{
-			close();
-		}
 	}
 
     
