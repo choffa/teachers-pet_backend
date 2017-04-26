@@ -181,7 +181,7 @@ public class ServerConnectionTest {
 		new Thread(sc).start();
 		Thread.sleep(100);
 		String returnLectures = s.nextLine();
-    	String expected = "NEXT Comment1 NEXT Comment2 NEXT Comment3 END";
+    	String expected = "NEXT Comment1 NEXT Comment2 NEXT Comment3 END ";
     	assertEquals(expected,returnLectures);
     }
     
