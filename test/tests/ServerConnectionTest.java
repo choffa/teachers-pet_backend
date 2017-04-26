@@ -261,7 +261,7 @@ public class ServerConnectionTest {
     	new Thread(sc).start();
     	Thread.sleep(100);
     	String rank = s.nextLine();
-    	assertEquals(2,rank);
+    	assertEquals("2.0",rank);
     }
 
 
@@ -290,8 +290,9 @@ public class ServerConnectionTest {
 		ResultSet rs = state.executeQuery("SELECT SubjectName FROM Subjects WHERE SubjectID='"+subID+"';");
 		rs.next();
     	assertEquals("sub1", rs.getString(1));
-		p.println("UPDATE_SUBJECT "+subID+" "+"name2"+"comment");
+		p.println("UPDATE_SUBJECT "+subID+" "+"name2"+" "+"comment");
 		p.flush();
+		Thread.sleep(200);
 		rs = state.executeQuery("SELECT SubjectName FROM Subjects WHERE SubjectID='"+subID+"';");
 		rs.next();
     	assertEquals("name2", rs.getString(1));
