@@ -211,6 +211,7 @@ public class ServerConnectionTest {
     	new Thread(sc).start();
     	Thread.sleep(100);
     	ResultSet rs = state.executeQuery("SELECT * FROM Lectures WHERE Professor = "+prof);
+    	rs.next();
     	assertTrue(rs.getString(1).length()>0);
     }
 
@@ -228,7 +229,7 @@ public class ServerConnectionTest {
     		new Thread(sc).start();
     		Thread.sleep(100);
     		String lec = s.nextLine();
-    		ResultSet rs = state.executeQuery("SELECT Professor, start, end, date FROM Lectures WHERE SubjectName='halla'");
+    		ResultSet rs = state.executeQuery("SELECT Professor, StartTime, EndTime, LectureDate FROM Lectures WHERE LectureID="+lec);
     		rs.next();
         	assertEquals(prof, rs.getString(1));
         	assertEquals(start,rs.getString(2));
