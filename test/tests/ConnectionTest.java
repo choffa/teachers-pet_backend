@@ -116,7 +116,7 @@ public class ConnectionTest {
         ArrayList<Lecture> lectureList = c.getLectures();
 
         assertEquals(expectedCommands, out.toString());
-        assertTrue(lectureList.isEmpty());
+        assertTrue(lectureList.size() == 1);
     }
 
     @Test
@@ -126,7 +126,7 @@ public class ConnectionTest {
         ArrayList<Lecture> lectureList = c.getLectures(professorID);
 
         assertEquals(expectedCommands, out.toString());
-        assertTrue(lectureList.isEmpty());
+        assertTrue(lectureList.size() == 1);
     }
 
     //TODO: END TODO
