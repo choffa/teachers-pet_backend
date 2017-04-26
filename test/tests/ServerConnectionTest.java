@@ -215,12 +215,13 @@ public class ServerConnectionTest {
     	assertEquals("3",rs.getString(1));
     }
 	
+	@Test
 	public void updateSubjectRating() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, InterruptedException{
 		String lec = insertLecture(insertThomas());
     	String stud = insertHarald();
     	String subID=insertSubject("sub1", lec);
     	state.execute("INSERT INTO SubjectRanking(Ranking,RankingComment,SubjectID,StudentID) VALUES ('1','hei','"+subID+"','"+stud+"');");
-    	ResultSet rs = state.executeQuery("SELECT Ranking FROM SubjectRanking WHERE LectureID='"+lec+"';");
+    	ResultSet rs = state.executeQuery("SELECT Ranking FROM SubjectRanking WHERE SubjectID='"+subID+"';");
 		rs.next();
     	assertEquals("1",rs.getString(1));
     	
@@ -228,7 +229,7 @@ public class ServerConnectionTest {
     	p.flush();
     	new Thread(sc).start();
     	Thread.sleep(100);
-    	rs = state.executeQuery("SELECT Ranking FROM SubjectRanking WHERE LectureID='"+lec+"';");
+    	rs = state.executeQuery("SELECT Ranking FROM SubjectRanking WHERE SubjectID='"+subID+"';");
 		rs.next();
     	assertEquals("3",rs.getString(1));
     }
