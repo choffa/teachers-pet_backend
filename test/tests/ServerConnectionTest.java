@@ -404,7 +404,7 @@ public class ServerConnectionTest {
     		String prof = insertThomas();
     		String lec = insertLecture(prof);
     		String stud = insertHarald();
-    		p.println("SET_SPEEDRATING "+lec+" 2 "+stud+";");
+    		p.println("SET_SPEEDRATING "+lec+" 2 "+stud);
     		p.flush();
     		new Thread(sc).start();
     		Thread.sleep(100);
