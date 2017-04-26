@@ -3,6 +3,7 @@ package backend;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -31,7 +32,7 @@ public class ServerConnection implements Runnable {
 	@Override
 	public void run() {
 		while (true){
-			System.out.println("Run method while");
+			System.out.println("You're a good lad");
 			if(in.hasNext()){
 				System.out.println("command recieved");
 				String command = in.next();
@@ -59,6 +60,7 @@ public class ServerConnection implements Runnable {
 						getAllLectures();
 						break;
 					case "SET_LECTURE":
+						System.out.println("entered setLecture case");
 						setLecture();
 						break;
 					case "SET_SPEEDRATING":
@@ -79,6 +81,24 @@ public class ServerConnection implements Runnable {
 					case "GET_NUMBEROFUSERS":
 						getTempoVotesInLecture();
 						break;
+					case "UPDATE_SUBJECT":
+						updateSubject();
+						break;
+					case "GET_STATS":
+						getStats();
+						break;
+					case "GET_STUDENTSUBJECTRATING":
+						getStudSubRating();
+						break;
+					case "GET_STUDENTSPEEDRATING":
+						getStudSpeedRating();
+						break;
+					case "SET_LECTURECOMMENT":
+						setLectureComment();
+						break;
+					case "GET_LECTURECOMMENTS":
+						getLectureComments();
+						break;
 					default:
 						close();
 						return;
@@ -91,11 +111,44 @@ public class ServerConnection implements Runnable {
 	}
 
 
+	private void getLectureComments() {
+		String LID = in.next();
+		String[] comments = new ServerDatabaseConnection().getList(ServerDatabaseConnection.LECTURECOMMENTS, "LectureID", LID, new String[]{"Comment"});
+		String returnString = "";
+		for (String comment:comments) {
+			returnString+= comment+" ";
+		}
+		out.println(returnString);
+		out.flush();
+	}
+
+
+	private void getStudSpeedRating() {
+		String SID = "'"+in.next()+"'";
+		String LID = "'"+in.next()+"'";
+		String rating = sdc.getString(ServerDatabaseConnection.SPEEDRANKING, "Ranking", "StudentID", SID, "LectureID", LID);
+		if(rating.length()>0){
+			out.println(rating);
+		} else {
+			out.println("NOSTRING");
+		}
+		out.flush();
+	}
+
+	private void getStudSubRating() {
+		String SID = "'"+in.next()+"'";
+		String SuID = "'"+in.next()+"'";
+		String rating = sdc.getString(ServerDatabaseConnection.SUBJECTRANKING, "Ranking", "StudentID", SID, "SubjectID", SuID);
+		if(rating.length()>0){
+			out.println(rating);
+		} else {
+			out.println("NOSTRING");
+		}
+		out.flush();
+	}
+
 	private void checkUser() {
-		System.out.println("Entered checkUser method");
-		System.out.println("Socket has next: "+in.hasNext());
 		boolean outBool = sdc.checkUsername(in.next());
-		System.out.println("Returns boolean: "+outBool);
 		out.println(outBool);
 		out.flush();
 	}
@@ -124,44 +177,44 @@ public class ServerConnection implements Runnable {
 		String ssprLID = in.next();
 		String ssprRat = in.next();
 		String ssprSID = in.next();
-		if(checkIfUpdate(ssprSID, ssprLID)){
+		if(checkIfUpdate(ServerDatabaseConnection.SPEEDRANKING,new String[] {"StudentID", "LectureID"},new String[] {ssprSID,ssprLID})){
 			sdc.update(ServerDatabaseConnection.SPEEDRANKING, new String[] {"Ranking"}, new String[] {ssprRat}, "StudentID", "'"+ssprSID+"'", "LectureID", "'"+ssprLID+"'");
+			System.out.println("Rating updated");
 		} else {
 			sdc.insert(ServerDatabaseConnection.SPEEDRANKING, new String[] {ssprLID, ssprRat,ssprSID});
+			System.out.println("New rating inserted");
 		}
 		
 	}
 
-	private boolean checkIfUpdate(String SID, String LID) {
+	private boolean checkIfUpdate(String table, String[] what, String[] values) {
 		String s;
- 		s=sdc.getString(ServerDatabaseConnection.SPEEDRANKING, "StudentID", "StudentId", "'"+SID+"'", "LectureID", "'"+LID+"'");
+ 		s=sdc.getString(table, "*", what[0], "'"+values[0]+"'", what[1], "'"+values[1]+"'");
 		return s.length()>0;
 	}
 
 	private void setLecture() {
-		System.out.println("in set lecture");
 		String PID= in.next();
-		System.out.println("got Pid");
 		String CID= in.next();
-		System.out.println("got cid");
 		String date= in.next();
-		System.out.println("got date");
 		String start= in.next();
-		System.out.println("got start");
 		String end= in.next();
-		System.out.println("got end");
 		String room= in.next();
-		System.out.println("data recieved: "+PID+CID+date+start+end+room);
 		sdc.insert(ServerDatabaseConnection.LECTURES, new String[] {date, start, end, PID, room, CID});
 		int ID=-1;
 		try{
-			System.out.println("insertion done, getting id");
 			ID = Integer.parseInt(sdc.getLastID());
 		} finally {
 		System.out.println("Created Lecture ID: "+ID);
 		out.println(ID);
 		out.flush();
 		}
+	}
+	
+	private void setLectureComment() {
+		String LID = in.next();
+		String comment = in.next();
+		sdc.insert(ServerDatabaseConnection.LECTURECOMMENTS, new String[]{LID, comment});
 	}
 	
 	private void setSubject(){
@@ -171,15 +224,28 @@ public class ServerConnection implements Runnable {
 		String comment = in.next();
 		String[] args = {Integer.toString(lectureID), name, comment};
 		sdc.insert(table, args);
+		System.out.println("Subject inserted");
+	}
+	
+	private void updateSubject(){
+		String subID = in.next();
+		String subName = in.next();
+		String subComment = in.next();
+		sdc.update(ServerDatabaseConnection.SUBJECTS, new String[]{"SubjectName", "Comment"}, new String[]{subName,subComment}, "SubjectID", "'"+subID+"'", "'1'", "'1'");
 	}
 
 	private void setSubjectRating(){
 		String ssrSuID = in.next();
 		String ssrSID = in.next();
 		String ssrRat = in.next();
-		String ssrComment = "'"+in.next()+"'";
-		sdc.insert(ServerDatabaseConnection.SUBJECTRANKING, new String[] {ssrSuID,ssrRat,ssrComment,ssrSID});
-
+		String ssrComment = in.next();
+		if(checkIfUpdate(ServerDatabaseConnection.SUBJECTRANKING,new String[] {"StudentID", "SubjectID"},new String[] {ssrSID, ssrSuID})){
+			sdc.update(ServerDatabaseConnection.SUBJECTRANKING, new String[] {"Ranking", "RankingComment"}, new String[] {ssrRat, ssrComment}, "StudentID", "'"+ssrSID+"'", "SubjectID", "'"+ssrSuID+"'");
+			System.out.println("Rating updated");
+		} else {
+			sdc.insert(ServerDatabaseConnection.SUBJECTRANKING, new String[] {ssrRat,ssrComment,ssrSuID,ssrSID});
+			System.out.println("New rating inserted");
+		}
 	}
 
 	private void getAverageSubjectRating(){
@@ -235,7 +301,7 @@ public class ServerConnection implements Runnable {
 	
 	private void getSubjects(){
 		String LID = in.next();
-		String[] ReturnList = sdc.getList(ServerDatabaseConnection.SUBJECTS,"'LectureID", "'"+LID+"'", new String[] {"*"});
+		String[] ReturnList = sdc.getList(ServerDatabaseConnection.SUBJECTS,"LectureID", "'"+LID+"'", new String[] {"SubjectID","SubjectName", "Comment"});
 		String ReturnString="";
 		if(ReturnList.length>0)
 		for (String s:ReturnList) ReturnString+=s+" ";
@@ -250,4 +316,12 @@ public class ServerConnection implements Runnable {
 		out.println(numOfUsers);
 		out.flush();
 	}
+	
+	 private void getStats(){
+		 String SuID = in.next();
+		 String stats = sdc.getStats(SuID);
+		 //System.out.println("Server returning: "+stats);
+		 out.println(stats);
+		 out.flush();
+	 }
 }
