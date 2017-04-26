@@ -251,10 +251,7 @@ public class ServerConnection implements Runnable {
 		String table = "SubjectRanking";
 		String idColumn = "SubjectID";
 		String id = in.next();
-		System.out.println("ID is: "+id);
-		System.out.println(sdc);
 		double avg = sdc.getAverage(table, idColumn, id);
-		System.out.println(avg);
 		float ret = (float) avg;
 		out.println(ret);
 		out.flush();

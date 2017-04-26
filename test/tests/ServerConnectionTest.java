@@ -147,7 +147,7 @@ public class ServerConnectionTest {
     	new Thread(sc).start();
     	Thread.sleep(100);
     	String stats = s.nextLine();
-    	assertEquals("0 1 0 0 0 0",stats);
+    	assertEquals("NEXT 0 NEXT 1 NEXT 0 NEXT 0 NEXT 0 NEXT 0 END",stats);
 	}
 	
 	@Test
@@ -270,19 +270,13 @@ case "GET_STATS":
     	String subID = insertSubject("helloworld",insertLecture(insertThomas()));
     	String stud = insertHarald();
     	state.execute("INSERT INTO SubjectRanking(Ranking,RankingComment,SubjectID,StudentID) VALUES ('1','hei','"+subID+"','"+stud+"');");
-    	
-		ResultSet rs = state.executeQuery("SELECT SubjectID FROM Subjects");
-		rs.next();
-    	System.out.println(rs.getString(1));  
     	String commandAndData = "GET_AVERAGESUBJECTRATING "+subID;
-    	System.out.println(commandAndData);
     	p.println(commandAndData);
     	p.flush();
     	new Thread(sc).start();
     	Thread.sleep(200);
     	if(s.hasNext()){
     	String avg = s.next();
-    	System.out.println("Recieved avg: "+avg);
     	assertEquals("1.0",avg);
     	}else{
     		fail("No return");
