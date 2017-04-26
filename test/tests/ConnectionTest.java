@@ -39,8 +39,8 @@ public class ConnectionTest {
     private static final String professorID = "djfsakløfjkløsjaklfø";
     private static final String password = "trwuiodsjoivdsgl325u485";
     private static final String studentID = "kdigfur64990#jdfydkwmdur&&jkd/daeb";
-    private static final String lectureResponse = "END";
-    private static final String subjectResponse = "END";
+    private static final String lectureResponse = "NEXT 1 djfsakløfjkløsjaklfø TDT4140 2017-05-04 12 14 R4 END";
+    private static final String subjectResponse = "NEXT 1 theorem END";
     private static final String subjectName = "EULERS_THEROEM";
     private static final String badSubjectName = "EULERS THEOREM";
     private static final String comment = "THIS_IS_A_VALID_NICE_COMMENT";
