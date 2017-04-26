@@ -96,7 +96,7 @@ public class ServerConnectionTest {
     	state.execute("DELETE FROM Users WHERE 1=1");
     	state.execute("DELETE FROM SpeedRanking WHERE 1=1");
     	state.execute("DELETE FROM SubjectRanking WHERE 1=1");
-    	state.execute("DELETE FROM LecturesComments WHERE 1=1");
+    	state.execute("DELETE FROM LectureComments WHERE 1=1");
 	}
 
     
