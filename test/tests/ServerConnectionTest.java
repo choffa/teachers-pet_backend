@@ -178,24 +178,12 @@ public class ServerConnectionTest {
     public void setSubjectRating(){
     	
     }
-/*
+
     @Test
     public void getAverageSubjectRating(){
-    	try{
-    		connect();
-	    	String lec = insertLecture(insertThomas());
-	    	state.execute("INSERT INTO Subjects(LectureID,SubjectName) VALUES ('"+lec+"','name1')");
-	    	state.execute("INSERT INTO Subjects(LectureID,SubjectName) VALUES ('"+lec+"','name2')");
-	    	state.execute("INSERT INTO Subjects(LectureID,SubjectName) VALUES ('"+lec+"','name3')");
-	    	p.println("GET_SUBJECTS "+lec);
-	    	p.flush();
-	    	new Thread(sc).start();
-	    	while("NEXT".equals(s.next())){
-	    		String Subject[][];
-	    	}
-    	}catch (Exception e){e.printStackTrace();}
+    
     }
-*/
+
     @Test(timeout=2000)
     public void setSubject() throws SQLException, InterruptedException, NoSuchAlgorithmException, UnsupportedEncodingException{
 
@@ -281,18 +269,7 @@ public class ServerConnectionTest {
 
     @Test
     public void getTempoVotesInLecture(){
-    	try{
-    		connect();
-    		String lec = insertLecture(insertThomas());
-    		state.execute("INSERT INTO Subjects(LectureID,SubjectName) VALUES ('"+lec+"','name1')");
-    	
-    		p.println("GET_SUBJECTS "+lec);
-    		p.flush();
-    		new Thread(sc).start();
-    		while("NEXT".equals(s.next())){
-    		String Subject[][];
-    		}
-    		}catch (Exception e){e.printStackTrace();}
+  
     }
 
 
