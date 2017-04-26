@@ -274,8 +274,9 @@ case "GET_STATS":
 		ResultSet rs = state.executeQuery("SELECT SubjectID FROM Subjects");
 		rs.next();
     	System.out.println(rs.getString(1));  
-    	
-    	p.println("GET_AVERAGESUBJECTRATING "+subID);
+    	String commandAndData = "GET_AVERAGESUBJECTRATING "+subID;
+    	System.out.println(commandAndData);
+    	p.println(commandAndData);
     	p.flush();
     	new Thread(sc).start();
     	Thread.sleep(200);
