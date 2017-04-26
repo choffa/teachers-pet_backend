@@ -270,6 +270,11 @@ case "GET_STATS":
     	String subID = insertSubject("helloworld",insertLecture(insertThomas()));
     	String stud = insertHarald();
     	state.execute("INSERT INTO SubjectRanking(Ranking,RankingComment,SubjectID,StudentID) VALUES (1,'hei','"+subID+"','"+stud+"');");
+    	
+		ResultSet rs = state.executeQuery("SELECT SubjectID FROM Subjects'");
+		rs.next();
+    	System.out.println(rs.getString(1));  
+    	
     	p.println("GET_AVERAGESUBJECTRATING "+subID);
     	p.flush();
     	new Thread(sc).start();
