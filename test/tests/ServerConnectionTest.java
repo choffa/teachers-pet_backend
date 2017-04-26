@@ -169,9 +169,9 @@ public class ServerConnectionTest {
     public void getSubjects() throws SQLException{
     	try{
     	String lec = insertLecture(insertThomas());
-    	state.execute("INSERT INTO Subjects(LectureID,SubjectName,Comment) VALUES ('"+lec+"','name1','comment1')");
-    	state.execute("INSERT INTO Subjects(LectureID,SubjectName,Comment) VALUES ('"+lec+"','name2','comment2')");
-    	state.execute("INSERT INTO Subjects(LectureID,SubjectName,Comment) VALUES ('"+lec+"','name3','comment3')");
+    	state.execute("INSERT INTO Subjects(LectureID,SubjectName) VALUES ('"+lec+"','name1')");
+    	state.execute("INSERT INTO Subjects(LectureID,SubjectName) VALUES ('"+lec+"','name2')");
+    	state.execute("INSERT INTO Subjects(LectureID,SubjectName) VALUES ('"+lec+"','name3')");
     	p.println("GET_SUBJECTS "+lec);
     	p.flush();
     	new Thread(sc).start();
@@ -190,9 +190,9 @@ public class ServerConnectionTest {
     	try{
     		connect();
 	    	String lec = insertLecture(insertThomas());
-	    	state.execute("INSERT INTO Subjects(LectureID,SubjectName,Comment) VALUES ('"+lec+"','name1','comment1')");
-	    	state.execute("INSERT INTO Subjects(LectureID,SubjectName,Comment) VALUES ('"+lec+"','name2','comment2')");
-	    	state.execute("INSERT INTO Subjects(LectureID,SubjectName,Comment) VALUES ('"+lec+"','name3','comment3')");
+	    	state.execute("INSERT INTO Subjects(LectureID,SubjectName) VALUES ('"+lec+"','name1')");
+	    	state.execute("INSERT INTO Subjects(LectureID,SubjectName) VALUES ('"+lec+"','name2')");
+	    	state.execute("INSERT INTO Subjects(LectureID,SubjectName) VALUES ('"+lec+"','name3')");
 	    	p.println("GET_SUBJECTS "+lec);
 	    	p.flush();
 	    	new Thread(sc).start();
@@ -222,9 +222,9 @@ public class ServerConnectionTest {
     public void getLecture(){
     	try{
     	String lec = insertLecture(insertThomas());
-    	state.execute("INSERT INTO Subjects(LectureID,SubjectName,Comment) VALUES ('"+lec+"','name1','comment1')");
-    	state.execute("INSERT INTO Subjects(LectureID,SubjectName,Comment) VALUES ('"+lec+"','name2','comment2')");
-    	state.execute("INSERT INTO Subjects(LectureID,SubjectName,Comment) VALUES ('"+lec+"','name3','comment3')");
+    	state.execute("INSERT INTO Subjects(LectureID,SubjectName) VALUES ('"+lec+"','name1')");
+    	state.execute("INSERT INTO Subjects(LectureID,SubjectName) VALUES ('"+lec+"','name2')");
+    	state.execute("INSERT INTO Subjects(LectureID,SubjectName) VALUES ('"+lec+"','name3')");
     	p.println("GET_SUBJECTS "+lec);
     	p.flush();
     	new Thread(sc).start();
@@ -267,7 +267,7 @@ public class ServerConnectionTest {
     public void getAverageSpeedRating(){
     	try{
     	String lec = insertLecture(insertThomas());
-    	state.execute("INSERT INTO Subjects(LectureID,SubjectName,Comment) VALUES ('"+lec+"','name1','comment1')");
+    	state.execute("INSERT INTO Subjects(LectureID,SubjectName) VALUES ('"+lec+"','name1')");
     	
     	p.println("GET_SUBJECTS "+lec);
     	p.flush();
@@ -286,7 +286,7 @@ public class ServerConnectionTest {
     	try{
     		connect();
     		String lec = insertLecture(insertThomas());
-    		state.execute("INSERT INTO Subjects(LectureID,SubjectName,Comment) VALUES ('"+lec+"','name1','comment1')");
+    		state.execute("INSERT INTO Subjects(LectureID,SubjectName) VALUES ('"+lec+"','name1')");
     	
     		p.println("GET_SUBJECTS "+lec);
     		p.flush();
