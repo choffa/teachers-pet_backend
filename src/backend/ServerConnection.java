@@ -104,9 +104,9 @@ public class ServerConnection implements Runnable {
 						return;
 				}
 			} else {
-				close(); 
+				close();
 				return;
-				}
+			}
 		}
 	}
 
@@ -220,7 +220,7 @@ public class ServerConnection implements Runnable {
 	private void setSubject(){
 		String table = ServerDatabaseConnection.SUBJECTS;
 		int lectureID = in.nextInt();
-		String name = in.next();
+		String name = "'"+in.next()+"'";
 		String comment = in.next();
 		String[] args = {Integer.toString(lectureID), name, comment};
 		sdc.insert(table, args);

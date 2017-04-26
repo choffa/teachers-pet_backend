@@ -3,17 +3,21 @@ package tests;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import com.mysql.jdbc.Driver;
+
 
 import com.sun.jmx.snmp.internal.SnmpAccessControlModel;
 
 import backend.ServerConnection;
 import backend.ServerDatabaseConnection;
 
+
 import static org.junit.Test.*;
 
 import java.io.*;
 import java.net.Socket;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
@@ -21,6 +25,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import java.util.Random;
 import java.util.Scanner;
 import java.util.stream.Stream;
@@ -28,14 +33,18 @@ import java.util.stream.Stream;
 import static org.junit.Before.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
+
 import org.mindrot.jbcrypt.BCrypt;
 
 
 public class ServerConnectionTest {
 
+
     private static ServerConnection sc;
     private static ServerDatabaseConnection sdc;
+
     private Socket skt;
     private PipedOutputStream printOut;
     private PipedInputStream in;
@@ -43,7 +52,7 @@ public class ServerConnectionTest {
     private PipedInputStream programReturn;
     private PrintWriter p;
     private Scanner s;
-    
+
     private static Statement state;
     private static  Connection con;
 
@@ -68,10 +77,12 @@ public class ServerConnectionTest {
 
     
     private void serverSetup() throws IOException {
+
     	skt = mock(Socket.class);    	
     	when(skt.getOutputStream()).thenReturn(out);
     	when(skt.getInputStream()).thenReturn(in);
     	when(skt.isConnected()).thenReturn(true);
+
     	//initializing classes
     	sc = new ServerConnection(skt, sdc);
     	sdc = new ServerDatabaseConnection("jdbc:mysql://localhost/teachers-pet_test_database?autoReconnect=true&useSSL=false", "root", "123");
@@ -131,6 +142,7 @@ public class ServerConnectionTest {
 	public void checkUser() throws NumberFormatException, IOException, NoSuchAlgorithmException, SQLException{
 				insertThomas();
 				p.println("CHECK_USER "+md5("Thomas"));
+
     			p.flush();
     			new Thread(sc).start();
     	    	assertTrue(s.nextBoolean());
@@ -377,6 +389,7 @@ public class ServerConnectionTest {
         byte[] sha1hash = md.digest();
         return convertToHex(sha1hash);
     }
+
 
     
 }
