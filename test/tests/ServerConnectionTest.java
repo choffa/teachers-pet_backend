@@ -256,7 +256,7 @@ public class ServerConnectionTest {
     	String lec = insertLecture(insertThomas());
     	String stud = insertHarald();
     	state.execute("INSERT INTO SpeedRanking(LectureID,Ranking,StudentID) VALUES ('"+lec+"','2','"+stud+"')");
-    	p.println("GET_AVERAGESPEEDRATING"+lec);
+    	p.println("GET_AVERAGESPEEDRATING "+lec);
     	p.flush();
     	new Thread(sc).start();
     	Thread.sleep(100);
