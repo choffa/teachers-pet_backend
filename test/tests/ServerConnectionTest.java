@@ -83,8 +83,8 @@ public class ServerConnectionTest {
     	when(skt.isConnected()).thenReturn(true);
 
     	//initializing classes
-    	sc = new ServerConnection(skt, sdc);
     	sdc = new ServerDatabaseConnection(database, "root", "");
+    	sc = new ServerConnection(skt, sdc);
 	}
 
 
