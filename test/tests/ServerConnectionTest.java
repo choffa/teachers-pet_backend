@@ -120,8 +120,70 @@ public class ServerConnectionTest {
 
 
     //---------------------TESTS----------------------------
+
+    public void testClose() throws InterruptedException{
+    	p.println("CLOSE");
+    	p.flush();
+    	Thread th = new Thread(sc);
+    	th.start();
+    	Thread.sleep(100);
+    	assertFalse(th.isAlive());
+    }
+    
+    public void defaultClose() throws InterruptedException{
+    	p.println("asdsa");
+    	p.flush();
+    	Thread th = new Thread(sc);
+    	th.start();
+    	Thread.sleep(100);
+    	assertFalse(th.isAlive());
+    }
+    
+    public void whileClose() throws InterruptedException{
+    	Thread th = new Thread(sc);
+    	th.start();
+    	Thread.sleep(100);
+    	assertFalse(th.isAlive());
+    }
     
     
+    
+    /*
+     * 
+     * case "SET_SUBJECTRATING":
+48		
+						setSubjectRating();
+49		
+						break;
+     * 					case "GET_ALLLECTURES":
+60		
+						getAllLectures();
+61		
+						break;
+     * case "GET_LECTURECOMMENTS":
+100		
+						getLectureComments();
+101		
+						break;
+102		
+					default:
+103		
+						close();
+104		
+						return;
+						
+						case "GET_STUDENTSUBJECTRATING":
+91		
+						getStudSubRating();
+92		
+						break;
+93		
+					case "GET_STUDENTSPEEDRATING":
+94		
+						getStudSpeedRating();
+95		
+						break;
+  */  
 	@Test
     public void updateSpeedRating() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, InterruptedException {
     	String lec = insertLecture(insertThomas());
@@ -161,43 +223,7 @@ public class ServerConnectionTest {
 		rs.next();
     	assertEquals("HelloWorld", rs.getString(1));
 	}
-	/*
-case "GET_STATS":
-88		
-					getStats();
-89		
-					break;
-90		
-				case "GET_STUDENTSUBJECTRATING":
-91		
-					getStudSubRating();
-92		
-					break;
-93		
-				case "GET_STUDENTSPEEDRATING":
-94		
-					getStudSpeedRating();
-95		
-					break;
-96		
-				case "SET_LECTURECOMMENT":
-97		
-					setLectureComment();
-98		
-					break;
-99		
-				case "GET_LECTURECOMMENTS":
-100		
-					getLectureComments();
-101		
-					break;
-102		
-				default:
-103		
-					close();
-104		
-					return;
-	*/
+
     
 	@Test
     public void setUser() throws NoSuchAlgorithmException, SQLException, InterruptedException, InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
