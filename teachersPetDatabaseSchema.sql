@@ -12,7 +12,8 @@ CREATE TABLE Subjects (
     SubjectID      	INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
     LectureID 	    INTEGER NOT NULL,
     SubjectName     VARCHAR(32),
-    
+    Comment			VARCHAR(255),
+	
     CONSTRAINT Subject_LectureID_FK FOREIGN KEY (LectureID) REFERENCES Lectures(LectureID)
 																	                                  ON UPDATE CASCADE
                                                                     ON DELETE CASCADE
@@ -24,8 +25,7 @@ CREATE TABLE SubjectRanking (
     Ranking     	  INTEGER NOT NULL,
     RankingComment  TEXT,
 
-    CONSTRAINT RankingConstraint CHECK (Ranking > 0 AND Ranking < 5),
-    CONSTRAINT SubjectRanking_SubjectID_FK FOREIGN KEY (SubjectID) REFERENCES Subjects(SubjectID)
+    CONSTRAINT SubjectRanking_SubjectID_FK FOREIGN KEY (SubjectID) REFERENCES Subjects(SubjectID),
 																			                                  ON UPDATE CASCADE
                                                                         ON DELETE CASCADE
 );
@@ -35,8 +35,8 @@ CREATE TABLE SpeedRanking (
     StudentID   	CHAR(32)  NOT NULL,
     Ranking     	INTEGER   NOT NULL,
 
-    CONSTRAINT RankingConstraint CHECK (Ranking > 0 AND Ranking < 5),
     CONSTRAINT SpeedRanking_LectureID_FK FOREIGN KEY (LectureID) REFERENCES Lectures(LectureID)
+	
 																		                                    ON UPDATE CASCADE
                                                                         ON DELETE CASCADE
 );
@@ -46,3 +46,10 @@ CREATE TABLE Users (
     PasswordHash    VARCHAR(255) NOT NULL,
     Salt            CHAR(29) NOT NULL
 );
+
+CREATE TABLE LectureComment (
+	LectureID	INTEGER NOT NULL,
+	Comment		VARCHAR(255),
+	
+	CONSTRAINT LID_FK FOREIGN KEY (LectureID) REFERENCES Lectures(LectureID) ON UPDATE CASCADE ON DELETE CASCADE
+	);
